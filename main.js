@@ -38,6 +38,11 @@ class GreeHvac extends utils.Adapter {
         }
         this.log.info('Device list: ' + this.config.devicelist);
 
+        if (!this.validateIPList(this.config.devicelist)){
+            this.log.error('Invalid device list');
+            this.terminate('Invalid device list');
+        }
+
         /*
         For every state in the system there has to be also an object of type state
         Here a simple template for a boolean variable named "testVariable"
@@ -82,6 +87,24 @@ class GreeHvac extends utils.Adapter {
 
         result = await this.checkGroupAsync('admin', 'admin');
         this.log.info('check group user admin group admin: ' + result);
+    }
+
+    validateIPList(ipList) {
+        // Regular expression for IP address
+        const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    
+        // Split the list by semicolon
+        const ips = ipList.split(';');
+    
+        // Validate each IP
+        for (let ip of ips) {
+            if (!ipPattern.test(ip)) {
+                return false;
+            }
+        }
+    
+        // If all IPs are valid
+        return true;
     }
 
     /**
