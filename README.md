@@ -1,5 +1,25 @@
+![Logo](admin/air-conditioner.png)
 # iobroker.gree-hvac
+
+[![NPM version](https://img.shields.io/npm/v/iobroker.gree-hvac.svg)](https://www.npmjs.com/package/iobroker.gree-hvac)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.gree-hvac.svg)](https://www.npmjs.com/package/iobroker.gree-hvac)
+![Number of Installations (latest)](https://iobroker.live/badges/gree-hvac-installed.svg)
+
 Adapter for Gree and C&amp;H conditioners
+
+## Supported devices
+All devices which can be controlled via EWPE Smart app should be supported, including:
+
+- Gree Smart series
+- Cooper&Hunter: Supreme, Vip Inverter, ICY II, Arctic, Alpha, Alpha NG, Veritas, Veritas NG series
+- EcoAir X series
+- ProKlima
+
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+## Changelog
+### 0.0.1 (2024-04-15)
+ - Firs version of the adapter
 
 ## License
 MIT License
