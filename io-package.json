@@ -19,17 +19,17 @@
         },
         "title": "Gree-Hvac adapter",
         "titleLang": {
-            "en": "Gree-Hvac adapter",
-            "de": "Gree-Hvac Adapter",
-            "ru": "Адаптер Gree-Hvac",
-            "pt": "Adaptador Gree-Hvac",
-            "nl": "Gree-Hvac adapter",
-            "fr": "Adaptateur Gree-Hvac",
-            "it": "Adattatore Gree-Hvac",
-            "es": "Adaptador Gree-Hvac",
-            "pl": "Adapter Gree- Hvac",
-            "uk": "Gree-Hvac адаптер",
-            "zh-cn": "Gree-Hvac 适配器"
+            "en": "Air conditioners Gree and C&H",
+            "de": "Klimaanlagen Gree und C&H",
+            "ru": "Кондиционеры Gree и C&H",
+            "pt": "Ar condicionado Gree e C&H",
+            "nl": "Airconditioners Gree en C&H",
+            "fr": "Climatiseurs Gree et C&H",
+            "it": "Aria condizionata Gree e C&H",
+            "es": "Aire acondicionado Gree and C&H",
+            "pl": "Urządzenia klimatyzacyjne Gree i C&H",
+            "uk": "Кондиціонери Gree та C&H",
+            "zh-cn": "空调机 Gree 和 C&H 软件"
         },
         "desc": {
             "en": "Adapter for Gree and C&H conditioners",
@@ -78,17 +78,17 @@
         "adminTab": {
             "singleton": true,
             "name": {
-                "en": "Template (JavaScript)",
-                "de": "Vorlage (JavaScript)",
-                "ru": "Шаблон (JavaScript)",
-                "pt": "Modelo (JavaScript)",
-                "nl": "Sjabloon (JavaScript)",
-                "fr": "Modèle (JavaScript)",
-                "it": "Modello (JavaScript)",
-                "es": "Plantilla (JavaScript)",
-                "pl": "Szablon (JavaScript)",
-                "uk": "Шаблон (JavaScript)",
-                "zh-cn": "模板（JavaScript）"
+                "en": "Adapter Gree-HVAC",
+                "de": "Adapter Gree-HVAC",
+                "ru": "Адаптер Gree-HVAC",
+                "pt": "Adaptador Gree-HVAC",
+                "nl": "Adapter Gree-HVAC",
+                "fr": "Adaptateur Gree-HVAC",
+                "it": "Adattatore Gree-HVAC",
+                "es": "Adaptador Gree-HVAC",
+                "pl": "Adapter Gree- HVAC",
+                "uk": "Адаптер Gree-HVAC",
+                "zh-cn": "适应器 Gree-HVAC"
             },
             "link": "",
             "fa-icon": "info"
