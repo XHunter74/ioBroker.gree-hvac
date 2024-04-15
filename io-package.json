@@ -17,18 +17,32 @@
                 "zh-cn": "首次出版"
             }
         },
+        "title": "Gree-Hvac adapter",
+        "titleLang": {
+            "en": "Gree-Hvac adapter",
+            "de": "Gree-Hvac Adapter",
+            "ru": "Адаптер Gree-Hvac",
+            "pt": "Adaptador Gree-Hvac",
+            "nl": "Gree-Hvac adapter",
+            "fr": "Adaptateur Gree-Hvac",
+            "it": "Adattatore Gree-Hvac",
+            "es": "Adaptador Gree-Hvac",
+            "pl": "Adapter Gree- Hvac",
+            "uk": "Gree-Hvac адаптер",
+            "zh-cn": "Gree-Hvac 适配器"
+        },
         "desc": {
-            "en": "Template for adapter development",
-            "de": "Vorlage für die Adapterentwicklung",
-            "ru": "Шаблон для разработки адаптера",
-            "pt": "Modelo para desenvolvimento de adaptador",
-            "nl": "Sjabloon voor adapterontwikkeling",
-            "fr": "Modèle pour le développement d'adaptateurs",
-            "it": "Modello per lo sviluppo dell'adattatore",
-            "es": "Plantilla para el desarrollo de adaptadores.",
-            "pl": "Szablon do opracowania adaptera",
-            "uk": "Шаблон для розробки адаптера",
-            "zh-cn": "适配器开发模板"
+            "en": "Adapter for Gree and C&H conditioners",
+            "de": "Adapter für Gree und C&H Conditioner",
+            "ru": "Адаптер для кондиционеров Gree и C&H",
+            "pt": "Adaptador para condicionadores Gree e C&H",
+            "nl": "Adapter voor Gree- en C&H-conditioners",
+            "fr": "Adaptateur pour conditionneurs Gree et C&H",
+            "it": "Adattatore per condizionatori Gree e C&H",
+            "es": "Adaptador para acondicionadores de Gree y CplH",
+            "pl": "Adapter do klimatyzatorów Gree i C & H",
+            "uk": "Адаптер для кондиціонерів Gree та C&H",
+            "zh-cn": "Gree 和 C&H 调制器的适配器"
         },
         "authors": [
             "Author <author@mail.com>"
@@ -55,7 +69,7 @@
         "mode": "daemon",
         "type": "hardware",
         "connectionType": "local",
-        "dataSource": "poll", 
+        "dataSource": "poll",
         "compact": true,
         "adminUI": {
             "config": "json",
@@ -91,8 +105,7 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "devicelist": ""
     },
     "objects": [],
     "instanceObjects": []

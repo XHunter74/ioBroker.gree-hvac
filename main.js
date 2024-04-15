@@ -1,9 +1,5 @@
 'use strict';
 
-/*
- * Created with @iobroker/create-adapter v2.6.3
- */
-
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
@@ -11,7 +7,7 @@ const utils = require('@iobroker/adapter-core');
 // Load your modules here, e.g.:
 // const fs = require("fs");
 
-class Template extends utils.Adapter {
+class GreeHvac extends utils.Adapter {
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -19,7 +15,7 @@ class Template extends utils.Adapter {
     constructor(options) {
         super({
             ...options,
-            name: 'template',
+            name: 'gree-hvac',
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -36,8 +32,11 @@ class Template extends utils.Adapter {
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
+        if (!this.config.devicelist){
+            this.log.error('You should config device list in adapter configuration page');
+            this.terminate('Device list is empty');
+        }
+        this.log.info('Device list: ' + this.config.devicelist);
 
         /*
         For every state in the system there has to be also an object of type state
@@ -160,8 +159,8 @@ if (require.main !== module) {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
-    module.exports = (options) => new Template(options);
+    module.exports = (options) => new GreeHvac(options);
 } else {
     // otherwise start the instance directly
-    new Template();
+    new GreeHvac();
 }
