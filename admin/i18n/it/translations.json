@@ -1,5 +1,5 @@
 {
-    "template adapter settings": "Impostazioni dell'adattatore per template",
-    "option1": "opzione 1",
-    "option2": "opzione 2"
+    "gree-hvac adapter settings": "Impostazioni dell'adattatore Gree HVAC",
+    "devicelist": "Dispositivi IP, delimitati da semicolon",
+    "pollInterval": "Intervallo di inquinamento in millisecondi"
 }

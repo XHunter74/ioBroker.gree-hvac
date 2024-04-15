@@ -1,5 +1,5 @@
 {
-    "template adapter settings": "Paramètres d'adaptateur pour template",
-    "option1": "Option 1",
-    "option2": "Option 2"
+    "gree-hvac adapter settings": "Paramètres de l'adaptateur Gree CVC",
+    "devicelist": "IP du périphérique, délimité par un point-virgule",
+    "pollInterval": "Intervalle de scrutin en millisecondes"
 }

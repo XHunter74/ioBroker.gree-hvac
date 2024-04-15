@@ -1,4 +1,5 @@
 {
-    "devicelist": "Device IPs, delimitted by semicolon",
+    "gree-hvac adapter settings": "Gree HVAC adapter settings",
+    "devicelist": "Device IPs, delimited by semicolon",
     "pollInterval": "Polling interval in milliseconds"
 }

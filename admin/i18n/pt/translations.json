@@ -1,5 +1,5 @@
 {
-    "template adapter settings": "Configurações do adaptador para template",
-    "option1": "Opção 1",
-    "option2": "opção 2"
+    "gree-hvac adapter settings": "Configurações do adaptador de HVAC da Gree",
+    "devicelist": "IPs do dispositivo, delimitado por ponto e vírgula",
+    "pollInterval": "Intervalo de polimento em milissegundos"
 }

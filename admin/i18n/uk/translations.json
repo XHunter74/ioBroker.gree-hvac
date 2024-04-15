@@ -1,5 +1,5 @@
 {
-    "template adapter settings": "Налаштування адаптера для template",
-    "option1": "варіант1",
-    "option2": "варіант2"
+    "gree-hvac adapter settings": "Налаштування адаптеру Gree HVAC",
+    "devicelist": "IP пристроїв, розділені крапкою з зап'ятою",
+    "pollInterval": "Інтервал опитування в міллісекундах"
 }

@@ -1,5 +1,5 @@
 {
-    "template adapter settings": "Ustawienia adaptera dla template",
-    "option1": "opcja 1",
-    "option2": "Opcja 2"
+    "gree-hvac adapter settings": "Ustawienia adaptera Gree HVAC",
+    "devicelist": "Urządzenie IP, wyznaczone przez średnik",
+    "pollInterval": "Odstęp między badaniami w milisekundach"
 }

@@ -1,5 +1,5 @@
 {
-    "template adapter settings": "Adapterinstellingen voor template",
-    "option1": "Optie 1",
-    "option2": "Optie 2"
+    "gree-hvac adapter settings": "Gree HVAC-adapterinstellingen",
+    "devicelist": "Apparaat IP's, afgebakend door puntkomma",
+    "pollInterval": "Berekeninterval in milliseconden"
 }
