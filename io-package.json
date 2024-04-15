@@ -67,7 +67,7 @@
         "loglevel": "info",
         "tier": 3,
         "mode": "daemon",
-        "type": "hardware",
+        "type": "climate-control",
         "connectionType": "local",
         "dataSource": "poll",
         "compact": true,
