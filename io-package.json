@@ -17,20 +17,6 @@
                 "zh-cn": "首次出版"
             }
         },
-        "title": "Template (JavaScript)",
-        "titleLang": {
-            "en": "Template (JavaScript)",
-            "de": "Vorlage (JavaScript)",
-            "ru": "Шаблон (JavaScript)",
-            "pt": "Modelo (JavaScript)",
-            "nl": "Sjabloon (JavaScript)",
-            "fr": "Modèle (JavaScript)",
-            "it": "Modello (JavaScript)",
-            "es": "Plantilla (JavaScript)",
-            "pl": "Szablon (JavaScript)",
-            "uk": "Шаблон (JavaScript)",
-            "zh-cn": "模板（JavaScript）"
-        },
         "desc": {
             "en": "Template for adapter development",
             "de": "Vorlage für die Adapterentwicklung",
@@ -54,7 +40,6 @@
             "C&H",
             "WiFi"
         ],
-        "license": "MIT",
         "licenseInformation": {
             "type": "free",
             "license": "MIT"
