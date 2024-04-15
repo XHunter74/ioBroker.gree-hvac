@@ -65,11 +65,11 @@ class GreeHvac extends utils.Adapter {
     getDeviceStatus = async (deviceId) => {
         const deviceStatus = await this.deviceManager.getDeviceStatus(deviceId);
         this.processDeviceStatus(deviceId, deviceStatus);
-    }
+    };
 
     async processDeviceStatus(deviceId, deviceStatus) {
         for (const key in deviceStatus) {
-            if (deviceStatus.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
                 const value = deviceStatus[key];
                 const mapItem = proptiesMap.find(item => item.hvacName === key);
                 if (!mapItem) {
@@ -113,7 +113,7 @@ class GreeHvac extends utils.Adapter {
         const ips = ipList.split(';');
 
         // Validate each IP
-        for (let ip of ips) {
+        for (const ip of ips) {
             if (!ipPattern.test(ip)) {
                 return false;
             }
