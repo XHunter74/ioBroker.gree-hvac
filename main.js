@@ -12,6 +12,7 @@ const utils = require('@iobroker/adapter-core');
 class GreeHvac extends utils.Adapter {
 
     deviceManager;
+    intervals = {};
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -53,7 +54,8 @@ class GreeHvac extends utils.Adapter {
             await this.processDevice(deviceId, device);
 
             if (pollInterval > 0) {
-                setInterval(() => this.getDeviceStatus(deviceId), pollInterval);
+                const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), pollInterval);
+                this.intervals[deviceId] = deviceInterval;
             }
         });
     }
@@ -125,12 +127,9 @@ class GreeHvac extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
-
+            for (const deviceId in this.intervals) {
+                clearInterval(this.intervals[deviceId]);
+            }
             callback();
         } catch (e) {
             callback();
