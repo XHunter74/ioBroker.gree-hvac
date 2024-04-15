@@ -48,10 +48,11 @@
             "Author <author@mail.com>"
         ],
         "keywords": [
-            "ioBroker",
-            "template",
-            "Smart Home",
-            "home automation"
+            "home automation",
+            "Air conditioners",
+            "Gree",
+            "C&H",
+            "WiFi"
         ],
         "license": "MIT",
         "licenseInformation": {
