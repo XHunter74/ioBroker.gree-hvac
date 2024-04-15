@@ -62,7 +62,7 @@
         "main": "main.js",
         "icon": "air-conditioner.png",
         "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Author/ioBroker.template/main/admin/air-conditioner.png",
+        "extIcon": "https://raw.githubusercontent.com/XHunter74/ioBroker.gree-hvac/main/admin/air-conditioner.png",
         "readme": "https://github.com/Author/ioBroker.template/blob/main/README.md",
         "loglevel": "info",
         "tier": 3,
@@ -93,7 +93,6 @@
             "link": "",
             "fa-icon": "info"
         },
-        "supportCustoms": true,
         "dependencies": [
             {
                 "js-controller": ">=3.3.22"
