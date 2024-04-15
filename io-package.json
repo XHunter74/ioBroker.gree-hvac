@@ -1,6 +1,6 @@
 {
     "common": {
-        "name": "template",
+        "name": "gree-hvac",
         "version": "0.0.1",
         "news": {
             "0.0.1": {
@@ -67,7 +67,9 @@
         "loglevel": "info",
         "tier": 3,
         "mode": "daemon",
-        "type": "general",
+        "type": "hardware",
+        "connectionType": "local",
+        "dataSource": "poll", 
         "compact": true,
         "adminUI": {
             "config": "json",
