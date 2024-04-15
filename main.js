@@ -142,10 +142,37 @@ class GreeHvac extends utils.Adapter {
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      */
-    onStateChange(id, state) {
+    async onStateChange(id, state) {
         if (state.ack === false) {
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+            const { deviceId, devicePath, property } = this.getDeviceInfo(id);
+            const mapItem = proptiesMap.find(item => item.name === property);
+            if (mapItem) {
+                const payload = await this.createPayload(devicePath);
+                const cmdResult = await this.deviceManager.setDeviceState(deviceId, payload);
+                await this.processDeviceStatus(deviceId, cmdResult);
+            }
         }
+    }
+
+    async createPayload(devicePath) {
+        const payload = {};
+        for (const property of proptiesMap) {
+            if (await this.objectExists(`${devicePath}.${property.name}`) === true) {
+                const state = await this.getStateAsync(`${devicePath}.${property.name}`);
+                if (state && state.val !== null) {
+                    payload[property.hvacName] = state.val;
+                }
+            }
+        }
+        return payload;
+    }
+
+    getDeviceInfo(id) {
+        const parts = id.split('.');
+        const deviceId = parts[2];
+        const devicePath = parts.slice(0, -1).join('.');
+        const property = parts[parts.length - 1];
+        return { deviceId, devicePath, property };
     }
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
