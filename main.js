@@ -2,12 +2,10 @@
 const DeviceManager = require('./lib/device_manager');
 const proptiesMap = require('./lib/properties_map');
 
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
-// Load your modules here, e.g.:
-// const fs = require("fs");
+const MinPollInterval = 1000;
+const MaxPollInterval = 60000;
 
 class GreeHvac extends utils.Adapter {
 
@@ -42,21 +40,25 @@ class GreeHvac extends utils.Adapter {
             this.terminate('Device list is empty');
         }
         this.log.info('Device list: ' + this.config.devicelist);
+        this.log.info('Poll interval: ' + this.config.pollInterval);
 
         if (!this.validateIPList(this.config.devicelist)) {
             this.log.error('Invalid device list');
             this.terminate('Invalid device list');
         }
-        const pollInterval = 5000;
+
+        if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
+            this.log.error('Invalid poll interval: ' + this.config.pollInterval);
+            this.terminate('Invalid poll interval: ' + this.config.pollInterval);
+        }
+
         this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
 
         this.deviceManager.on('device_bound', async (deviceId, device) => {
             await this.processDevice(deviceId, device);
 
-            if (pollInterval > 0) {
-                const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), pollInterval);
-                this.intervals[deviceId] = deviceInterval;
-            }
+            const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
+            this.intervals[deviceId] = deviceInterval;
         });
     }
 

@@ -45,7 +45,7 @@
             "zh-cn": "Gree 和 C&H 调制器的适配器"
         },
         "authors": [
-            "Author <author@mail.com>"
+            "Author <xhunter74@gmail.com>"
         ],
         "keywords": [
             "home automation",
@@ -105,7 +105,8 @@
         ]
     },
     "native": {
-        "devicelist": ""
+        "devicelist": "",
+        "pollInterval": 5000
     },
     "objects": [],
     "instanceObjects": []

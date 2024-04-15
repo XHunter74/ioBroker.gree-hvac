@@ -6,6 +6,11 @@
             "type": "text",
             "label": "devicelist",
             "newLine": true
+        },
+        "pollInterval": {
+            "type": "number",
+            "label": "pollInterval",
+            "newLine": true
         }
     }
 }

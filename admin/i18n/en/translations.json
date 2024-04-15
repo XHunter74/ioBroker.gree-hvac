@@ -1,3 +1,4 @@
 {
-    "devicelist": "Device IPs, delimitted by semicolon"
+    "devicelist": "Device IPs, delimitted by semicolon",
+    "pollInterval": "Polling interval in milliseconds"
 }
