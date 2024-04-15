@@ -1,4 +1,6 @@
 'use strict';
+const DeviceManager = require('./lib/device_manager');
+const proptiesMap = require('./lib/properties_map');
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
@@ -8,6 +10,8 @@ const utils = require('@iobroker/adapter-core');
 // const fs = require("fs");
 
 class GreeHvac extends utils.Adapter {
+
+    deviceManager;
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -32,77 +36,85 @@ class GreeHvac extends utils.Adapter {
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
-        if (!this.config.devicelist){
+        if (!this.config.devicelist) {
             this.log.error('You should config device list in adapter configuration page');
             this.terminate('Device list is empty');
         }
         this.log.info('Device list: ' + this.config.devicelist);
 
-        if (!this.validateIPList(this.config.devicelist)){
+        if (!this.validateIPList(this.config.devicelist)) {
             this.log.error('Invalid device list');
             this.terminate('Invalid device list');
         }
+        const pollInterval = 5000;
+        this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
 
-        /*
-        For every state in the system there has to be also an object of type state
-        Here a simple template for a boolean variable named "testVariable"
-        Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-        */
-        await this.setObjectNotExistsAsync('testVariable', {
+        this.deviceManager.on('device_bound', async (deviceId, device) => {
+            await this.processDevice(deviceId, device);
+
+            if (pollInterval > 0) {
+                setInterval(() => this.getDeviceStatus(deviceId), pollInterval);
+            }
+        });
+    }
+
+    getDeviceStatus = async (deviceId) => {
+        const deviceStatus = await this.deviceManager.getDeviceStatus(deviceId);
+        this.processDeviceStatus(deviceId, deviceStatus);
+    }
+
+    async processDeviceStatus(deviceId, deviceStatus) {
+        for (const key in deviceStatus) {
+            if (deviceStatus.hasOwnProperty(key)) {
+                const value = deviceStatus[key];
+                const mapItem = proptiesMap.find(item => item.hvacName === key);
+                if (!mapItem) {
+                    this.log.warn(`Property ${key} not found in the map`);
+                    continue;
+                }
+                await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+            }
+        }
+    }
+    async processDevice(deviceId, device) {
+        this.log.info(`Device ${deviceId} bound`);
+
+        await this.setObjectNotExistsAsync(deviceId, {
             type: 'state',
             common: {
-                name: 'testVariable',
-                type: 'boolean',
-                role: 'indicator',
+                name: deviceId,
+                type: 'string',
+                role: 'variable',
                 read: true,
-                write: true,
+                write: false,
             },
             native: {},
         });
 
-        // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
-        // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-        // this.subscribeStates('lights.*');
-        // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-        // this.subscribeStates('*');
+        await this.setStateAsync(deviceId, { val: JSON.stringify(device), ack: true });
 
-        /*
-            setState examples
-            you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-        */
-        // the variable testVariable is set to true as command (ack=false)
-        await this.setStateAsync('testVariable', true);
+        for (const property of proptiesMap) {
+            await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+        }
 
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setStateAsync('testVariable', { val: true, ack: true });
+        this.subscribeStates(`${deviceId}.*`);
 
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-
-        // examples for the checkPassword/checkGroup functions
-        let result = await this.checkPasswordAsync('admin', 'iobroker');
-        this.log.info('check user admin pw iobroker: ' + result);
-
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info('check group user admin group admin: ' + result);
     }
 
     validateIPList(ipList) {
         // Regular expression for IP address
         const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    
+
         // Split the list by semicolon
         const ips = ipList.split(';');
-    
+
         // Validate each IP
         for (let ip of ips) {
             if (!ipPattern.test(ip)) {
                 return false;
             }
         }
-    
+
         // If all IPs are valid
         return true;
     }
@@ -124,23 +136,6 @@ class GreeHvac extends utils.Adapter {
             callback();
         }
     }
-
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  * @param {string} id
-    //  * @param {ioBroker.Object | null | undefined} obj
-    //  */
-    // onObjectChange(id, obj) {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-    // }
 
     /**
      * Is called if a subscribed state changes
@@ -187,3 +182,4 @@ if (require.main !== module) {
     // otherwise start the instance directly
     new GreeHvac();
 }
+
