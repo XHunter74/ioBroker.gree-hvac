@@ -25,5 +25,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ## Acknowledgments
-tomikaa87 for reverse-engineering the Gree protocol
-arthurkrupa for code of DeviceManager
+- [tomikaa87](https://github.com/tomikaa87) for reverse-engineering the Gree protocol
+- [stas-demydiuk](https://github.com/stas-demydiuk) for code of DeviceManager
