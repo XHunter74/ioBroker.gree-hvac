@@ -20,107 +20,136 @@ class GreeHvac extends utils.Adapter {
             ...options,
             name: 'gree-hvac',
         });
-        this.on('ready', this.onReady.bind(this));
-        this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
-        // this.on('message', this.onMessage.bind(this));
-        this.on('unload', this.onUnload.bind(this));
+        try {
+            this.on('ready', this.onReady.bind(this));
+            this.on('stateChange', this.onStateChange.bind(this));
+            // this.on('objectChange', this.onObjectChange.bind(this));
+            // this.on('message', this.onMessage.bind(this));
+            this.on('unload', this.onUnload.bind(this));
+        } catch (error) {
+            this.sendError(error, 'Error in constructor');
+        }
     }
 
     /**
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
-        // Initialize your adapter here
+        try {
+            // Initialize your adapter here
 
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        if (!this.config.devicelist) {
-            this.log.error('You should config device list in adapter configuration page');
-            this.terminate('Device list is empty');
+            // The adapters config (in the instance object everything under the attribute "native") is accessible via
+            // this.config:
+            if (!this.config.devicelist) {
+                this.log.error('You should config device list in adapter configuration page');
+                this.terminate('Device list is empty');
+            }
+            this.log.info('Device list: ' + this.config.devicelist);
+            this.log.info('Poll interval: ' + this.config.pollInterval);
+
+            if (!this.validateIPList(this.config.devicelist)) {
+                this.log.error('Invalid device list');
+                this.terminate('Invalid device list');
+            }
+
+            if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
+                this.log.error('Invalid poll interval: ' + this.config.pollInterval);
+                this.terminate('Invalid poll interval: ' + this.config.pollInterval);
+            }
+
+            this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
+
+            this.deviceManager.on('device_bound', async (deviceId, device) => {
+                try {
+                    await this.processDevice(deviceId, device);
+
+                    const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
+                    this.intervals[deviceId] = deviceInterval;
+                } catch (error) {
+                    this.sendError(error, `Error in device_bound event for device ${deviceId}`);
+                }
+            });
+        } catch (error) {
+            this.sendError(error, 'Error in onReady');
         }
-        this.log.info('Device list: ' + this.config.devicelist);
-        this.log.info('Poll interval: ' + this.config.pollInterval);
-
-        if (!this.validateIPList(this.config.devicelist)) {
-            this.log.error('Invalid device list');
-            this.terminate('Invalid device list');
-        }
-
-        if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
-            this.log.error('Invalid poll interval: ' + this.config.pollInterval);
-            this.terminate('Invalid poll interval: ' + this.config.pollInterval);
-        }
-
-        this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
-
-        this.deviceManager.on('device_bound', async (deviceId, device) => {
-            await this.processDevice(deviceId, device);
-
-            const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
-            this.intervals[deviceId] = deviceInterval;
-        });
     }
 
     getDeviceStatus = async (deviceId) => {
-        const deviceStatus = await this.deviceManager.getDeviceStatus(deviceId);
-        this.processDeviceStatus(deviceId, deviceStatus);
+        try {
+            const deviceStatus = await this.deviceManager.getDeviceStatus(deviceId);
+            this.processDeviceStatus(deviceId, deviceStatus);
+        } catch (error) {
+            this.sendError(error, `Error in getDeviceStatus for device ${deviceId}`);
+        }
     };
 
     async processDeviceStatus(deviceId, deviceStatus) {
-        for (const key in deviceStatus) {
-            if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
-                const value = deviceStatus[key];
-                const mapItem = proptiesMap.find(item => item.hvacName === key);
-                if (!mapItem) {
-                    this.log.warn(`Property ${key} not found in the map`);
-                    continue;
+        try {
+            for (const key in deviceStatus) {
+                if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
+                    const value = deviceStatus[key];
+                    const mapItem = proptiesMap.find(item => item.hvacName === key);
+                    if (!mapItem) {
+                        this.log.warn(`Property ${key} not found in the map`);
+                        continue;
+                    }
+                    await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
                 }
-                await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
             }
+        } catch (error) {
+            this.sendError(error, `Error in processDeviceStatus for device ${deviceId}`);
         }
     }
+
     async processDevice(deviceId, device) {
-        this.log.info(`Device ${deviceId} bound`);
+        try {
+            this.log.info(`Device ${deviceId} bound`);
 
-        await this.setObjectNotExistsAsync(deviceId, {
-            type: 'state',
-            common: {
-                name: deviceId,
-                type: 'string',
-                role: 'variable',
-                read: true,
-                write: false,
-            },
-            native: {},
-        });
+            await this.setObjectNotExistsAsync(deviceId, {
+                type: 'state',
+                common: {
+                    name: deviceId,
+                    type: 'string',
+                    role: 'variable',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            });
 
-        await this.setStateAsync(deviceId, { val: JSON.stringify(device), ack: true });
+            await this.setStateAsync(deviceId, { val: JSON.stringify(device), ack: true });
 
-        for (const property of proptiesMap) {
-            await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+            for (const property of proptiesMap) {
+                await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+            }
+
+            this.subscribeStates(`${deviceId}.*`);
+        } catch (error) {
+            this.sendError(error, `Error in processDevice for device ${deviceId}`);
         }
-
-        this.subscribeStates(`${deviceId}.*`);
-
     }
 
     validateIPList(ipList) {
-        // Regular expression for IP address
-        const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        try {
+            // Regular expression for IP address
+            const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-        // Split the list by semicolon
-        const ips = ipList.split(';');
+            // Split the list by semicolon
+            const ips = ipList.split(';');
 
-        // Validate each IP
-        for (const ip of ips) {
-            if (!ipPattern.test(ip)) {
-                return false;
+            // Validate each IP
+            for (const ip of ips) {
+                if (!ipPattern.test(ip)) {
+                    return false;
+                }
             }
-        }
 
-        // If all IPs are valid
-        return true;
+            // If all IPs are valid
+            return true;
+        } catch (error) {
+            this.sendError(error, 'Error in validateIPList');
+            return false;
+        }
     }
 
     /**
@@ -133,7 +162,8 @@ class GreeHvac extends utils.Adapter {
                 clearInterval(this.intervals[deviceId]);
             }
             callback();
-        } catch (e) {
+        } catch (error) {
+            this.sendError(error, 'Error in onUnload');
             callback();
         }
     }
@@ -144,36 +174,50 @@ class GreeHvac extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      */
     async onStateChange(id, state) {
-        if (state.ack === false) {
-            const { deviceId, devicePath, property } = this.getDeviceInfo(id);
-            const mapItem = proptiesMap.find(item => item.name === property);
-            if (mapItem) {
-                const payload = await this.createPayload(devicePath);
-                const cmdResult = await this.deviceManager.setDeviceState(deviceId, payload);
-                await this.processDeviceStatus(deviceId, cmdResult);
+        try {
+            if (state.ack === false) {
+                const { deviceId, devicePath, property } = this.getDeviceInfo(id);
+                const mapItem = proptiesMap.find(item => item.name === property);
+                if (mapItem) {
+                    const payload = await this.createPayload(devicePath);
+                    const cmdResult = await this.deviceManager.setDeviceState(deviceId, payload);
+                    await this.processDeviceStatus(deviceId, cmdResult);
+                }
             }
+        } catch (error) {
+            this.sendError(error, `Error in onStateChange for state ${id}`);
         }
     }
 
     async createPayload(devicePath) {
-        const payload = {};
-        for (const property of proptiesMap) {
-            if (await this.objectExists(`${devicePath}.${property.name}`) === true) {
-                const state = await this.getStateAsync(`${devicePath}.${property.name}`);
-                if (state && state.val !== null) {
-                    payload[property.hvacName] = state.val;
+        try {
+            const payload = {};
+            for (const property of proptiesMap) {
+                if (await this.objectExists(`${devicePath}.${property.name}`) === true) {
+                    const state = await this.getStateAsync(`${devicePath}.${property.name}`);
+                    if (state && state.val !== null) {
+                        payload[property.hvacName] = state.val;
+                    }
                 }
             }
+            return payload;
+        } catch (error) {
+            this.sendError(error, 'Error in createPayload');
+            return {};
         }
-        return payload;
     }
 
     getDeviceInfo(id) {
-        const parts = id.split('.');
-        const deviceId = parts[2];
-        const devicePath = parts.slice(0, -1).join('.');
-        const property = parts[parts.length - 1];
-        return { deviceId, devicePath, property };
+        try {
+            const parts = id.split('.');
+            const deviceId = parts[2];
+            const devicePath = parts.slice(0, -1).join('.');
+            const property = parts[parts.length - 1];
+            return { deviceId, devicePath, property };
+        } catch (error) {
+            this.sendError(error, 'Error in getDeviceInfo');
+            return {};
+        }
     }
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
@@ -194,6 +238,35 @@ class GreeHvac extends utils.Adapter {
     //     }
     // }
 
+    sendError(error, message) {
+        try {
+            if (this.supportsFeature && this.supportsFeature('PLUGINS')) {
+                const sentryInstance = this.getPluginInstance('sentry');
+                if (sentryInstance) {
+                    const Sentry = sentryInstance.getSentryObject();
+                    if (Sentry) {
+                        if (message) {
+                            Sentry.configureScope(scope => {
+                                scope.addBreadcrumb({
+                                    type: 'error', // predefined types
+                                    category: 'error message',
+                                    level: Sentry.Severity.Error,
+                                    message: message
+                                });
+                            });
+                        }
+                        if (typeof error == 'string') {
+                            Sentry.captureException(new Error(error));
+                        } else {
+                            Sentry.captureException(error);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error in sendError:', error);
+        }
+    }
 }
 
 if (require.main !== module) {

@@ -93,6 +93,11 @@
             "link": "",
             "fa-icon": "info"
         },
+        "plugins": {
+            "sentry": {
+                "dsn": "https://0b5a9ab175f617f1d0e75219bc758fda@o1146681.ingest.us.sentry.io/4507094441918464"
+            }
+        },
         "dependencies": [
             {
                 "js-controller": ">=3.3.22"
