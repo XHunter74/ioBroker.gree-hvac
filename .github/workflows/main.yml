@@ -127,8 +127,8 @@ jobs:
           npm i -g @sentry/cli
           export SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
           export SENTRY_ORG=private-person-ua
-          export SENTRY_PROJECT=iobroker-apcups
-          export SENTRY_VERSION=iobroker.apcups@${{ steps.extract_release.outputs.VERSION }}
+          export SENTRY_PROJECT=iobroker-gree-hvac
+          export SENTRY_VERSION=iobroker-gree-hvac@${{ steps.extract_release.outputs.VERSION }}
           # export SENTRY_LOG_LEVEL=debug
           sentry-cli releases new $SENTRY_VERSION
           sentry-cli releases finalize $SENTRY_VERSION
