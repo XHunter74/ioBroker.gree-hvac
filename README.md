@@ -3,7 +3,8 @@
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.gree-hvac.svg)](https://www.npmjs.com/package/iobroker.gree-hvac)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.gree-hvac.svg)](https://www.npmjs.com/package/iobroker.gree-hvac)
-![Number of Installations (latest)](https://iobroker.live/badges/gree-hvac-installed.svg)
+![Number of Installations](https://iobroker.live/badges/template-installed.svg)
+![Current version in stable repository](https://iobroker.live/badges/template-stable.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.gree-hvac.png?downloads=true)](https://nodei.co/npm/iobroker.gree-hvac/)
 
