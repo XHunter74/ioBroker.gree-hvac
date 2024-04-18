@@ -7,7 +7,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch List Users",
+            "name": "Launch Left Panel",
             "url": "http://localhost:5500/admin/tab_m.html",
             "webRoot": "${workspaceFolder}/admin"
         }

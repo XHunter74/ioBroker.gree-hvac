@@ -3,24 +3,12 @@ const path = location.pathname;
 const parts = path.split('/');
 parts.splice(-3);
 
-setCookie('connect.sid', 's%3Agiz9-AzYGxP1uPzUzXxHj6x8effGOYrL.LRuZNZ2ZX%2BByGahyIvsBDw%2FPVidrKtYJZOSASjT8SlI', 10);
-
 // const socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
-const socket = io.connect('http://192.178.10.100:8100/', { path: 'socket.io' });
+const socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
 
 var query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
 var args = {};
 let theme = null;
-
-function setCookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
 
 // parse parameters
 query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(function (b, i) {
@@ -54,13 +42,16 @@ const onChangeSupported = false;
 
 const tmp = window.location.pathname.split('/');
 adapter = tmp[tmp.length - 2];
-const _adapterInstance = 'system.adapter.' + adapter + '.' + instance;
+// const _adapterInstance = 'system.adapter.' + adapter + '.' + instance;
+const _adapterInstance = 'system.adapter.gree-hvac.0';
 
 $(document).ready(function () {
     'use strict';
     loadSystemConfig(function () {
-        if (typeof translateAll === 'function') translateAll();
-        loadSettings(prepareTooltips);
+        if (typeof translateAll === 'function') {
+            translateAll();
+        }
+        loadSettings();
     });
 });
 
@@ -83,8 +74,10 @@ function loadSettings(callback) {
             $('.adapter-config').html('system.adapter.' + adapter + '.' + instance);
             common = res.common;
             if (res.common && res.common.name) $('.adapter-name').html(res.common.name);
+            if (res.native) $('#devicelist').val(res.native.devicelist);
+            if (res.native) $('#pollInterval').val(res.native.pollInterval);
             if (typeof load === 'undefined') {
-                alert('Please implement save function in your admin/index.html');
+                // alert('Please implement save function in your admin/index.html');
             } else {
                 // detect, that we are now in react container (themeNames = ['dark', 'blue', 'colored', 'light'])
 
