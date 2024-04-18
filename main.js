@@ -24,7 +24,7 @@ class GreeHvac extends utils.Adapter {
             this.on('ready', this.onReady.bind(this));
             this.on('stateChange', this.onStateChange.bind(this));
             // this.on('objectChange', this.onObjectChange.bind(this));
-            // this.on('message', this.onMessage.bind(this));
+            this.on('message', this.onMessage.bind(this));
             this.on('unload', this.onUnload.bind(this));
         } catch (error) {
             this.sendError(error, 'Error in constructor');
@@ -226,17 +226,46 @@ class GreeHvac extends utils.Adapter {
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  * @param {ioBroker.Message} obj
     //  */
-    // onMessage(obj) {
-    //     if (typeof obj === 'object' && obj.message) {
-    //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
+    async onMessage(obj) {
+        this.log.info(`Received message ${JSON.stringify(obj)}`);
+        if (typeof obj === 'object' && obj.message) {
+            switch (obj.command) {
+                case 'getDevices':
+                    const devices = await this.collectDeviceInfo();
+                    if (obj.callback) this.sendTo(obj.from, obj.command, JSON.stringify(devices), obj.callback);
+                    break;
+                default:
+                    this.log.warn(`Unknown command ${obj.command}`);
+                    break;
+            }
+        }
+    }
 
-    //             // Send response in callback if required
-    //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-    //         }
-    //     }
-    // }
+    async collectDeviceInfo() {
+        const devicesInfo = [];
+        const devices = this.deviceManager.getDevices();
+        for (const deviceId in devices) {
+            const device = devices[deviceId];
+            const deviceInfo = {
+                id: device.mac,
+                ip: device.address,
+            }
+            const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
+            for (const key in deviceStatus) {
+                if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
+                    const value = deviceStatus[key];
+                    const mapItem = proptiesMap.find(item => item.hvacName === key);
+                    if (!mapItem) {
+                        this.log.warn(`Property ${key} not found in the map`);
+                        continue;
+                    }
+                    deviceInfo[mapItem.name] = value;
+                }
+            }
+            devicesInfo.push(deviceInfo);
+        }
+        return devicesInfo;
+    }
 
     sendError(error, message) {
         try {
