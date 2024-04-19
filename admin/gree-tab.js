@@ -35,6 +35,16 @@ var instance = args.instance;
 // const namespace = 'gree-hvac.' + instance;
 const namespace = 'gree-hvac.0';
 
+socket.emit('subscribe', namespace + '.*');
+
+socket.on('stateChange', function (id, state) {
+    // only watch our own states
+    if (id.substring(0, namespace.length) !== namespace) return;
+    // console.log('stateChange', id, state);
+    const controlId = id.substring(namespace.length + 1).replace('.', '-');
+    $('#' + controlId).text(state.val);
+});
+
 let common = null; // common information of adapter
 const host = null; // host object on which the adapter runs
 const changed = false;
@@ -102,15 +112,15 @@ function getCard(device) {
     html += `       <h1 id="${device.id}-target-temperature" style="font-family: \'Digital-7 Mono\'; font-weight: normal;">${device['target-temperature']}'</h1>`;
     html += `</div>`;
     html += '    <div style="display:flex; flex-direction:column;align-items:center">';
-    html += `       <div style="height:40px;width:100px"><a id="${device.id}-power" href="#" class="btn btn-white btn-animate">ON/OFF</a></div>`;
+    html += `       <div style="height:40px;width:100px"><a id="${device.id}-power-btn" href="#" class="btn btn-white btn-animate">ON/OFF</a></div>`;
     html += `       <div style="display: flex;width: 100%;flex-direction: column;align-items: center;margin-top: 5px;">`;
-    html += `           <div style="height:40px;width:50px"><a id="${device.id}-power" href="#" class="btn btn-white btn-animate">UP</a></div>`;
+    html += `           <div style="height:40px;width:50px"><a id="${device.id}-up-btn" href="#" class="btn btn-white btn-animate">UP</a></div>`;
     html += '           <div style="height: 80px;display: flex;align-items: center;width: 100%;justify-content: space-between;">';
-    html += `               <div style="width:45px;height:75px"><a id="${device.id}-power" href="#" class="vertical-btn btn btn-white btn-animate">TURBO</a></div>`;
-    html += `               <div style="width:70px;height:70px;"><a id="${device.id}-power" style="width:70px;height:70px;padding-top: 17px;padding-left: 0px;text-align: center;padding-right: 0px;" href="#" class="btn btn-white btn-animate">MODE</a></div>`;
-    html += `               <div style="width:45px;height:75px"><a id="${device.id}-power" href="#" class="vertical-btn btn btn-white btn-animate">FAN</a></div>`;
+    html += `               <div style="width:45px;height:75px"><a id="${device.id}-turbo-btn" href="#" class="vertical-btn btn btn-white btn-animate">TURBO</a></div>`;
+    html += `               <div style="width:70px;height:70px;"><a id="${device.id}-mode-btn" style="width:70px;height:70px;padding-top: 17px;padding-left: 0px;text-align: center;padding-right: 0px;" href="#" class="btn btn-white btn-animate">MODE</a></div>`;
+    html += `               <div style="width:45px;height:75px"><a id="${device.id}-fan" href="#" class="vertical-btn btn btn-white btn-animate">FAN</a></div>`;
     html += '           </div>';
-    html += `           <div style="height:40px;width: 82px;margin-top: 5px;"><a id="${device.id}-power" href="#" class="btn btn-white btn-animate">Down</a></div>`;
+    html += `           <div style="height:40px;width: 82px;margin-top: 5px;"><a id="${device.id}-down-btn" href="#" class="btn btn-white btn-animate">Down</a></div>`;
     html += `       </div>`;
     html += `   </div>`;
     html += '</div>';

@@ -38,14 +38,14 @@
 
 .vertical-btn {
     writing-mode: tb-rl;
-    height: 73px!important;
+    height: 73px !important;
     text-align: center;
     width: 43px;
-    padding-left: 0px!important;
-    padding-right: 5px!important;
+    padding-left: 0px !important;
+    padding-right: 5px !important;
 }
 
-/* .btn:hover {
+.btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
@@ -97,4 +97,4 @@
         opacity: 1;
         transform: translateY(0px);
     }
-} */
+}
