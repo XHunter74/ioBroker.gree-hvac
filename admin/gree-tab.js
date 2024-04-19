@@ -32,6 +32,9 @@ query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(functi
 
 var instance = args.instance;
 
+// const namespace = 'gree-hvac.' + instance;
+const namespace = 'gree-hvac.0';
+
 let common = null; // common information of adapter
 const host = null; // host object on which the adapter runs
 const changed = false;
@@ -39,6 +42,7 @@ let systemConfig;
 let certs = [];
 let adapter = '';
 const onChangeSupported = false;
+let devices = [];
 
 const tmp = window.location.pathname.split('/');
 adapter = tmp[tmp.length - 2];
@@ -51,10 +55,85 @@ $(document).ready(function () {
         if (typeof translateAll === 'function') {
             translateAll();
         }
-        loadSettings();
+        loadSettings(function () {
+            getDevices();
+        });
     });
 });
 
+
+function getDevices() {
+    sendTo('gree-hvac.0', 'getDevices', {}, function (msg) {
+        if (msg) {
+            if (msg.error) {
+                console.log('Error: ' + msg.error);
+            } else {
+                console.log('msg: ' + msg);
+                devices = JSON.parse(msg);
+                showDevices();
+            }
+        }
+    });
+}
+
+function showDevices() {
+    let html = '';
+    if (!devices || !devices.length || devices.length === 0) {
+        return;
+    } else {
+        for (let i = 0; i < devices.length; i++) {
+            const d = devices[i];
+            const card = getCard(d);
+            html += card;
+        }
+    }
+    $('#devices').html(html);
+    for (let i = 0; i < devices.length; i++) {
+        const d = devices[i];
+        assignClickEvents(d);
+    }
+}
+
+function getCard(device) {
+    let html = '';
+    html += `<div id="${device.id}" class="device-card">`;
+    html += `   <div>${device.id}</div>`;
+    html += `   <div style="width: 100%;text-align: center;">`;
+    html += `       <h1 id="${device.id}-target-temperature" style="font-family: \'Digital-7 Mono\'; font-weight: normal;">${device['target-temperature']}'</h1>`;
+    html += `</div>`;
+    html += '    <div style="display:flex; flex-direction:column;align-items:center">';
+    html += `       <div style="height:40px;width:100px"><a id="${device.id}-power" href="#" class="btn btn-white btn-animate">ON/OFF</a></div>`;
+    html += `       <div style="display: flex;width: 100%;flex-direction: column;align-items: center;margin-top: 5px;">`;
+    html += `           <div style="height:40px;width:50px"><a id="${device.id}-power" href="#" class="btn btn-white btn-animate">UP</a></div>`;
+    html += '           <div style="height: 80px;display: flex;align-items: center;width: 100%;justify-content: space-between;">';
+    html += `               <div style="width:45px;height:75px"><a id="${device.id}-power" href="#" class="vertical-btn btn btn-white btn-animate">TURBO</a></div>`;
+    html += `               <div style="width:70px;height:70px;"><a id="${device.id}-power" style="width:70px;height:70px;padding-top: 17px;padding-left: 0px;text-align: center;padding-right: 0px;" href="#" class="btn btn-white btn-animate">MODE</a></div>`;
+    html += `               <div style="width:45px;height:75px"><a id="${device.id}-power" href="#" class="vertical-btn btn btn-white btn-animate">FAN</a></div>`;
+    html += '           </div>';
+    html += `           <div style="height:40px;width: 82px;margin-top: 5px;"><a id="${device.id}-power" href="#" class="btn btn-white btn-animate">Down</a></div>`;
+    html += `       </div>`;
+    html += `   </div>`;
+    html += '</div>';
+    return html;
+}
+
+function assignClickEvents(device) {
+    $(`#${device.id}-power`).click(function () {
+        console.log('clicked');
+    });
+}
+
+function sendCommand(deviceId) {
+    sendTo('gree-hvac.0', 'sendCommand', { id: deviceId, command: 'power' }, function (msg) {
+        if (msg) {
+            if (msg.error) {
+                console.log('Error: ' + msg.error);
+            } else {
+                console.log('msg: ' + msg);
+            }
+        }
+    });
+}
 
 // Read language settings
 function loadSystemConfig(callback) {
