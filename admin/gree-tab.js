@@ -156,7 +156,7 @@ function getCard(device) {
     html += `           <a id="${device.id}-on-off-btn" class="oval-btn ctrl-btn" style="color: black;" href="#"><span>On/Off</span></a>`;
     html += '   </div>';
     html += '   <div style="display:flex;justify-content: center;margin-bottom: 40px;">';
-    html += '       <div style="display: flex;flex-direction: column;justify-content: space-between;gap: 55px;">';
+    html += '       <div style="display: flex;flex-direction: column;gap: 55px;">';
     html += `           <a id="${device.id}-temperature-up-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
     html += `           <a id="${device.id}-temperature-down-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_more</span></a>`;
     html += `       </div>`;
