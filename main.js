@@ -246,12 +246,30 @@ class GreeHvac extends utils.Adapter {
     async processSendCommand(obj) {
         const command = obj.message.command;
         const deviceId = obj.message.deviceId;
+        let state;
+        let newState;
         switch (command) {
             case 'on-off-btn':
-                const state = (await this.getStateAsync(`${deviceId}.power`)).val;
-                const newState = state === 1 ? 0 : 1;
+                state = (await this.getStateAsync(`${deviceId}.power`)).val;
+                newState = state === 1 ? 0 : 1;
                 await this.setStateAsync(`${deviceId}.power`, newState);
-                break
+                break;
+            case 'temperature-up-btn':
+                state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
+                newState = Number(state) + 1;
+                if (newState > 30) {
+                    newState = 30;
+                }
+                await this.setStateAsync(`${deviceId}.target-temperature`, newState);
+                break;
+            case 'temperature-down-btn':
+                state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
+                newState = Number(state) - 1;
+                if (newState < 16) {
+                    newState = 16;
+                }
+                await this.setStateAsync(`${deviceId}.target-temperature`, newState);
+                break;
         }
     }
 
