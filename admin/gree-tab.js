@@ -107,42 +107,42 @@ function showDevices() {
 function getCard(device) {
     let html = '';
     html += `<div id="${device.id}" class="device-card">`;
-    html += `   <div>${device.id}</div>`;
-    html += `   <div style="width: 100%;text-align: center;">`;
-    html += `       <h1 id="${device.id}-target-temperature" style="font-family: \'Digital-7 Mono\'; font-weight: normal;">${device['target-temperature']}'</h1>`;
+    html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
+    html += `       <span style="font-size: 14px;">${device.id}</span>`;
     html += `   </div>`;
-    html += '<span class="material-symbols-outlined"> signal_cellular_alt</span>';
-    html += '    <div style="display:flex; flex-direction:column;align-items:center">';
-    html += `       <div style="height:40px;width:100px"><a id="${device.id}-power-btn" href="#" class="btn btn-white btn-animate">ON/OFF</a></div>`;
-    html += `       <div style="display: flex;width: 100%;flex-direction: column;align-items: center;margin-top: 5px;">`;
-    html += `           <div style="height:40px;width:50px"><a id="${device.id}-up-btn" href="#" class="btn btn-white btn-animate">UP</a></div>`;
-    html += '           <div style="height: 80px;display: flex;align-items: center;width: 100%;justify-content: space-between;">';
-    html += `               <div style="width:45px;height:75px"><a id="${device.id}-turbo-btn" href="#" class="vertical-btn btn btn-white btn-animate">TURBO</a></div>`;
-    html += `               <div style="width:70px;height:70px;"><a id="${device.id}-mode-btn" style="width:70px;height:70px;padding-top: 17px;padding-left: 0px;text-align: center;padding-right: 0px;" href="#" class="btn btn-white btn-animate">MODE</a></div>`;
-    html += `               <div style="width:45px;height:75px"><a id="${device.id}-fan" href="#" class="vertical-btn btn btn-white btn-animate">FAN</a></div>`;
-    html += '           </div>';
-    html += `           <div style="height:40px;width: 82px;margin-top: 5px;"><a id="${device.id}-down-btn" href="#" class="btn btn-white btn-animate">Down</a></div>`;
+    html += `   <div style="width: 100%;text-align: center;margin-top: 20px;margin-bottom: 20px;">`;
+    html += `       <span id="${device.id}-target-temperature" class="temperature">${device['target-temperature']}'</h1>`;
+    html += `   </div>`;
+    html += '   <div style="display:flex;justify-content: center;">';
+    html += '       <div style="display: flex;flex-direction: column;justify-content: space-between;gap: 55px;">';
+    html += `           <a id="temperature-up-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
+    html += '           <a id="temperature-down-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_more</span></a>`';
     html += `       </div>`;
-    html += `   </div>`;
+    html += '       <div style="display: flex;flex-direction: column;">';
+    html += `           <a id="mode-btn" class="oval-btn ctrl-btn" href="#"><span>Mode</span></a>`;
+    html += `           <a id="fan-btn" class="oval-btn ctrl-btn" href="#"><span>Fan</span></a>`;
+    html += `           <a id="turbo-btn" class="oval-btn ctrl-btn" href="#"><span>Turbo</span></a>`;
+    html += '       </div>';
+    html += '   </div>';
     html += '</div>';
     return html;
 }
 
 function assignClickEvents(device) {
-    $(`#${device.id}-power-btn`).click(function () {
-        console.log('clicked');
-    });
-}
-
-function sendCommand(deviceId) {
-    sendTo('gree-hvac.0', 'sendCommand', { id: deviceId, command: 'power' }, function (msg) {
-        if (msg) {
-            if (msg.error) {
-                console.log('Error: ' + msg.error);
-            } else {
-                console.log('msg: ' + msg);
+    $('.ctrl-btn').click(function () {
+        const btn=this.id;
+        console.log('clicked: ' + btn);
+        const deviceId= $(this).parents('.device-card').attr('id');
+        console.log('deviceId: ' + deviceId);
+        sendTo(namespace, 'sendCommand', { deviceId: deviceId, command: btn }, function (data) {
+            if (data) {
+                if (data.error) {
+                    console.log('Error: ' + data.error);
+                } else {
+                    console.log('msg: ' + data);
+                }
             }
-        }
+        });
     });
 }
 
