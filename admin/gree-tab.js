@@ -75,6 +75,21 @@ socket.on('stateChange', function (id, state) {
                 $('#' + `${deviceId}-on-off-btn`).removeClass('power-on');
             }
             break;
+        case 'fan-speed':
+            if (state.val === 0) {
+                $('#' + `${deviceId}-fan-mode`).css('display', 'block');
+                $('#' + `${deviceId}-fan-speed`).css('display', 'none');
+            } else {
+                $('#' + `${deviceId}-fan-mode`).css('display', 'none');
+                $('#' + `${deviceId}-fan-speed`).css('display', 'block');
+                if (state.val === 1) {
+                    $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_1_bar');
+                } else if (state.val === 2) {
+                    $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_2_bar');
+                } else if (state.val === 3) {
+                    $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt');
+                }
+            }
     }
 });
 
@@ -147,9 +162,18 @@ function getCard(device) {
     html += '       <div style="margin-left: 4px;padding-top: 5px;">';
     html += `           <span id="${device.id}-hvac-mode" class="material-symbols-outlined" style="font-size: 20px;">mode_cool</span>`;
     html += '       </div>';
-    html += '       <div>';
-    html += `           <span id="${device.id}-target-temperature" class="temperature">${device['target-temperature']}</span>`;
-    html += `           <span class="degree">°C</span>`;
+    html += '       <div style="margin-left: 7px;">';
+    html += '           <div style="display: flex;">';
+    html += '               <span class="">FAN</span>';
+    html += `               <span id="${device.id}-fan-mode" class="" style="margin-left: 5px;">AUTO</span>`;
+    html += '           </div>';
+    html += '           <div style="display: flex;">';
+    html += `               <span id="${device.id}-fan-speed" class="material-symbols-outlined" style="font-size: 20px;">signal_cellular_alt</span>`;
+    html += '           </div>';
+    html += '           <div style="display: flex;justify-content: center;align-items: center;">';
+    html += `               <span id="${device.id}-target-temperature" style="margin-left: 10px;" class="temperature">${device['target-temperature']}</span>`;
+    html += `               <span class="degree">°C</span>`;
+    html += '           </div>';
     html += '       </div>';
     html += `   </div>`;
     html += '   <div style="display:flex;justify-content: center;margin-bottom: 10px;">';
