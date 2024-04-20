@@ -110,7 +110,8 @@ function getCard(device) {
     html += `   <div>${device.id}</div>`;
     html += `   <div style="width: 100%;text-align: center;">`;
     html += `       <h1 id="${device.id}-target-temperature" style="font-family: \'Digital-7 Mono\'; font-weight: normal;">${device['target-temperature']}'</h1>`;
-    html += `</div>`;
+    html += `   </div>`;
+    html += '<span class="material-symbols-outlined"> signal_cellular_alt</span>';
     html += '    <div style="display:flex; flex-direction:column;align-items:center">';
     html += `       <div style="height:40px;width:100px"><a id="${device.id}-power-btn" href="#" class="btn btn-white btn-animate">ON/OFF</a></div>`;
     html += `       <div style="display: flex;width: 100%;flex-direction: column;align-items: center;margin-top: 5px;">`;
@@ -128,7 +129,7 @@ function getCard(device) {
 }
 
 function assignClickEvents(device) {
-    $(`#${device.id}-power`).click(function () {
+    $(`#${device.id}-power-btn`).click(function () {
         console.log('clicked');
     });
 }
