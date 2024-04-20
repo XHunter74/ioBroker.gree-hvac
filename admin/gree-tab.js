@@ -155,15 +155,15 @@ function getCard(device) {
     html += '   <div style="display:flex;justify-content: center;margin-bottom: 10px;">';
     html += `           <a id="${device.id}-on-off-btn" class="oval-btn ctrl-btn" style="color: black;" href="#"><span>On/Off</span></a>`;
     html += '   </div>';
-    html += '   <div style="display:flex;justify-content: center;">';
+    html += '   <div style="display:flex;justify-content: center;margin-bottom: 40px;">';
     html += '       <div style="display: flex;flex-direction: column;justify-content: space-between;gap: 55px;">';
-    html += `           <a id="temperature-up-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
-    html += '           <a id="temperature-down-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_more</span></a>`';
+    html += `           <a id="${device.id}-temperature-up-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
+    html += `           <a id="${device.id}-temperature-down-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_more</span></a>`;
     html += `       </div>`;
     html += '       <div style="display: flex;flex-direction: column;">';
-    html += `           <a id="mode-btn" class="oval-btn ctrl-btn" href="#"><span>Mode</span></a>`;
-    html += `           <a id="fan-btn" class="oval-btn ctrl-btn" href="#"><span>Fan</span></a>`;
-    html += `           <a id="turbo-btn" class="oval-btn ctrl-btn" href="#"><span>Turbo</span></a>`;
+    html += `           <a id="${device.id}-mode-btn" class="oval-btn ctrl-btn" href="#"><span>Mode</span></a>`;
+    html += `           <a id="${device.id}-fan-btn" class="oval-btn ctrl-btn" href="#"><span>Fan</span></a>`;
+    html += `           <a id="${device.id}-turbo-btn" class="oval-btn ctrl-btn" href="#"><span>Turbo</span></a>`;
     html += '       </div>';
     html += '   </div>';
     html += '</div>';
@@ -173,10 +173,13 @@ function getCard(device) {
 function assignClickEvents(device) {
     $('.ctrl-btn').click(function () {
         const btn = this.id;
+        const parts = btn.split('-');
+        const command = parts.slice(1).join('-');
         console.log('clicked: ' + btn);
         const deviceId = $(this).parents('.device-card').attr('id');
         console.log('deviceId: ' + deviceId);
-        sendTo(namespace, 'sendCommand', { deviceId: deviceId, command: btn }, function (data) {
+        console.log('command: ' + command);
+        sendTo(namespace, 'sendCommand', { deviceId: deviceId, command: command }, function (data) {
             if (data) {
                 if (data.error) {
                     console.log('Error: ' + data.error);
