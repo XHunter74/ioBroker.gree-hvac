@@ -272,6 +272,15 @@ class GreeHvac extends utils.Adapter {
                 }
                 await this.setStateAsync(`${deviceId}.target-temperature`, newState);
                 break;
+            case 'mode-btn':
+                if (powerState === 0) return;
+                state = (await this.getStateAsync(`${deviceId}.mode`)).val;
+                newState = Number(state) + 1;
+                if (newState > 4) {
+                    newState = 0;
+                }
+                await this.setStateAsync(`${deviceId}.mode`, newState);
+                break;
         }
     }
 
