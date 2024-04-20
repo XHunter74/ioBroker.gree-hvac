@@ -1,12 +1,28 @@
 .devices-row {
-    margin-top: 120px;
+    margin-top: 135px;
+}
+
+.lcd-display {
+    width: 90%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 45px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: rgb(77, 138, 77);
+    border-radius: 5px;
+    display: flex;
+}
+
+.degree {
+    font-size: 20px !important;
 }
 
 .device-card {
     width: 200px;
     margin-left: 10px;
     border: 1px solid grey;
-    border-radius: 10px;
+    border-radius: 15px;
 }
 
 @font-face {
@@ -61,5 +77,9 @@
 .temperature {
     font-family: 'Digital-7 Mono';
     font-weight: normal;
-    font-size: 78px!important;
+    font-size: 78px !important;
+}
+
+.power-on {
+    background-color: rgb(248, 209, 176)!important;
 }

@@ -42,7 +42,40 @@ socket.on('stateChange', function (id, state) {
     if (id.substring(0, namespace.length) !== namespace) return;
     // console.log('stateChange', id, state);
     const controlId = id.substring(namespace.length + 1).replace('.', '-');
-    $('#' + controlId).text(state.val);
+    const parts = id.split('.');
+    const stateId = parts[parts.length - 1];
+    const deviceId = parts[parts.length - 2];
+    switch (stateId) {
+        case 'target-temperature':
+            $('#' + controlId).text(state.val);
+            break;
+        case 'mode':
+            switch (state.val) {
+                case 0:
+                    $('#' + `${deviceId}-hvac-mode`).text('autorenew');
+                    break;
+                case 1:
+                    $('#' + `${deviceId}-hvac-mode`).text('mode_cool');
+                    break;
+                case 2:
+                    $('#' + `${deviceId}-hvac-mode`).text('water_drop');
+                    break;
+                case 3:
+                    $('#' + `${deviceId}-hvac-mode`).text('mode_fan');
+                    break;
+                case 4:
+                    $('#' + `${deviceId}-hvac-mode`).text('sunny');
+                    break;
+            }
+            break;
+        case 'power':
+            if (state.val === 1) {
+                $('#' + `${deviceId}-on-off-btn`).addClass('power-on');
+            } else {
+                $('#' + `${deviceId}-on-off-btn`).removeClass('power-on');
+            }
+            break;
+    }
 });
 
 let common = null; // common information of adapter
@@ -110,9 +143,18 @@ function getCard(device) {
     html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
     html += `       <span style="font-size: 14px;">${device.id}</span>`;
     html += `   </div>`;
-    html += `   <div style="width: 100%;text-align: center;margin-top: 20px;margin-bottom: 20px;">`;
-    html += `       <span id="${device.id}-target-temperature" class="temperature">${device['target-temperature']}'</h1>`;
+    html += `   <div class="lcd-display">`;
+    html += '       <div style="margin-left: 4px;padding-top: 5px;">';
+    html += `           <span id="${device.id}-hvac-mode" class="material-symbols-outlined" style="font-size: 20px;">mode_cool</span>`;
+    html += '       </div>';
+    html += '       <div>';
+    html += `           <span id="${device.id}-target-temperature" class="temperature">${device['target-temperature']}</span>`;
+    html += `           <span class="degree">°C</span>`;
+    html += '       </div>';
     html += `   </div>`;
+    html += '   <div style="display:flex;justify-content: center;margin-bottom: 10px;">';
+    html += `           <a id="${device.id}-on-off-btn" class="oval-btn ctrl-btn" style="color: black;" href="#"><span>On/Off</span></a>`;
+    html += '   </div>';
     html += '   <div style="display:flex;justify-content: center;">';
     html += '       <div style="display: flex;flex-direction: column;justify-content: space-between;gap: 55px;">';
     html += `           <a id="temperature-up-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
@@ -130,9 +172,9 @@ function getCard(device) {
 
 function assignClickEvents(device) {
     $('.ctrl-btn').click(function () {
-        const btn=this.id;
+        const btn = this.id;
         console.log('clicked: ' + btn);
-        const deviceId= $(this).parents('.device-card').attr('id');
+        const deviceId = $(this).parents('.device-card').attr('id');
         console.log('deviceId: ' + deviceId);
         sendTo(namespace, 'sendCommand', { deviceId: deviceId, command: btn }, function (data) {
             if (data) {
@@ -193,83 +235,6 @@ function loadSettings(callback) {
         }
     });
 }
-
-function prepareTooltips() {
-    $('.admin-icon').each(function () {
-        let id = $(this).data('id');
-        if (!id) {
-            let $prev = $(this).prev();
-            let $input = $prev.find('input');
-            if (!$input.length) $input = $prev.find('select');
-            if (!$input.length) $input = $prev.find('textarea');
-
-            if (!$input.length) {
-                $prev = $prev.parent();
-                $input = $prev.find('input');
-                if (!$input.length) $input = $prev.find('select');
-                if (!$input.length) $input = $prev.find('textarea');
-            }
-            if ($input.length) id = $input.attr('id');
-        }
-
-        if (!id) return;
-
-        let tooltip = '';
-        if (systemDictionary['tooltip_' + id]) {
-            tooltip = systemDictionary['tooltip_' + id][systemLang] || systemDictionary['tooltip_' + id].en;
-        }
-
-        let icon = '';
-        let link = $(this).data('link');
-        if (link) {
-            if (link === true) {
-                if (common.readme) {
-                    link = common.readme + '#' + id;
-                } else {
-                    link = 'https://github.com/ioBroker/ioBroker.' + common.name + '#' + id;
-                }
-            }
-            if (!link.match('^https?:\/\/')) {
-                if (common.readme) {
-                    link = common.readme + '#' + link;
-                } else {
-                    link = 'https://github.com/ioBroker/ioBroker.' + common.name + '#' + link;
-                }
-            }
-            icon += '<a class="admin-tooltip-link" target="config_help" href="' + link + '" title="' + (tooltip || systemDictionary.htooltip[systemLang]) + '"><img class="admin-tooltip-icon" src="../../img/info.png" /></a>';
-        } else if (tooltip) {
-            icon += '<img class="admin-tooltip-icon" title="' + tooltip + '" src="../../img/info.png"/>';
-        }
-
-        if (icon) {
-            $(this).html(icon);
-        }
-    });
-    $('.admin-text').each(function () {
-        let id = $(this).data('id');
-        if (!id) {
-            let $prev = $(this).prev();
-            let $input = $prev.find('input');
-            if (!$input.length) $input = $prev.find('select');
-            if (!$input.length) $input = $prev.find('textarea');
-            if (!$input.length) {
-                $prev = $prev.parent();
-                $input = $prev.find('input');
-                if (!$input.length) $input = $prev.find('select');
-                if (!$input.length) $input = $prev.find('textarea');
-            }
-            if ($input.length) id = $input.attr('id');
-        }
-
-        if (!id) return;
-
-        // check if translation for this exist
-        if (systemDictionary['info_' + id]) {
-            $(this).html('<span class="admin-tooltip-text">' + (systemDictionary['info_' + id][systemLang] || systemDictionary['info_' + id].en) + '</span>');
-        }
-    });
-}
-
 
 function sendTo(_adapter_instance, command, message, callback) {
     socket.emit('sendTo', (_adapter_instance || adapter + '.' + instance), command, message, callback);
