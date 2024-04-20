@@ -231,14 +231,33 @@ class GreeHvac extends utils.Adapter {
         if (typeof obj === 'object' && obj.message) {
             switch (obj.command) {
                 case 'getDevices':
-                    const devices = await this.collectDeviceInfo();
-                    if (obj.callback) this.sendTo(obj.from, obj.command, JSON.stringify(devices), obj.callback);
+                    await this.processGetDevicesCommand(obj)
+                    break;
+                case 'sendCommand':
+                    await this.processSendCommand(obj);
                     break;
                 default:
                     this.log.warn(`Unknown command ${obj.command}`);
                     break;
             }
         }
+    }
+
+    async processSendCommand(obj) {
+        const command = obj.message.command;
+        const deviceId = obj.message.deviceId;
+        switch (command) {
+            case 'on-off-btn':
+                const state = (await this.getStateAsync(`${deviceId}.power`)).val;
+                const newState = state === 1 ? 0 : 1;
+                await this.setStateAsync(`${deviceId}.power`, newState);
+                break
+        }
+    }
+
+    async processGetDevicesCommand(obj) {
+        const devices = await this.collectDeviceInfo();
+        if (obj.callback) this.sendTo(obj.from, obj.command, JSON.stringify(devices), obj.callback);
     }
 
     async collectDeviceInfo() {
