@@ -282,6 +282,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.mode`, newState);
                 break;
             case 'fan-btn':
+                if (powerState === 0) return;
                 const fan_speeds = [0, 1, 3, 5];
                 state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
                 let idx = fan_speeds.indexOf(Number(state));
@@ -303,9 +304,11 @@ class GreeHvac extends utils.Adapter {
         const devices = this.deviceManager.getDevices();
         for (const deviceId in devices) {
             const device = devices[deviceId];
+            const deviceObject = await this.getObjectAsync(device.mac);
             const deviceInfo = {
                 id: device.mac,
                 ip: device.address,
+                name: deviceObject.common.name
             }
             const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
             for (const key in deviceStatus) {
