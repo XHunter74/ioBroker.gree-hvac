@@ -214,7 +214,7 @@ function assignClickEvents(device) {
             }
         });
     });
-    $('.edit-btn').click(() => {
+    $('.edit-btn').click(function () {
         const deviceId = $(this).parents('.device-card').attr('id');
         const deviceName = $(`#${deviceId}-device-name`).text();
         console.log('deviceId: ' + deviceId);
