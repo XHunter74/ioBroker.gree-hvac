@@ -35,6 +35,8 @@ var instance = args.instance;
 // const namespace = 'gree-hvac.' + instance;
 const namespace = 'gree-hvac.0';
 
+const Materialize = (typeof M !== 'undefined') ? M : Materialize;
+
 socket.emit('subscribe', namespace + '.*');
 
 socket.on('stateChange', function (id, state) {
@@ -225,10 +227,21 @@ function assignClickEvents(device) {
         $('#modaledit a.btn[name=\'save\']').click(() => {
             const newName = $('#modaledit').find('input[id=\'d_name\']').val();
             console.log('newName: ' + newName);
+            sendTo(namespace, 'renameDevice', { deviceId: deviceId, name: newName }, function (data) {
+                if (data) {
+                    if (data.error) {
+                        console.log('Error: ' + data.error);
+                    } else {
+                        console.log('msg: ' + JSON.stringify(data));
+                        $(`#${deviceId}-device-name`).text(newName);
+                    }
+                }
+            });
         });
 
+        $('#modaledit').modal();
         $('#modaledit').modal('open');
-        Materialize.updateTextFields();
+        // Materialize.updateTextFields();
     });
 }
 

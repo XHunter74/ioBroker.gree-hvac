@@ -65,7 +65,7 @@
     padding: 10px 20px;
     height: 40px;
     width: auto;
-    max-width: 100px;
+    max-width: 120px;
     border: 1px solid grey;
     text-align: center;
     margin-bottom: 7px;
@@ -92,3 +92,16 @@
     cursor: pointer;
     margin-left: 10px;
 }
+
+.modal-header {
+    position: relative;
+    height: 50px;
+    padding: 20px 20px 5px 20px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.m .modal.modal-fixed-footer.modal-fixed-header .modal-content{
+    height: calc(100% - 140px)!important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
