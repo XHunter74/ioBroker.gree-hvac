@@ -82,30 +82,56 @@ systemDictionary = {
     "uk": "Налаштування",
     "zh-cn": "设定值"
   },
-  'Device IPs, delimited by semicolon':{
-    "en": "Device IPs, delimited by semicolon",
-    "de": "Geräte-IPs, begrenzt durch Semikolon",
-    "ru": "IP-адреса устройств, разделенные точкой с запятой",
-    "pt": "IPs do dispositivo, delimitado por ponto e vírgula",
-    "nl": "Apparaat IP's, afgebakend door puntkomma",
-    "fr": "IP du périphérique, délimité par un point-virgule",
-    "it": "Dispositivi IP, delimitati da semicolon",
-    "es": "IPs de dispositivos, delimitados por semicolon",
-    "pl": "Urządzenie IP, wyznaczone przez średnik",
-    "uk": "IP-адреси устройств, розділені точкою с зап'ятою",
-    "zh-cn": "设备 IP, 用分号分隔"
+  'Rename device': {
+    "en": "Rename device",
+    "de": "Rename Gerät",
+    "ru": "Переименовать устройство",
+    "pt": "Renomear dispositivo",
+    "nl": "Hernoem apparaat",
+    "fr": "Renommer le périphérique",
+    "it": "Rinominare dispositivo",
+    "es": "Renombrado dispositivo",
+    "pl": "Zmień nazwę urządzenia",
+    "uk": "Перейменувати пристрій",
+    "zh-cn": "重命名设备"
   },
-  'Polling interval in milliseconds':{
-    "en": "Polling interval in milliseconds",
-    "de": "Polierintervall in Millisekunden",
-    "ru": "Интервал опроса в миллисекундах",
-    "pt": "Intervalo de polimento em milissegundos",
-    "nl": "Berekeninterval in milliseconden",
-    "fr": "Intervalle de scrutin en millisecondes",
-    "it": "Intervallo di inquinamento in millisecondi",
-    "es": "Intervalo de votación en milisegundos",
-    "pl": "Odstęp między badaniami w milisekundach",
-    "uk": "Інтервал опитування в мілісекундах",
-    "zh-cn": "投票间隔( 毫秒)"
+  'Save': {
+    "en": "Save",
+    "de": "Speichern",
+    "ru": "Сохранить",
+    "pt": "Salvar",
+    "nl": "Opslaan",
+    "fr": "Enregistrer",
+    "it": "Salva",
+    "es": "Guardar",
+    "pl": "Zapisz",
+    "uk": "Зберегти",
+    "zh-cn": "保存"
+  },
+  'Cancel': {
+    "en": "Cancel",
+    "de": "Abbrechen",
+    "ru": "Отмена",
+    "pt": "Cancelar",
+    "nl": "Annuleren",
+    "fr": "Annuler",
+    "it": "Annulla",
+    "es": "Cancelar",
+    "pl": "Anuluj",
+    "uk": "Відмінити",
+    "zh-cn": "取消"
+  },
+  'Name': {
+    "en": "Name",
+    "de": "Name",
+    "ru": "Имя",
+    "pt": "Nome",
+    "nl": "Naam",
+    "fr": "Dénomination",
+    "it": "Nome",
+    "es": "Nombre",
+    "pl": "Nazwa",
+    "uk": "Ім'я",
+    "zh-cn": "名称"
   }
 };

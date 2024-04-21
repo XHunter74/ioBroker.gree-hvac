@@ -222,7 +222,6 @@ function assignClickEvents(device) {
         console.log('deviceId: ' + deviceId);
         console.log('deviceName: ' + deviceName);
         $('#modaledit').find('input[id=\'d_name\']').val(deviceName);
-
         $('#modaledit a.btn[name=\'save\']').unbind('click');
         $('#modaledit a.btn[name=\'save\']').click(() => {
             const newName = $('#modaledit').find('input[id=\'d_name\']').val();
@@ -241,7 +240,9 @@ function assignClickEvents(device) {
 
         $('#modaledit').modal();
         $('#modaledit').modal('open');
-        // Materialize.updateTextFields();
+        $('#modaledit').find('input[id=\'d_name\']').focus();
+
+        Materialize.updateTextFields();
     });
 }
 
