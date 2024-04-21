@@ -282,6 +282,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.mode`, newState);
                 break;
             case 'fan-btn':
+                if (powerState === 0) return;
                 const fan_speeds = [0, 1, 3, 5];
                 state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
                 let idx = fan_speeds.indexOf(Number(state));
