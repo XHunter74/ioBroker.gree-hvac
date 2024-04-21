@@ -1,4 +1,4 @@
-/*global $, location, socket, document, window, io, alert, load, systemDictionary, systemLang, translateAll*/
+/*global $, location,  document, window, io, alert, systemLang, translateAll*/
 const path = location.pathname;
 const parts = path.split('/');
 parts.splice(-3);
@@ -6,9 +6,8 @@ parts.splice(-3);
 const socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
 // const socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
 
-var query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
-var args = {};
-let theme = null;
+const query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
+const args = {};
 
 // parse parameters
 query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(function (b, i) {
@@ -16,7 +15,7 @@ query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(functi
     if (!i && parts.length === 1 && !isNaN(parseInt(b, 10))) {
         args.instance = parseInt(b, 10);
     }
-    var name = parts[0];
+    const name = parts[0];
     args[name] = parts.length === 2 ? parts[1] : true;
 
     if (name === 'instance') {
@@ -33,13 +32,13 @@ query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(functi
 let instance = args.instance;
 
 if (typeof instance === 'undefined') {
-    instance = 0
+    instance = 0;
 }
 
 const namespace = 'gree-hvac.' + instance;
 // const namespace = 'gree-hvac.0';
 
-const Materialize = (typeof M !== 'undefined') ? M : Materialize;
+const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disable-line no-undef
 
 socket.emit('subscribe', namespace + '.*');
 
@@ -106,13 +105,9 @@ socket.on('stateChange', function (id, state) {
     }
 });
 
-let common = null; // common information of adapter
-const host = null; // host object on which the adapter runs
-const changed = false;
-let systemConfig;
-let certs = [];
+let common = null; // eslint-disable-line no-unused-vars
+let systemConfig; // eslint-disable-line no-unused-vars
 let adapter = '';
-const onChangeSupported = false;
 let devices = [];
 
 const tmp = window.location.pathname.split('/');
@@ -160,8 +155,7 @@ function showDevices() {
     }
     $('#devices').html(html);
     for (let i = 0; i < devices.length; i++) {
-        const d = devices[i];
-        assignClickEvents(d);
+        assignClickEvents();
     }
 }
 
@@ -208,7 +202,7 @@ function getCard(device) {
     return html;
 }
 
-function assignClickEvents(device) {
+function assignClickEvents() {
     $('.ctrl-btn').click(function () {
         const btn = this.id;
         const parts = btn.split('-');
@@ -261,7 +255,9 @@ function assignClickEvents(device) {
 function loadSystemConfig(callback) {
     socket.emit('getObject', 'system.config', function (err, res) {
         if (!err && res && res.common) {
-            systemLang = res.common.language || systemLang;
+            // @ts-ignore
+            systemLang = res.common.language || systemLang; // eslint-disable-line no-global-assign
+            // @ts-ignore
             systemConfig = res;
         }
         if (callback) callback();
@@ -277,22 +273,6 @@ function loadSettings(callback) {
             if (res.common && res.common.name) $('.adapter-name').html(res.common.name);
             if (res.native) $('#devicelist').val(res.native.devicelist);
             if (res.native) $('#pollInterval').val(res.native.pollInterval);
-            if (typeof load === 'undefined') {
-                // alert('Please implement save function in your admin/index.html');
-            } else {
-                // detect, that we are now in react container (themeNames = ['dark', 'blue', 'colored', 'light'])
-
-                const _query = query.split('&');
-
-                for (var q = 0; q < _query.length; q++) {
-                    if (_query[q].indexOf('react=') !== -1) {
-                        $('.adapter-container').addClass('react-' + _query[q].substring(6));
-                        theme = 'react-' + _query[q].substring(6);
-                    }
-                }
-
-                load(res.native, onChange);
-            }
             if (typeof callback === 'function') {
                 callback();
             }
@@ -307,45 +287,4 @@ function loadSettings(callback) {
 
 function sendTo(_adapter_instance, command, message, callback) {
     socket.emit('sendTo', (_adapter_instance || adapter + '.' + instance), command, message, callback);
-}
-
-function sendToHost(host, command, message, callback) {
-    socket.emit('sendToHost', host || common.host, command, message, callback);
-}
-
-function onChange(isChanged) {
-    //
-}
-
-function showMessage(message, title, icon) {
-    var $dialogMessage;
-    // noinspection JSJQueryEfficiency
-    $dialogMessage = $('#dialog-message');
-    if (!$dialogMessage.length) {
-        $('body').append(
-            '<div class="m"><div id="dialog-message" class="modal modal-fixed-footer">' +
-            '    <div class="modal-content">' +
-            '        <h6 class="dialog-title title"></h6>' +
-            '        <p><i class="large material-icons dialog-icon"></i><span class="dialog-text"></span></p>' +
-            '    </div>' +
-            '    <div class="modal-footer">' +
-            '        <a class="modal-action modal-close waves-effect waves-green btn-flat translate">Ok</a>' +
-            '    </div>' +
-            '</div></div>');
-        $dialogMessage = $('#dialog-message');
-    }
-    if (icon) {
-        $dialogMessage.find('.dialog-icon')
-            .show()
-            .html(icon);
-    } else {
-        $dialogMessage.find('.dialog-icon').hide();
-    }
-    if (title) {
-        $dialogMessage.find('.dialog-title').html(title).show();
-    } else {
-        $dialogMessage.find('.dialog-title').hide();
-    }
-    $dialogMessage.find('.dialog-text').html(message);
-    $dialogMessage.modal().modal('open');
 }
