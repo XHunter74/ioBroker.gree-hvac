@@ -58,16 +58,19 @@ socket.on('stateChange', function (id, state) {
     // only watch our own states
     if (id.substring(0, namespace.length) !== namespace) return;
     // console.log('stateChange', id, state);
-    const controlId = id.substring(namespace.length + 1).replace('.', '-');
     const parts = id.split('.');
     const stateId = parts[parts.length - 1];
     const deviceId = parts[parts.length - 2];
+    processStateChange(deviceId, stateId, state.val);
+});
+
+function processStateChange(deviceId, stateId, stateVal) {
     switch (stateId) {
         case 'target-temperature':
-            $('#' + controlId).text(state.val);
+            $('#' + `${deviceId}-target-temperature`).text(stateVal);
             break;
         case 'mode':
-            switch (state.val) {
+            switch (stateVal) {
                 case 0:
                     $('#' + `${deviceId}-hvac-mode`).text('autorenew');
                     break;
@@ -86,43 +89,43 @@ socket.on('stateChange', function (id, state) {
             }
             break;
         case 'power':
-            if (state.val === 1) {
+            if (stateVal === 1) {
                 $('#' + `${deviceId}-on-off-btn`).addClass('power-on');
             } else {
                 $('#' + `${deviceId}-on-off-btn`).removeClass('power-on');
             }
             break;
         case 'turbo':
-            if (state.val === 1) {
+            if (stateVal === 1) {
                 $('#' + `${deviceId}-turbo-btn`).addClass('turbo-on');
             } else {
                 $('#' + `${deviceId}-turbo-btn`).removeClass('turbo-on');
             }
             break;
         case 'display-state':
-            if (state.val === 1) {
+            if (stateVal === 1) {
                 $('#' + `${deviceId}-display-btn`).addClass('display-on');
             } else {
                 $('#' + `${deviceId}-display-btn`).removeClass('display-on');
             }
             break;
         case 'fan-speed':
-            if (state.val === 0) {
+            if (stateVal === 0) {
                 $('#' + `${deviceId}-fan-mode`).css('display', 'block');
                 $('#' + `${deviceId}-fan-speed`).css('display', 'none');
             } else {
                 $('#' + `${deviceId}-fan-mode`).css('display', 'none');
                 $('#' + `${deviceId}-fan-speed`).css('display', 'block');
-                if (state.val === 1) {
+                if (stateVal === 1) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_1_bar');
-                } else if (state.val === 3) {
+                } else if (stateVal === 3) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_2_bar');
-                } else if (state.val === 5) {
+                } else if (stateVal === 5) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt');
                 }
             }
     }
-});
+}
 
 let common = null; // eslint-disable-line no-unused-vars
 let systemConfig; // eslint-disable-line no-unused-vars
@@ -174,8 +177,16 @@ function showDevices() {
     }
     $('#devices').html(html);
     for (let i = 0; i < devices.length; i++) {
-        assignClickEvents();
+        const d = devices[i];
+        for (const key in d) {
+            if (Object.prototype.hasOwnProperty.call(d, key)) {
+                const stateId = key;
+                const state = d[key];
+                processStateChange(d.id, stateId, state);
+            }
+        }
     }
+    assignClickEvents();
 }
 
 function getCard(device) {
