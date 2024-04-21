@@ -236,11 +236,26 @@ class GreeHvac extends utils.Adapter {
                 case 'sendCommand':
                     await this.processSendCommand(obj);
                     break;
+                case 'renameDevice':
+                    await this.processRenameDevice(obj);
+                    break;
                 default:
                     this.log.warn(`Unknown command ${obj.command}`);
                     break;
             }
         }
+    }
+
+    async processRenameDevice(obj) {
+        const deviceId = obj.message.deviceId;
+        const deviceName = obj.message.name;
+        const deviceObject = await this.getObjectAsync(deviceId);
+        if (!deviceObject) {
+            this.log.warn(`Device ${deviceId} not found`);
+            return;
+        }
+        await this.extendObjectAsync(deviceId, { common: { name: deviceName } })
+        this.log.info(`Device ${deviceObject.common.name} renamed to ${deviceName}`);
     }
 
     async processSendCommand(obj) {
