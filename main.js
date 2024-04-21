@@ -307,6 +307,15 @@ class GreeHvac extends utils.Adapter {
                 newState = fan_speeds[idx];
                 await this.setStateAsync(`${deviceId}.fan-speed`, newState);
                 break;
+            case 'turbo-btn':
+                if (powerState === 0) return;
+                state = (await this.getStateAsync(`${deviceId}.turbo`)).val;
+                newState = Number(state) + 1;
+                if (newState > 1) {
+                    newState = 0;
+                }
+                await this.setStateAsync(`${deviceId}.turbo`, newState);
+                break
         }
     }
 
