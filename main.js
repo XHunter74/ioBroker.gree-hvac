@@ -304,9 +304,11 @@ class GreeHvac extends utils.Adapter {
         const devices = this.deviceManager.getDevices();
         for (const deviceId in devices) {
             const device = devices[deviceId];
+            const deviceObject = await this.getObjectAsync(device.mac);
             const deviceInfo = {
                 id: device.mac,
                 ip: device.address,
+                name: deviceObject.common.name
             }
             const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
             for (const key in deviceStatus) {
