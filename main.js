@@ -315,7 +315,7 @@ class GreeHvac extends utils.Adapter {
                     newState = 0;
                 }
                 await this.setStateAsync(`${deviceId}.turbo`, newState);
-                break
+                break;
             case 'display-btn':
                 state = (await this.getStateAsync(`${deviceId}.display-state`)).val;
                 newState = Number(state) + 1;
