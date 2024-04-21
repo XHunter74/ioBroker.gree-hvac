@@ -84,9 +84,9 @@ socket.on('stateChange', function (id, state) {
                 $('#' + `${deviceId}-fan-speed`).css('display', 'block');
                 if (state.val === 1) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_1_bar');
-                } else if (state.val === 2) {
-                    $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_2_bar');
                 } else if (state.val === 3) {
+                    $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_2_bar');
+                } else if (state.val === 5) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt');
                 }
             }
@@ -167,7 +167,7 @@ function getCard(device) {
     html += '               <span class="">FAN</span>';
     html += `               <span id="${device.id}-fan-mode" class="" style="margin-left: 5px;">AUTO</span>`;
     html += '           </div>';
-    html += '           <div style="display: flex;">';
+    html += '           <div style="display: flex;height: 15px;">';
     html += `               <span id="${device.id}-fan-speed" class="material-symbols-outlined" style="font-size: 20px;">signal_cellular_alt</span>`;
     html += '           </div>';
     html += '           <div style="display: flex;justify-content: center;align-items: center;">';
