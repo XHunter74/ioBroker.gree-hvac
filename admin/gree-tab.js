@@ -156,7 +156,7 @@ function getCard(device) {
     let html = '';
     html += `<div id="${device.id}" class="device-card">`;
     html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
-    html += `       <span style="font-size: 14px;">${device.id}</span>`;
+    html += `       <span style="font-size: 14px;">${device.name}</span>`;
     html += `   </div>`;
     html += `   <div class="lcd-display">`;
     html += '       <div style="margin-left: 4px;padding-top: 5px;">';

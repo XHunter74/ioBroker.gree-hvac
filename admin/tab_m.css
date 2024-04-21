@@ -21,6 +21,7 @@
 .device-card {
     width: 200px;
     margin-left: 10px;
+    margin-right: 10px;
     border: 1px solid grey;
     border-radius: 15px;
     background-color: rgb(238, 233, 233);
