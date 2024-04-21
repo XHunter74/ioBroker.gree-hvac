@@ -76,6 +76,24 @@
             "config": "json",
             "tab": "materialize"
         },
+        "adminTab": {
+            "singleton": true,
+            "name": {
+                "en": "Adapter Gree-HVAC",
+                "de": "Adapter Gree-HVAC",
+                "ru": "Адаптер Gree-HVAC",
+                "pt": "Adaptador Gree-HVAC",
+                "nl": "Adapter Gree-HVAC",
+                "fr": "Adaptateur Gree-HVAC",
+                "it": "Adattatore Gree-HVAC",
+                "es": "Adaptador Gree-HVAC",
+                "pl": "Adapter Gree- HVAC",
+                "uk": "Адаптер Gree-HVAC",
+                "zh-cn": "适应器 Gree-HVAC"
+            },
+            "link": "",
+            "fa-icon": "info"
+        },
         "plugins": {
             "sentry": {
                 "dsn": "https://0b5a9ab175f617f1d0e75219bc758fda@o1146681.ingest.us.sentry.io/4507094441918464"
