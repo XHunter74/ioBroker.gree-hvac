@@ -256,6 +256,7 @@ class GreeHvac extends utils.Adapter {
         }
         await this.extendObjectAsync(deviceId, { common: { name: deviceName } })
         this.log.info(`Device ${deviceObject.common.name} renamed to ${deviceName}`);
+        if (obj.callback) this.sendTo(obj.from, obj.command, { deviceId: deviceId, name: deviceName }, obj.callback);
     }
 
     async processSendCommand(obj) {
