@@ -316,6 +316,14 @@ class GreeHvac extends utils.Adapter {
                 }
                 await this.setStateAsync(`${deviceId}.turbo`, newState);
                 break
+            case 'display-btn':
+                state = (await this.getStateAsync(`${deviceId}.display-state`)).val;
+                newState = Number(state) + 1;
+                if (newState > 1) {
+                    newState = 0;
+                }
+                await this.setStateAsync(`${deviceId}.display-state`, newState);
+                break;
         }
     }
 
