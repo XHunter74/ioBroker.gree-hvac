@@ -281,6 +281,15 @@ class GreeHvac extends utils.Adapter {
                 }
                 await this.setStateAsync(`${deviceId}.mode`, newState);
                 break;
+            case 'fan-btn':
+                const fan_speeds = [0, 1, 3, 5];
+                state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
+                let idx = fan_speeds.indexOf(Number(state));
+                idx++;
+                if (idx >= fan_speeds.length) idx = 0;
+                newState = fan_speeds[idx];
+                await this.setStateAsync(`${deviceId}.fan-speed`, newState);
+                break;
         }
     }
 
