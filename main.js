@@ -231,7 +231,7 @@ class GreeHvac extends utils.Adapter {
         if (typeof obj === 'object' && obj.message) {
             switch (obj.command) {
                 case 'getDevices':
-                    await this.processGetDevicesCommand(obj)
+                    await this.processGetDevicesCommand(obj);
                     break;
                 case 'sendCommand':
                     await this.processSendCommand(obj);
@@ -254,7 +254,7 @@ class GreeHvac extends utils.Adapter {
             this.log.warn(`Device ${deviceId} not found`);
             return;
         }
-        await this.extendObjectAsync(deviceId, { common: { name: deviceName } })
+        await this.extendObjectAsync(deviceId, { common: { name: deviceName } });
         this.log.info(`Device ${deviceObject.common.name} renamed to ${deviceName}`);
         if (obj.callback) this.sendTo(obj.from, obj.command, { deviceId: deviceId, name: deviceName }, obj.callback);
     }
@@ -299,9 +299,9 @@ class GreeHvac extends utils.Adapter {
                 break;
             case 'fan-btn':
                 if (powerState === 0) return;
-                const fan_speeds = [0, 1, 3, 5];
+                const fan_speeds = [0, 1, 3, 5]; // eslint-disable-line no-case-declarations
                 state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
-                let idx = fan_speeds.indexOf(Number(state));
+                let idx = fan_speeds.indexOf(Number(state)); // eslint-disable-line no-case-declarations
                 idx++;
                 if (idx >= fan_speeds.length) idx = 0;
                 newState = fan_speeds[idx];
@@ -315,7 +315,7 @@ class GreeHvac extends utils.Adapter {
                     newState = 0;
                 }
                 await this.setStateAsync(`${deviceId}.turbo`, newState);
-                break
+                break;
         }
     }
 
@@ -334,7 +334,7 @@ class GreeHvac extends utils.Adapter {
                 id: device.mac,
                 ip: device.address,
                 name: deviceObject.common.name
-            }
+            };
             const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
