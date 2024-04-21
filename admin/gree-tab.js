@@ -156,7 +156,8 @@ function getCard(device) {
     let html = '';
     html += `<div id="${device.id}" class="device-card">`;
     html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
-    html += `       <span style="font-size: 14px;">${device.name}</span>`;
+    html += `       <span id="${device.id}-device-name" style="font-size: 14px;">${device.name}</span>`;
+    html += `       <span id="${device.id}-edit" class="material-symbols-outlined edit-btn">edit</span>`;
     html += `   </div>`;
     html += `   <div class="lcd-display">`;
     html += '       <div style="margin-left: 4px;padding-top: 5px;">';
@@ -212,6 +213,22 @@ function assignClickEvents(device) {
                 }
             }
         });
+    });
+    $('.edit-btn').click(() => {
+        const deviceId = $(this).parents('.device-card').attr('id');
+        const deviceName = $(`#${deviceId}-device-name`).text();
+        console.log('deviceId: ' + deviceId);
+        console.log('deviceName: ' + deviceName);
+        $('#modaledit').find('input[id=\'d_name\']').val(deviceName);
+
+        $('#modaledit a.btn[name=\'save\']').unbind('click');
+        $('#modaledit a.btn[name=\'save\']').click(() => {
+            const newName = $('#modaledit').find('input[id=\'d_name\']').val();
+            console.log('newName: ' + newName);
+        });
+
+        $('#modaledit').modal('open');
+        Materialize.updateTextFields();
     });
 }
 

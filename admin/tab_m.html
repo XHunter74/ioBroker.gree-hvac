@@ -41,7 +41,6 @@
                 <div class="nav-content">
                     <ul class="tabs tabs-transparent">
                         <li class="tab col s2"><a href="#tab-main" id="devs" class="translate">Devices</a></li>
-                        <li class="tab col s2"><a href="#tab-settings" id="devs" class="translate">Settings</a></li>
                     </ul>
                 </div>
             </nav>
@@ -50,21 +49,26 @@
             <div id="tab-main" class="col s12 page active">
                 <div id="devices" style="display: flex;" class="row devices-row"></div>
             </div>
-            <div id="tab-settings" class="col s12 page">
-                <div class="row" style="margin-top: 40px;">
-                    <div class="input-field col s3" style="width: 350px;">
-                        <input class="value" id="devicelist" type="text" />
-                        <label for="devicelist"></label>
-                        <span class="translate">Device IPs, delimited by semicolon</span>
-                    </div>
-                </div>
+        </div>
+    </div>
+
+    <div class="materialize-dialogs m">
+        <div id="modaledit" class="modal">
+            <div class="modal-content">
+                <h3 class="translate">Rename device</h3>
                 <div class="row">
-                    <div class="input-field col s3" style="width: 350px;">
-                        <input type="number" class="value" id="pollInterval" />
-                        <label for="pollInterval" class="translate"></label>
-                        <span class="translate">Polling interval in milliseconds</span>
+                    <div class="col1">
+                        <div class="input-field">
+                            <input id="d_name" type="text" class="value validate">
+                            <label for="d_name" class="translate">Name</label>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <a name="save" href="#!"
+                    class="modal-action modal-close waves-effect waves-green btn green translate">Save</a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat translate">Cancel</a>
             </div>
         </div>
     </div>
