@@ -1,10 +1,22 @@
 /*global $, location,  document, window, io, alert, systemLang, translateAll*/
 const path = location.pathname;
+
+let isDebug = false;
+
+if (location.host === 'localhost:5500') {
+    isDebug = true;
+}
+
 const parts = path.split('/');
 parts.splice(-3);
 
-const socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
-// const socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
+let socket;
+
+if (isDebug) {
+    socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
+} else {
+    socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
+}
 
 const query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
 const args = {};
@@ -85,6 +97,13 @@ socket.on('stateChange', function (id, state) {
                 $('#' + `${deviceId}-turbo-btn`).addClass('turbo-on');
             } else {
                 $('#' + `${deviceId}-turbo-btn`).removeClass('turbo-on');
+            }
+            break;
+        case 'display-state':
+            if (state.val === 1) {
+                $('#' + `${deviceId}-display-btn`).addClass('display-on');
+            } else {
+                $('#' + `${deviceId}-display-btn`).removeClass('display-on');
             }
             break;
         case 'fan-speed':
@@ -184,8 +203,9 @@ function getCard(device) {
     html += '           </div>';
     html += '       </div>';
     html += `   </div>`;
-    html += '   <div style="display:flex;justify-content: center;margin-bottom: 10px;">';
-    html += `           <a id="${device.id}-on-off-btn" class="oval-btn ctrl-btn" style="color: black;" href="#"><span>On/Off</span></a>`;
+    html += '   <div style="display:flex;justify-content: space-between;margin-bottom: 20px;margin-left: 15px;margin-right: 15px;">';
+    html += `           <a id="${device.id}-on-off-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">power_settings_new</span></a>`;
+    html += `           <a id="${device.id}-display-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">wb_incandescent</span></a>`;
     html += '   </div>';
     html += '   <div style="display:flex;justify-content: center;margin-bottom: 40px;">';
     html += '       <div style="display: flex;flex-direction: column;gap: 55px;">';
