@@ -3,8 +3,8 @@ const path = location.pathname;
 const parts = path.split('/');
 parts.splice(-3);
 
-// const socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
-const socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
+const socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
+// const socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
 
 var query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
 var args = {};
@@ -30,10 +30,14 @@ query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(functi
     }
 });
 
-var instance = args.instance;
+let instance = args.instance;
 
-// const namespace = 'gree-hvac.' + instance;
-const namespace = 'gree-hvac.0';
+if (typeof instance === 'undefined') {
+    instance = 0
+}
+
+const namespace = 'gree-hvac.' + instance;
+// const namespace = 'gree-hvac.0';
 
 const Materialize = (typeof M !== 'undefined') ? M : Materialize;
 
