@@ -77,6 +77,13 @@ socket.on('stateChange', function (id, state) {
                 $('#' + `${deviceId}-on-off-btn`).removeClass('power-on');
             }
             break;
+        case 'turbo':
+            if (state.val === 1) {
+                $('#' + `${deviceId}-turbo-btn`).addClass('turbo-on');
+            } else {
+                $('#' + `${deviceId}-turbo-btn`).removeClass('turbo-on');
+            }
+            break;
         case 'fan-speed':
             if (state.val === 0) {
                 $('#' + `${deviceId}-fan-mode`).css('display', 'block');
