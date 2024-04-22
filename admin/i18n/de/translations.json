@@ -1,6 +1,7 @@
 {
-    "gree-hvac adapter settings": "Gree HVAC Adapter Einstellungen",
-    "devicelist": "Geräte-IPs, begrenzt durch Semikolon",
-    "pollInterval": "Polierintervall in Millisekunden"
-    
-}
+    "gree-hvac adapter settings": "Gree HVAC-Adaptereinstellungen",
+    "devicelist": "Geräte-IPs",
+    "pollInterval": "Abfrageintervall in Millisekunden",
+    "deviceIp": "Geräte-IP",
+    "enterDeviceIp": "Geben Sie die Geräte-IP ein"
+  }

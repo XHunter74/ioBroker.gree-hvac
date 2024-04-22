@@ -44,7 +44,7 @@ class GreeHvac extends utils.Adapter {
                 this.log.error('You should config device list in adapter configuration page');
                 await this.stop();
             }
-            this.log.info('Device list: ' + this.config.devicelist);
+            this.log.info('Device list: ' + JSON.stringify(this.config.devicelist));
             this.log.info('Poll interval: ' + this.config.pollInterval);
 
             if (!this.validateIPList(this.config.devicelist)) {
@@ -57,7 +57,10 @@ class GreeHvac extends utils.Adapter {
                 await this.stop();
             }
 
-            this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
+            const devicesArray = this.config.devicelist.map(item => item.deviceIp);
+            const devices = devicesArray.join(';');
+
+            this.deviceManager = new DeviceManager(devices, this.log);
 
             this.deviceManager.on('device_bound', async (deviceId, device) => {
                 try {
@@ -66,6 +69,7 @@ class GreeHvac extends utils.Adapter {
                     const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
                     this.intervals[deviceId] = deviceInterval;
                 } catch (error) {
+                    this.log.error(`Error in device_bound event for device ${deviceId}: ${error}`);
                     this.sendError(error, `Error in device_bound event for device ${deviceId}`);
                 }
             });
@@ -85,6 +89,7 @@ class GreeHvac extends utils.Adapter {
 
     async processDeviceStatus(deviceId, deviceStatus) {
         try {
+            deviceId = this.nameToId(deviceId);
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
                     const value = deviceStatus[key];
@@ -103,30 +108,43 @@ class GreeHvac extends utils.Adapter {
 
     async processDevice(deviceId, device) {
         try {
+            deviceId = this.nameToId(deviceId);
             this.log.info(`Device ${deviceId} bound`);
 
             await this.setObjectNotExistsAsync(deviceId, {
-                type: 'state',
+                type: 'device',
                 common: {
                     name: deviceId,
-                    type: 'string',
-                    role: 'variable',
-                    read: true,
-                    write: false,
                 },
                 native: {},
             });
 
-            await this.setStateAsync(deviceId, { val: JSON.stringify(device), ack: true });
+            await this.setObjectNotExistsAsync(`${deviceId}.deviceInfo`, {
+                type: 'state',
+                common: {
+                    name: 'Device Info',
+                    type: 'string',
+                    role: 'info',
+                    read: true,
+                    write: false,
+                },
+                native: {}
+            });
+
+            await this.setStateAsync(`${deviceId}.deviceInfo`, { val: JSON.stringify(device), ack: true });
 
             for (const property of propertiesMap) {
                 await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
             }
 
-            this.subscribeStates(`${deviceId}.*`);
+            this.subscribeStates('*');
         } catch (error) {
             this.sendError(error, `Error in processDevice for device ${deviceId}`);
         }
+    }
+
+    nameToId(pName) {
+        return (pName || '').replace(adapter.FORBIDDEN_CHARS, '_');
     }
 
     validateIPList(ipList) {
@@ -134,12 +152,9 @@ class GreeHvac extends utils.Adapter {
             // Regular expression for IP address
             const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-            // Split the list by semicolon
-            const ips = ipList.split(';');
-
             // Validate each IP
-            for (const ip of ips) {
-                if (!ipPattern.test(ip)) {
+            for (const networkItem of ipList) {
+                if (!ipPattern.test(networkItem.deviceIp)) {
                     return false;
                 }
             }
@@ -147,7 +162,7 @@ class GreeHvac extends utils.Adapter {
             // If all IPs are valid
             return true;
         } catch (error) {
-            this.sendError(error, 'Error in validateIPList');
+            this.log.error(`Error in validateIPList: ${error}`);
             return false;
         }
     }
@@ -175,7 +190,7 @@ class GreeHvac extends utils.Adapter {
      */
     async onStateChange(id, state) {
         try {
-            if (state.ack === false) {
+            if (state && state.ack === false) {
                 const { deviceId, devicePath, property } = this.getDeviceInfo(id);
                 const mapItem = propertiesMap.find(item => item.name === property);
                 if (mapItem) {

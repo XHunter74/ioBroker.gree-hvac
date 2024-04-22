@@ -3,14 +3,30 @@
     "type": "panel",
     "items": {
         "devicelist": {
-            "type": "text",
+            "type": "table",
             "label": "devicelist",
-            "newLine": true
+            "newLine": true,
+            "items": [
+                {
+                    "type": "text",
+                    "attr": "deviceIp",
+                    "width": "200px",
+                    "title": "deviceIp",
+                    "tooltip": "enterDeviceIp",
+                    "filter": false,
+                    "sort": false,
+                    "default": ""
+                }
+            ]
         },
         "pollInterval": {
             "type": "number",
             "label": "pollInterval",
-            "newLine": true
+            "min": 1000,
+            "max": 60000,
+            "newLine": true,
+            "step": 1000,
+            "default": 5000
         }
     }
 }

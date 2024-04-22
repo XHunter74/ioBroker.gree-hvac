@@ -1,5 +1,7 @@
 {
     "gree-hvac adapter settings": "Gree HVAC 适配器设置",
-    "devicelist": "设备 IP, 用分号分隔",
-    "pollInterval": "投票间隔( 毫秒)"
+    "pollInterval": "投票间隔( 毫秒)",
+    "deviceList": "设备IP",
+    "deviceIp": "设备IP",
+    "enterDeviceIp": "输入设备IP"
 }
