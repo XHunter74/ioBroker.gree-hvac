@@ -89,6 +89,7 @@ class GreeHvac extends utils.Adapter {
 
     async processDeviceStatus(deviceId, deviceStatus) {
         try {
+            deviceId = this.nameToId(deviceId);
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
                     const value = deviceStatus[key];
@@ -107,6 +108,7 @@ class GreeHvac extends utils.Adapter {
 
     async processDevice(deviceId, device) {
         try {
+            deviceId = this.nameToId(deviceId);
             this.log.info(`Device ${deviceId} bound`);
 
             await this.setObjectNotExistsAsync(deviceId, {
@@ -135,10 +137,14 @@ class GreeHvac extends utils.Adapter {
                 await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
             }
 
-            this.subscribeStates(`${deviceId}.*`);
+            this.subscribeStates('*');
         } catch (error) {
             this.sendError(error, `Error in processDevice for device ${deviceId}`);
         }
+    }
+
+    nameToId(pName) {
+        return (pName || '').replace(adapter.FORBIDDEN_CHARS, '_');
     }
 
     validateIPList(ipList) {
@@ -184,7 +190,7 @@ class GreeHvac extends utils.Adapter {
      */
     async onStateChange(id, state) {
         try {
-            if (state.ack === false) {
+            if (state && state.ack === false) {
                 const { deviceId, devicePath, property } = this.getDeviceInfo(id);
                 const mapItem = propertiesMap.find(item => item.name === property);
                 if (mapItem) {
