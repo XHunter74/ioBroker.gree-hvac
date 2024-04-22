@@ -27,7 +27,7 @@
     "node": ">= 18"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.1.14",
+    "@iobroker/adapter-core": "^3.1.4",
     "js-controller": ">=5.0.19"
   },
   "devDependencies": {
