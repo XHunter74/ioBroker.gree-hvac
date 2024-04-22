@@ -42,19 +42,19 @@ class GreeHvac extends utils.Adapter {
             // this.config:
             if (!this.config.devicelist) {
                 this.log.error('You should config device list in adapter configuration page');
-                this.terminate('Device list is empty');
+                await this.stop();
             }
             this.log.info('Device list: ' + this.config.devicelist);
             this.log.info('Poll interval: ' + this.config.pollInterval);
 
             if (!this.validateIPList(this.config.devicelist)) {
                 this.log.error('Invalid device list');
-                this.terminate('Invalid device list');
+                await this.stop();
             }
 
             if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
                 this.log.error('Invalid poll interval: ' + this.config.pollInterval);
-                this.terminate('Invalid poll interval: ' + this.config.pollInterval);
+                await this.stop();
             }
 
             this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
