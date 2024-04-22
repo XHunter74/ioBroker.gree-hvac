@@ -6,8 +6,6 @@
 ![Number of Installations](https://iobroker.live/badges/template-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/template-stable.svg)
 
-[![NPM](https://nodei.co/npm/iobroker.gree-hvac.png?downloads=true)](https://nodei.co/npm/iobroker.gree-hvac/)
-
 **Tests:** [![Test and Release](https://github.com/xhunter74/ioBroker.gree-hvac/actions/workflows/main.yml/badge.svg)](https://github.com/xhunter74/ioBroker.gree-hvac/actions/workflows/main.yml)
 
 Adapter for Gree and C&amp;H conditioners
