@@ -6,11 +6,15 @@ const utils = require('@iobroker/adapter-core');
 
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
+const MaxDeviceErrors = 100;
+const CheckDeviceTimeout = 1000;
 
 class GreeHvac extends utils.Adapter {
 
     deviceManager;
     intervals = {};
+    deviceErrors = {};
+    activeDevices = {};
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -67,7 +71,7 @@ class GreeHvac extends utils.Adapter {
             this.deviceManager.on('device_bound', async (deviceId, device) => {
                 try {
                     await this.processDevice(deviceId, device);
-
+                    this.activeDevices[deviceId] = true;
                     const deviceInterval = this.setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
                     this.intervals[deviceId] = deviceInterval;
                 } catch (error) {
@@ -75,23 +79,51 @@ class GreeHvac extends utils.Adapter {
                     this.sendError(error, `Error in device_bound event for device ${deviceId}`);
                 }
             });
+            await this.setStateAsync('info.connection', { val: true, ack: true });
+            this.checkDevices();
         } catch (error) {
             this.sendError(error, 'Error in onReady');
         }
     }
 
+    checkDevices() {
+        this.setTimeout(async () => {
+            for (const deviceId in this.activeDevices) {
+                if (this.activeDevices[deviceId] === false) {
+                    await this.setStateAsync('info.connection', { val: false, ack: true });
+                }
+            }
+            this.checkDevices();
+        }, CheckDeviceTimeout);
+    }
+
     getDeviceStatus = async (deviceId) => {
         try {
+            if (this.deviceErrors[deviceId] >= MaxDeviceErrors) {
+                if (this.activeDevices[deviceId] === true) {
+                    this.log.error(`Device ${deviceId} is not responding. Check device availability and restart adapter.`);
+                    this.activeDevices[deviceId] = false;
+                }
+                return;
+            }
             const deviceStatus = await this.deviceManager.getDeviceStatus(deviceId);
+            this.deviceErrors[deviceId] = 0;
             this.processDeviceStatus(deviceId, deviceStatus);
         } catch (error) {
-            this.sendError(error, `Error in getDeviceStatus for device ${deviceId}`);
+            await this.setStateAsync(`${deviceId}.alive`, { val: false, ack: true });
+            if (this.deviceErrors[deviceId]) {
+                this.deviceErrors[deviceId]++;
+            } else {
+                this.deviceErrors[deviceId] = 1;
+            }
+            this.log.error(`Error in getDeviceStatus for device ${deviceId}: ${error}`);
         }
     };
 
     async processDeviceStatus(deviceId, deviceStatus) {
         try {
             deviceId = this.nameToId(deviceId);
+            await this.setStateAsync(`${deviceId}.alive`, { val: true, ack: true });
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
                     const value = deviceStatus[key];
@@ -132,14 +164,26 @@ class GreeHvac extends utils.Adapter {
                 },
                 native: {}
             });
-
             await this.setStateAsync(`${deviceId}.deviceInfo`, { val: JSON.stringify(device), ack: true });
+
+            await this.setObjectNotExistsAsync(`${deviceId}.alive`, {
+                "type": "state",
+                "common": {
+                    "name": "Is alive",
+                    "type": "boolean",
+                    "read": true,
+                    "write": false,
+                    "role": "indicator.state"
+                },
+                native: {}
+            });
+            await this.setStateAsync(`${deviceId}.alive`, { val: true, ack: true });
 
             for (const property of propertiesMap) {
                 try {
                     await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
                 }
-                catch(error){
+                catch (error) {
                     this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
                     this.log.error(`Property ${property.name}, definition '${property.definition}'`);
                     this.sendError(error, `Property ${property.name}, definition '${property.definition}'`);
