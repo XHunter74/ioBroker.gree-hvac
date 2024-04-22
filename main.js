@@ -106,18 +106,26 @@ class GreeHvac extends utils.Adapter {
             this.log.info(`Device ${deviceId} bound`);
 
             await this.setObjectNotExistsAsync(deviceId, {
-                type: 'state',
+                type: 'device',
                 common: {
                     name: deviceId,
-                    type: 'string',
-                    role: 'variable',
-                    read: true,
-                    write: false,
                 },
                 native: {},
             });
 
-            await this.setStateAsync(deviceId, { val: JSON.stringify(device), ack: true });
+            await this.setObjectNotExistsAsync(`${deviceId}.deviceInfo`, {
+                type: 'state',
+                common: {
+                    name: 'Device Info',
+                    type: 'string',
+                    role: 'info',
+                    read: true,
+                    write: false,
+                },
+                native: {}
+            });
+
+            await this.setStateAsync(`${deviceId}.deviceInfo`, { val: JSON.stringify(device), ack: true });
 
             for (const property of propertiesMap) {
                 await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
