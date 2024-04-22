@@ -44,7 +44,7 @@ class GreeHvac extends utils.Adapter {
                 this.log.error('You should config device list in adapter configuration page');
                 await this.stop();
             }
-            this.log.info('Device list: ' + this.config.devicelist);
+            this.log.info('Device list: ' + JSON.stringify(this.config.devicelist));
             this.log.info('Poll interval: ' + this.config.pollInterval);
 
             if (!this.validateIPList(this.config.devicelist)) {
@@ -57,7 +57,10 @@ class GreeHvac extends utils.Adapter {
                 await this.stop();
             }
 
-            this.deviceManager = new DeviceManager(this.config.devicelist, this.log);
+            const devicesArray = this.config.devicelist.map(item => item.deviceIp);
+            const devices = devicesArray.join(';');
+
+            this.deviceManager = new DeviceManager(devices, this.log);
 
             this.deviceManager.on('device_bound', async (deviceId, device) => {
                 try {
@@ -66,6 +69,7 @@ class GreeHvac extends utils.Adapter {
                     const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
                     this.intervals[deviceId] = deviceInterval;
                 } catch (error) {
+                    this.log.error(`Error in device_bound event for device ${deviceId}: ${error}`);
                     this.sendError(error, `Error in device_bound event for device ${deviceId}`);
                 }
             });
@@ -142,12 +146,9 @@ class GreeHvac extends utils.Adapter {
             // Regular expression for IP address
             const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-            // Split the list by semicolon
-            const ips = ipList.split(';');
-
             // Validate each IP
-            for (const ip of ips) {
-                if (!ipPattern.test(ip)) {
+            for (const networkItem of ipList) {
+                if (!ipPattern.test(networkItem.deviceIp)) {
                     return false;
                 }
             }
@@ -155,7 +156,7 @@ class GreeHvac extends utils.Adapter {
             // If all IPs are valid
             return true;
         } catch (error) {
-            this.sendError(error, 'Error in validateIPList');
+            this.log.error(`Error in validateIPList: ${error}`);
             return false;
         }
     }

@@ -1,5 +1,7 @@
 {
     "gree-hvac adapter settings": "Ajustes de adaptador HVAC Gree",
-    "devicelist": "IPs de dispositivos, delimitados por semicolon",
-    "pollInterval": "Intervalo de votación en milisegundos"
+    "pollInterval": "Intervalo de votación en milisegundos",
+    "deviceList": "IP del dispositivo",
+    "deviceIp": "IP del dispositivo",
+    "enterDeviceIp": "Ingrese la IP del dispositivo"
 }

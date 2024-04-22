@@ -1,5 +1,7 @@
 {
     "gree-hvac adapter settings": "Paramètres de l'adaptateur Gree CVC",
-    "devicelist": "IP du périphérique, délimité par un point-virgule",
-    "pollInterval": "Intervalle de scrutin en millisecondes"
+    "pollInterval": "Intervalle de scrutin en millisecondes",
+    "deviceList": "IP des appareils",
+    "deviceIp": "IP de l'appareil",
+    "enterDeviceIp": "Entrez l'adresse IP de l'appareil"
 }

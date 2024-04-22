@@ -1,5 +1,7 @@
 {
     "gree-hvac adapter settings": "Налаштування адаптеру Gree HVAC",
-    "devicelist": "IP пристроїв, розділені крапкою з зап'ятою",
-    "pollInterval": "Інтервал опитування в міллісекундах"
+    "devicelist": "IP пристроїв",
+    "pollInterval": "Інтервал опитування в міллісекундах",
+    "deviceIp":"IP адреса пристрою",
+    "enterDeviceIp": "Введіть IP адресу пристрою"
 }
