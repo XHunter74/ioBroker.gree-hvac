@@ -68,7 +68,7 @@ class GreeHvac extends utils.Adapter {
                 try {
                     await this.processDevice(deviceId, device);
 
-                    const deviceInterval = setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
+                    const deviceInterval = this.setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
                     this.intervals[deviceId] = deviceInterval;
                 } catch (error) {
                     this.log.error(`Error in device_bound event for device ${deviceId}: ${error}`);
@@ -183,7 +183,7 @@ class GreeHvac extends utils.Adapter {
     onUnload(callback) {
         try {
             for (const deviceId in this.intervals) {
-                clearInterval(this.intervals[deviceId]);
+                this.clearInterval(this.intervals[deviceId]);
             }
             callback();
         } catch (error) {
