@@ -29,11 +29,11 @@
 
 @font-face {
     font-family: 'Digital-7 Mono';
-    src: url('Digital-7Mono.eot');
-    src: url('Digital-7Mono.eot?#iefix') format('embedded-opentype'),
-        url('Digital-7Mono.woff2') format('woff2'),
-        url('Digital-7Mono.woff') format('woff'),
-        url('Digital-7Mono.ttf') format('truetype');
+    src: url('fonts/Digital-7Mono.eot');
+    src: url('fonts/Digital-7Mono.eot?#iefix') format('embedded-opentype'),
+        url('fonts/Digital-7Mono.woff2') format('woff2'),
+        url('fonts/Digital-7Mono.woff') format('woff'),
+        url('fonts/Digital-7Mono.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
