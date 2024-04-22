@@ -6,7 +6,7 @@
 ![Number of Installations](https://iobroker.live/badges/template-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/template-stable.svg)
 
-**Tests:** [![Test and Release](https://github.com/xhunter74/ioBroker.gree-hvac/actions/workflows/main.yml/badge.svg)](https://github.com/xhunter74/ioBroker.gree-hvac/actions/workflows/main.yml)
+**Tests:** [![Test and Release](https://github.com/xhunter74/ioBroker.gree-hvac/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/xhunter74/ioBroker.gree-hvac/actions/workflows/test-and-release.yml)
 
 Adapter for Gree and C&amp;H conditioners
 
