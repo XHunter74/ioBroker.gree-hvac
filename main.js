@@ -62,6 +62,8 @@ class GreeHvac extends utils.Adapter {
                 await this.stop();
             }
 
+            await this.setStateAsync('info.connection', { val: false, ack: true });
+
             const devicesArray = this.config.devicelist.map(item => item.deviceIp);
             const devices = devicesArray.join(';');
 
@@ -80,7 +82,6 @@ class GreeHvac extends utils.Adapter {
                     this.sendError(error, `Error in device_bound event for device ${deviceId}`);
                 }
             });
-            await this.setStateAsync('info.connection', { val: true, ack: true });
             this.checkDevices();
         } catch (error) {
             this.log.error(`Error in onReady: ${error}`);
@@ -124,6 +125,7 @@ class GreeHvac extends utils.Adapter {
 
     async processDeviceStatus(deviceId, deviceStatus) {
         try {
+            await this.setStateAsync('info.connection', { val: true, ack: true });
             deviceId = this.nameToId(deviceId);
             await this.setStateAsync(`${deviceId}.alive`, { val: true, ack: true });
             for (const key in deviceStatus) {
@@ -401,7 +403,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.display-state`, newState);
                 break;
         }
-        if (obj.callback) this.sendTo(obj.from, obj.command, {result: 'Ok'}, obj.callback);
+        if (obj.callback) this.sendTo(obj.from, obj.command, { result: 'Ok' }, obj.callback);
     }
 
     async processGetDevicesCommand(obj) {
