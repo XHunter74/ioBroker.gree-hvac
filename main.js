@@ -31,6 +31,7 @@ class GreeHvac extends utils.Adapter {
             this.on('message', this.onMessage.bind(this));
             this.on('unload', this.onUnload.bind(this));
         } catch (error) {
+            this.log.error(`Error in constructor: ${error}`);
             this.sendError(error, 'Error in constructor');
         }
     }
@@ -82,6 +83,7 @@ class GreeHvac extends utils.Adapter {
             await this.setStateAsync('info.connection', { val: true, ack: true });
             this.checkDevices();
         } catch (error) {
+            this.log.error(`Error in onReady: ${error}`);
             this.sendError(error, 'Error in onReady');
         }
     }
@@ -136,6 +138,7 @@ class GreeHvac extends utils.Adapter {
                 }
             }
         } catch (error) {
+            this.log.error(`Error in processDeviceStatus for device ${deviceId}: ${error}`);
             this.sendError(error, `Error in processDeviceStatus for device ${deviceId}`);
         }
     }
@@ -231,6 +234,7 @@ class GreeHvac extends utils.Adapter {
             }
             callback();
         } catch (error) {
+            this.log.error(`Error in onUnload: ${error}`);
             this.sendError(error, 'Error in onUnload');
             callback();
         }
@@ -253,6 +257,7 @@ class GreeHvac extends utils.Adapter {
                 }
             }
         } catch (error) {
+            this.log.error(`Error in onStateChange for state ${id}: ${error}`);
             this.sendError(error, `Error in onStateChange for state ${id}`);
         }
     }
@@ -270,6 +275,7 @@ class GreeHvac extends utils.Adapter {
             }
             return payload;
         } catch (error) {
+            this.log.error(`Error in createPayload: ${error}`);
             this.sendError(error, 'Error in createPayload');
             return {};
         }
@@ -283,6 +289,7 @@ class GreeHvac extends utils.Adapter {
             const property = parts[parts.length - 1];
             return { deviceId, devicePath, property };
         } catch (error) {
+            this.log.error(`Error in getDeviceInfo: ${error}`);
             this.sendError(error, 'Error in getDeviceInfo');
             return {};
         }
@@ -309,6 +316,7 @@ class GreeHvac extends utils.Adapter {
                     break;
                 default:
                     this.log.warn(`Unknown command ${obj.command}`);
+                    if (obj.callback) this.sendTo(obj.from, obj.command, { error: `Unknown command ${obj.command}` }, obj.callback);
                     break;
             }
         }
@@ -393,6 +401,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.display-state`, newState);
                 break;
         }
+        if (obj.callback) this.sendTo(obj.from, obj.command, {result: "Ok"}, obj.callback);
     }
 
     async processGetDevicesCommand(obj) {
