@@ -144,7 +144,7 @@ class GreeHvac extends utils.Adapter {
     }
 
     nameToId(pName) {
-        return (pName || '').replace(adapter.FORBIDDEN_CHARS, '_'); // eslint-disable-line no-undef
+        return (pName || '').replace(this.FORBIDDEN_CHARS, '_');
     }
 
     validateIPList(ipList) {
