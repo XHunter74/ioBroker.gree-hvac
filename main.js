@@ -60,6 +60,8 @@ class GreeHvac extends utils.Adapter {
             const devicesArray = this.config.devicelist.map(item => item.deviceIp);
             const devices = devicesArray.join(';');
 
+            this.subscribeStates('*');
+
             this.deviceManager = new DeviceManager(devices, this.log);
 
             this.deviceManager.on('device_bound', async (deviceId, device) => {
