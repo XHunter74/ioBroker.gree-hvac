@@ -127,15 +127,8 @@ function processStateChange(deviceId, stateId, stateVal) {
     }
 }
 
-let common = null; // eslint-disable-line no-unused-vars
 let systemConfig; // eslint-disable-line no-unused-vars
-let adapter = '';
 let devices = [];
-
-const tmp = window.location.pathname.split('/');
-adapter = tmp[tmp.length - 2];
-// const _adapterInstance = 'system.adapter.' + adapter + '.' + instance;
-const _adapterInstance = 'system.adapter.gree-hvac.0';
 
 $(document).ready(function () {
     'use strict';
@@ -143,15 +136,13 @@ $(document).ready(function () {
         if (typeof translateAll === 'function') {
             translateAll();
         }
-        loadSettings(function () {
-            getDevices();
-        });
+        getDevices();
     });
 });
 
 
 function getDevices() {
-    sendTo('gree-hvac.0', 'getDevices', {}, function (msg) {
+    sendTo(namespace, 'getDevices', {}, function (msg) {
         if (msg) {
             if (msg.error) {
                 console.log('Error: ' + msg.error);
@@ -295,27 +286,6 @@ function loadSystemConfig(callback) {
     });
 }
 
-function loadSettings(callback) {
-    socket.emit('getObject', _adapterInstance, function (err, res) {
-        if (!err && res && res.native) {
-            $('.adapter-instance').html(adapter + '.' + instance);
-            $('.adapter-config').html('system.adapter.' + adapter + '.' + instance);
-            common = res.common;
-            if (res.common && res.common.name) $('.adapter-name').html(res.common.name);
-            if (res.native) $('#devicelist').val(res.native.devicelist);
-            if (res.native) $('#pollInterval').val(res.native.pollInterval);
-            if (typeof callback === 'function') {
-                callback();
-            }
-        } else {
-            if (typeof callback === 'function') {
-                callback();
-            }
-            alert('error loading settings for ' + _adapterInstance + '\n\n' + err);
-        }
-    });
-}
-
 function sendTo(_adapter_instance, command, message, callback) {
-    socket.emit('sendTo', (_adapter_instance || adapter + '.' + instance), command, message, callback);
+    socket.emit('sendTo', _adapter_instance, command, message, callback);
 }
