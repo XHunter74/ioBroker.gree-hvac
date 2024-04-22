@@ -1,4 +1,4 @@
-/*global $, location,  document, window, io, alert, systemLang, translateAll*/
+/*global $, location,  document, window, io, systemLang, translateAll*/
 const path = location.pathname;
 
 let isDebug = false;
