@@ -136,11 +136,18 @@ class GreeHvac extends utils.Adapter {
             await this.setStateAsync(`${deviceId}.deviceInfo`, { val: JSON.stringify(device), ack: true });
 
             for (const property of propertiesMap) {
-                await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+                try {
+                    await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+                }
+                catch(error){
+                    this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
+                    this.log.error(`Property ${property.name}, definition '${property.definition}'`);
+                    this.sendError(error, `Property ${property.name}, definition '${property.definition}'`);
+                }
             }
 
-            this.subscribeStates('*');
         } catch (error) {
+            this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
             this.sendError(error, `Error in processDevice for device ${deviceId}`);
         }
     }
