@@ -55,9 +55,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disab
 socket.emit('subscribe', namespace + '.*');
 
 socket.on('stateChange', function (id, state) {
-    // only watch our own states
     if (id.substring(0, namespace.length) !== namespace) return;
-    // console.log('stateChange', id, state);
     const parts = id.split('.');
     const stateId = parts[parts.length - 1];
     const deviceId = parts[parts.length - 2];
@@ -231,8 +229,8 @@ function assignClickEvents() {
         const command = parts.slice(1).join('-');
         console.log('clicked: ' + btn);
         const deviceId = $(this).parents('.device-card').attr('id');
-        console.log('deviceId: ' + deviceId);
-        console.log('command: ' + command);
+        // console.log('deviceId: ' + deviceId);
+        // console.log('command: ' + command);
         sendTo(namespace, 'sendCommand', { deviceId: deviceId, command: command }, function (data) {
             if (data) {
                 if (data.error) {
@@ -246,8 +244,8 @@ function assignClickEvents() {
     $('.edit-btn').click(function () {
         const deviceId = $(this).parents('.device-card').attr('id');
         const deviceName = $(`#${deviceId}-device-name`).text();
-        console.log('deviceId: ' + deviceId);
-        console.log('deviceName: ' + deviceName);
+        // console.log('deviceId: ' + deviceId);
+        // console.log('deviceName: ' + deviceName);
         $('#modaledit').find('input[id=\'d_name\']').val(deviceName);
         $('#modaledit a.btn[name=\'save\']').unbind('click');
         $('#modaledit a.btn[name=\'save\']').click(() => {
@@ -258,7 +256,7 @@ function assignClickEvents() {
                     if (data.error) {
                         console.log('Error: ' + data.error);
                     } else {
-                        console.log('msg: ' + JSON.stringify(data));
+                        // console.log('msg: ' + JSON.stringify(data));
                         $(`#${deviceId}-device-name`).text(newName);
                     }
                 }
