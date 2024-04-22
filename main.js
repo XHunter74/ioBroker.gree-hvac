@@ -170,13 +170,13 @@ class GreeHvac extends utils.Adapter {
             await this.setStateAsync(`${deviceId}.deviceInfo`, { val: JSON.stringify(device), ack: true });
 
             await this.setObjectNotExistsAsync(`${deviceId}.alive`, {
-                "type": "state",
-                "common": {
-                    "name": "Is alive",
-                    "type": "boolean",
-                    "read": true,
-                    "write": false,
-                    "role": "indicator.state"
+                'type': 'state',
+                'common': {
+                    'name': 'Is alive',
+                    'type': 'boolean',
+                    'read': true,
+                    'write': false,
+                    'role': 'indicator.state'
                 },
                 native: {}
             });
@@ -401,7 +401,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.display-state`, newState);
                 break;
         }
-        if (obj.callback) this.sendTo(obj.from, obj.command, {result: "Ok"}, obj.callback);
+        if (obj.callback) this.sendTo(obj.from, obj.command, {result: 'Ok'}, obj.callback);
     }
 
     async processGetDevicesCommand(obj) {
