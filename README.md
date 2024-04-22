@@ -23,7 +23,7 @@ All devices which can be controlled via EWPE Smart app should be supported, incl
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 ## Changelog
-### 0.0.7 (2024-04-15)
+### 0.0.8 (2024-04-15)
  - First version of the adapter
 
 ## License
@@ -52,3 +52,4 @@ SOFTWARE.
 ## Acknowledgments
 - [tomikaa87](https://github.com/tomikaa87) for reverse-engineering the Gree protocol
 - [stas-demydiuk](https://github.com/stas-demydiuk) for code of DeviceManager
+- Sizenko Alexander for Digital-7 fonts
