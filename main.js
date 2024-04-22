@@ -1,6 +1,6 @@
 'use strict';
 const DeviceManager = require('./lib/device_manager');
-const proptiesMap = require('./lib/properties_map');
+const propertiesMap = require('./lib/properties_map');
 
 const utils = require('@iobroker/adapter-core');
 
@@ -88,7 +88,7 @@ class GreeHvac extends utils.Adapter {
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
                     const value = deviceStatus[key];
-                    const mapItem = proptiesMap.find(item => item.hvacName === key);
+                    const mapItem = propertiesMap.find(item => item.hvacName === key);
                     if (!mapItem) {
                         this.log.warn(`Property ${key} not found in the map`);
                         continue;
@@ -119,7 +119,7 @@ class GreeHvac extends utils.Adapter {
 
             await this.setStateAsync(deviceId, { val: JSON.stringify(device), ack: true });
 
-            for (const property of proptiesMap) {
+            for (const property of propertiesMap) {
                 await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
             }
 
@@ -177,7 +177,7 @@ class GreeHvac extends utils.Adapter {
         try {
             if (state.ack === false) {
                 const { deviceId, devicePath, property } = this.getDeviceInfo(id);
-                const mapItem = proptiesMap.find(item => item.name === property);
+                const mapItem = propertiesMap.find(item => item.name === property);
                 if (mapItem) {
                     const payload = await this.createPayload(devicePath);
                     const cmdResult = await this.deviceManager.setDeviceState(deviceId, payload);
@@ -192,7 +192,7 @@ class GreeHvac extends utils.Adapter {
     async createPayload(devicePath) {
         try {
             const payload = {};
-            for (const property of proptiesMap) {
+            for (const property of propertiesMap) {
                 if (await this.objectExists(`${devicePath}.${property.name}`) === true) {
                     const state = await this.getStateAsync(`${devicePath}.${property.name}`);
                     if (state && state.val !== null) {
@@ -347,7 +347,7 @@ class GreeHvac extends utils.Adapter {
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
                     const value = deviceStatus[key];
-                    const mapItem = proptiesMap.find(item => item.hvacName === key);
+                    const mapItem = propertiesMap.find(item => item.hvacName === key);
                     if (!mapItem) {
                         this.log.warn(`Property ${key} not found in the map`);
                         continue;
