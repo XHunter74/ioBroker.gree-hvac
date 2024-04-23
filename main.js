@@ -142,7 +142,7 @@ class GreeHvac extends utils.Adapter {
 
     async processDevice(deviceId, device) {
         try {
-            this.activeDevices.push(new DeviceState(deviceId))
+            this.activeDevices.push(new DeviceState(deviceId));
             deviceId = this.nameToId(deviceId);
             this.log.info(`Device ${deviceId} bound`);
 
