@@ -1,20 +1,19 @@
 'use strict';
 const DeviceManager = require('./lib/device_manager');
 const propertiesMap = require('./lib/properties_map');
+const DeviceState = require('./lib/device-state');
 
 const utils = require('@iobroker/adapter-core');
 
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
-const MaxDeviceErrors = 100;
 const CheckDeviceTimeout = 1000;
 
 class GreeHvac extends utils.Adapter {
 
     deviceManager;
     intervals = {};
-    deviceErrors = {};
-    activeDevices = {};
+    activeDevices = [];
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -74,7 +73,6 @@ class GreeHvac extends utils.Adapter {
             this.deviceManager.on('device_bound', async (deviceId, device) => {
                 try {
                     await this.processDevice(deviceId, device);
-                    this.activeDevices[deviceId] = true;
                     const deviceInterval = this.setInterval(() => this.getDeviceStatus(deviceId), this.config.pollInterval);
                     this.intervals[deviceId] = deviceInterval;
                 } catch (error) {
@@ -91,41 +89,38 @@ class GreeHvac extends utils.Adapter {
 
     checkDevices() {
         this.setTimeout(async () => {
-            for (const deviceId in this.activeDevices) {
-                if (this.activeDevices[deviceId] === false) {
-                    await this.setStateAsync('info.connection', { val: false, ack: true });
-                }
+            const inactiveDevices = this.activeDevices.filter(device => device.isActive === false);
+            if (inactiveDevices.length > 0) {
+                await this.setStateAsync('info.connection', { val: false, ack: true });
+            } else {
+                await this.setStateAsync('info.connection', { val: true, ack: true });
             }
             this.checkDevices();
         }, CheckDeviceTimeout);
     }
 
     getDeviceStatus = async (deviceId) => {
+        const deviceItem = this.activeDevices.find(device => device.id === deviceId);
+
         try {
-            if (this.deviceErrors[deviceId] >= MaxDeviceErrors) {
-                if (this.activeDevices[deviceId] === true) {
-                    this.log.error(`Device ${deviceId} is not responding. Check device availability and restart adapter.`);
-                    this.activeDevices[deviceId] = false;
-                }
-                return;
-            }
             const deviceStatus = await this.deviceManager.getDeviceStatus(deviceId);
-            this.deviceErrors[deviceId] = 0;
+            if (deviceItem.isActive === false) {
+                this.log.info(`Device ${deviceId} is responding again`);
+                deviceItem.isActive = true;
+            }
+            deviceItem.lastSeen = new Date();
             this.processDeviceStatus(deviceId, deviceStatus);
         } catch (error) {
             await this.setStateAsync(`${deviceId}.alive`, { val: false, ack: true });
-            if (this.deviceErrors[deviceId]) {
-                this.deviceErrors[deviceId]++;
-            } else {
-                this.deviceErrors[deviceId] = 1;
+            if (deviceItem.isActive === true) {
+                this.log.error(`Error in getDeviceStatus for device ${deviceId}: ${error}`);
+                deviceItem.isActive = false;
             }
-            this.log.error(`Error in getDeviceStatus for device ${deviceId}: ${error}`);
         }
     };
 
     async processDeviceStatus(deviceId, deviceStatus) {
         try {
-            await this.setStateAsync('info.connection', { val: true, ack: true });
             deviceId = this.nameToId(deviceId);
             await this.setStateAsync(`${deviceId}.alive`, { val: true, ack: true });
             for (const key in deviceStatus) {
@@ -147,6 +142,7 @@ class GreeHvac extends utils.Adapter {
 
     async processDevice(deviceId, device) {
         try {
+            this.activeDevices.push(new DeviceState(deviceId))
             deviceId = this.nameToId(deviceId);
             this.log.info(`Device ${deviceId} bound`);
 
