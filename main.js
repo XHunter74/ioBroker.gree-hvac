@@ -51,7 +51,7 @@ class GreeHvac extends utils.Adapter {
             if (!this.config.devicelist || this.config.devicelist.length === 0 || !this.validateIPList(this.config.devicelist)) {
                 this.log.error(`Invalid device list: ${JSON.stringify(this.config.devicelist)}`);
                 await this.stop();
-                return
+                return;
             }
 
             if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
@@ -337,14 +337,16 @@ class GreeHvac extends utils.Adapter {
         const deviceId = obj.message.deviceId;
         let state;
         const powerState = (await this.getStateAsync(`${deviceId}.power`)).val;
+        const isAlive = (await this.getStateAsync(`${deviceId}.alive`)).val;
         let newState;
         switch (command) {
             case 'on-off-btn':
+                if (isAlive === false) return;
                 newState = powerState === 1 ? 0 : 1;
                 await this.setStateAsync(`${deviceId}.power`, newState);
                 break;
             case 'temperature-up-btn':
-                if (powerState === 0) return;
+                if (powerState === 0 || isAlive === false) return;
                 state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
                 newState = Number(state) + 1;
                 if (newState > 30) {
@@ -353,7 +355,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.target-temperature`, newState);
                 break;
             case 'temperature-down-btn':
-                if (powerState === 0) return;
+                if (powerState === 0 || isAlive === false) return;
                 state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
                 newState = Number(state) - 1;
                 if (newState < 16) {
@@ -362,7 +364,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.target-temperature`, newState);
                 break;
             case 'mode-btn':
-                if (powerState === 0) return;
+                if (powerState === 0 || isAlive === false) return;
                 state = (await this.getStateAsync(`${deviceId}.mode`)).val;
                 newState = Number(state) + 1;
                 if (newState > 4) {
@@ -371,7 +373,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.mode`, newState);
                 break;
             case 'fan-btn':
-                if (powerState === 0) return;
+                if (powerState === 0 || isAlive === false) return;
                 const fan_speeds = [0, 1, 3, 5]; // eslint-disable-line no-case-declarations
                 state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
                 let idx = fan_speeds.indexOf(Number(state)); // eslint-disable-line no-case-declarations
@@ -381,7 +383,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.fan-speed`, newState);
                 break;
             case 'turbo-btn':
-                if (powerState === 0) return;
+                if (powerState === 0 || isAlive === false) return;
                 state = (await this.getStateAsync(`${deviceId}.turbo`)).val;
                 newState = Number(state) + 1;
                 if (newState > 1) {
@@ -390,6 +392,7 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.turbo`, newState);
                 break;
             case 'display-btn':
+                if (isAlive === false) return;
                 state = (await this.getStateAsync(`${deviceId}.display-state`)).val;
                 newState = Number(state) + 1;
                 if (newState > 1) {
