@@ -44,21 +44,20 @@ class GreeHvac extends utils.Adapter {
 
             // The adapters config (in the instance object everything under the attribute "native") is accessible via
             // this.config:
-            if (!this.config.devicelist) {
-                this.log.error('You should config device list in adapter configuration page');
-                await this.stop();
-            }
+
             this.log.info('Device list: ' + JSON.stringify(this.config.devicelist));
             this.log.info('Poll interval: ' + this.config.pollInterval);
 
-            if (!this.validateIPList(this.config.devicelist)) {
-                this.log.error('Invalid device list');
+            if (!this.config.devicelist || this.config.devicelist.length === 0 || !this.validateIPList(this.config.devicelist)) {
+                this.log.error(`Invalid device list: ${JSON.stringify(this.config.devicelist)}`);
                 await this.stop();
+                return
             }
 
             if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
                 this.log.error('Invalid poll interval: ' + this.config.pollInterval);
                 await this.stop();
+                return;
             }
 
             await this.setStateAsync('info.connection', { val: false, ack: true });
