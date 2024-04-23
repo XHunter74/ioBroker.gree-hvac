@@ -128,7 +128,7 @@ class GreeHvac extends utils.Adapter {
                 deviceItem.isActive = false;
             }
         }
-    };
+    }
 
     /**
      * @param {string} deviceId
