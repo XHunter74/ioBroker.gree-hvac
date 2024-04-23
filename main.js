@@ -308,7 +308,7 @@ class GreeHvac extends utils.Adapter {
     //  * @param {ioBroker.Message} obj
     //  */
     async onMessage(obj) {
-        this.log.info(`Received message ${JSON.stringify(obj)}`);
+        this.log.debug(`Received message ${JSON.stringify(obj)}`);
         if (typeof obj === 'object' && obj.message) {
             switch (obj.command) {
                 case 'getDevices':
