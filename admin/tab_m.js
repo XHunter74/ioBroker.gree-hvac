@@ -122,6 +122,14 @@ function processStateChange(deviceId, stateId, stateVal) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt');
                 }
             }
+            break;
+        case 'alive':
+            if (stateVal === true) {
+                $('#' + `${deviceId}-alive`).css('display', 'none');
+            } else {
+                $('#' + `${deviceId}-alive`).css('display', 'block');
+            }
+            break;
     }
 }
 
@@ -182,6 +190,7 @@ function getCard(device) {
     let html = '';
     html += `<div id="${device.id}" class="device-card">`;
     html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
+    html += `       <span id="${device.id}-alive" class="material-symbols-outlined alive-icon">wifi_off</span>`;
     html += `       <span id="${device.id}-device-name" style="font-size: 14px;">${device.name}</span>`;
     html += `       <span id="${device.id}-edit" class="material-symbols-outlined edit-btn">edit</span>`;
     html += `   </div>`;

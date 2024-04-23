@@ -101,6 +101,12 @@
     margin-left: 10px;
 }
 
+.alive-icon{
+    font-size: 17px!important;
+    color: red;
+    margin-right: 10px;
+}
+
 .modal-header {
     position: relative;
     height: 50px;
