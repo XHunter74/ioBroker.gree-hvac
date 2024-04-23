@@ -62,7 +62,7 @@ class GreeHvac extends utils.Adapter {
 
             await this.setStateAsync('info.connection', { val: false, ack: true });
 
-            var adapterObjects = await this.getAdapterObjectsAsync();
+            const adapterObjects = await this.getAdapterObjectsAsync();
 
             for (const key in adapterObjects) {
                 if (Object.prototype.hasOwnProperty.call(adapterObjects, key)
