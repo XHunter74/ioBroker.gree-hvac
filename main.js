@@ -50,13 +50,13 @@ class GreeHvac extends utils.Adapter {
 
             if (!this.config.devicelist || this.config.devicelist.length === 0 || !this.validateIPList(this.config.devicelist)) {
                 this.log.error(`Invalid device list: ${JSON.stringify(this.config.devicelist)}`);
-                await this.stop();
+                this.stop();
                 return;
             }
 
             if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
                 this.log.error('Invalid poll interval: ' + this.config.pollInterval);
-                await this.stop();
+                this.stop();
                 return;
             }
 
@@ -107,7 +107,10 @@ class GreeHvac extends utils.Adapter {
         }, CheckDeviceTimeout);
     }
 
-    getDeviceStatus = async (deviceId) => {
+    /**
+     * @param {string} deviceId
+     */
+    async getDeviceStatus(deviceId) {
         const deviceItem = this.activeDevices.find(device => device.id === deviceId);
 
         try {
@@ -127,6 +130,10 @@ class GreeHvac extends utils.Adapter {
         }
     };
 
+    /**
+     * @param {string} deviceId
+     * @param {{ [x: string]: any; }} deviceStatus
+     */
     async processDeviceStatus(deviceId, deviceStatus) {
         try {
             deviceId = this.nameToId(deviceId);
@@ -148,6 +155,10 @@ class GreeHvac extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} deviceId
+     * @param {any} device
+     */
     async processDevice(deviceId, device) {
         try {
             this.activeDevices.push(new DeviceState(deviceId));
@@ -205,10 +216,17 @@ class GreeHvac extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} pName
+     */
     nameToId(pName) {
         return (pName || '').replace(this.FORBIDDEN_CHARS, '_');
     }
 
+
+    /**
+     * @param {string[]} ipList
+     */
     validateIPList(ipList) {
         try {
             // Regular expression for IP address
@@ -268,12 +286,15 @@ class GreeHvac extends utils.Adapter {
         }
     }
 
-    async createPayload(devicePath) {
+    /**
+     * @param {string} deviceId
+     */
+    async createPayload(deviceId) {
         try {
             const payload = {};
             for (const property of propertiesMap) {
-                if (await this.objectExists(`${devicePath}.${property.name}`) === true) {
-                    const state = await this.getStateAsync(`${devicePath}.${property.name}`);
+                if (await this.objectExists(`${deviceId}.${property.name}`) === true) {
+                    const state = await this.getStateAsync(`${deviceId}.${property.name}`);
                     if (state && state.val !== null) {
                         payload[property.hvacName] = state.val;
                     }
@@ -287,6 +308,9 @@ class GreeHvac extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} id
+     */
     getDeviceInfo(id) {
         try {
             const parts = id.split('.');
@@ -296,17 +320,17 @@ class GreeHvac extends utils.Adapter {
             return { deviceId, devicePath, property };
         } catch (error) {
             this.log.error(`Error in getDeviceInfo: ${error}`);
-            this.sendError(error, 'Error in getDeviceInfo');
+            this.sendError(error, `Error in getDeviceInfo, id: ${id}`);
             return {};
         }
     }
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * @param {ioBroker.Message} obj
-    //  */
+    /**
+     * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+     * Using this method requires "common.messagebox" property to be set to true in io-package.json
+     * @param {ioBroker.Message} obj
+     */
     async onMessage(obj) {
         this.log.debug(`Received message ${JSON.stringify(obj)}`);
         if (typeof obj === 'object' && obj.message) {

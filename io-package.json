@@ -111,7 +111,7 @@
         ]
     },
     "native": {
-        "devicelist": "",
+        "devicelist": [],
         "pollInterval": 5000
     },
     "objects": [],
