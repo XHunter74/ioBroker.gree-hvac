@@ -1,6 +1,6 @@
 {
   "name": "iobroker.gree-hvac",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Adapter for Gree and C&H conditioners",
   "author": {
     "name": "Serhiy Krasovskyy",
