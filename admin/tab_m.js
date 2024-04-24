@@ -239,7 +239,7 @@ function assignClickEvents() {
         const deviceId = $(this).parents('.device-card').attr('id');
         // console.log('deviceId: ' + deviceId);
         // console.log('command: ' + command);
-        sendTo(namespace, 'sendCommand', { deviceId: deviceId, command: command }, function (data) {
+        sendTo(namespace, 'remoteCommand', { deviceId: deviceId, command: command }, function (data) {
             if (data) {
                 if (data.error) {
                     console.log('Error: ' + data.error);
