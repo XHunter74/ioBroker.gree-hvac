@@ -346,13 +346,16 @@ class GreeHvac extends utils.Adapter {
                     break;
                 default:
                     this.log.warn(`Unknown command ${obj.command}`);
-                    if (obj.callback) this.sendTo(obj.from, obj.command, { error: `Unknown command ${obj.command}` }, obj.callback);
+                    const result = { error: `Unknown command ${obj.command}` };
+                    if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
                     break;
             }
         }
     }
 
     async processRenameDevice(obj) {
+        const result = {};
+        try {
         const deviceId = obj.message.deviceId;
         const deviceName = obj.message.name;
         const deviceObject = await this.getObjectAsync(deviceId);
@@ -362,10 +365,17 @@ class GreeHvac extends utils.Adapter {
         }
         await this.extendObjectAsync(deviceId, { common: { name: deviceName } });
         this.log.info(`Device ${deviceObject.common.name} renamed to ${deviceName}`);
-        if (obj.callback) this.sendTo(obj.from, obj.command, { deviceId: deviceId, name: deviceName }, obj.callback);
+            result.result = { deviceId: deviceId, name: deviceName };
+        }
+        catch (error) {
+            result.error = error;
+        }
+        if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
     }
 
     async processSendCommand(obj) {
+const result = {};
+        try {
         const command = obj.message.command;
         const deviceId = obj.message.deviceId;
         let state;
@@ -434,12 +444,22 @@ class GreeHvac extends utils.Adapter {
                 await this.setStateAsync(`${deviceId}.display-state`, newState);
                 break;
         }
-        if (obj.callback) this.sendTo(obj.from, obj.command, { result: 'Ok' }, obj.callback);
+            result.result = 'Ok';
+        } catch (error) {
+            result.error = error;
+        }
+        if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
     }
 
     async processGetDevicesCommand(obj) {
+        const result = {};
+        try {
         const devices = await this.collectDeviceInfo();
-        if (obj.callback) this.sendTo(obj.from, obj.command, JSON.stringify(devices), obj.callback);
+            result.result = devices;
+        } catch (error) {
+            result.error = error;
+        }
+        if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
     }
 
     async collectDeviceInfo() {
