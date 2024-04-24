@@ -346,7 +346,7 @@ class GreeHvac extends utils.Adapter {
                     break;
                 default:
                     this.log.warn(`Unknown command ${obj.command}`);
-                    const result = { error: `Unknown command ${obj.command}` };
+                    const result = { error: `Unknown command ${obj.command}` }; // eslint-disable-line no-case-declarations
                     if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
                     break;
             }

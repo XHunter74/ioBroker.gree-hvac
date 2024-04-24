@@ -34,26 +34,26 @@ if (args.debug) {
     isDebug = true;
 }
 
-instance = args.instance;
+instance = args.instance; // eslint-disable-line no-undef
 
 if (typeof instance === 'undefined') {
-    instance = 0;
+    instance = 0; // eslint-disable-line no-undef
 }
 
-const namespace = 'gree-hvac.' + instance;
+const namespace = 'gree-hvac.' + instance; // eslint-disable-line no-undef
 // const namespace = 'gree-hvac.0';
 
 if (isDebug) {
-    socket = io.connect(debugServer, { path: 'socket.io' });
+    socket = io.connect(debugServer, { path: 'socket.io' }); // eslint-disable-line no-undef
 } else {
-    socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
+    socket = io.connect('/', { path: parts.join('/') + '/socket.io' }); // eslint-disable-line no-undef
 }
 
 const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disable-line no-undef
 
-socket.emit('subscribeStates', namespace + '.*');
+socket.emit('subscribeStates', namespace + '.*'); // eslint-disable-line no-undef
 
-socket.on('stateChange', function (id, state) {
+socket.on('stateChange', function (id, state) { // eslint-disable-line no-undef
     if (id.substring(0, namespace.length) !== namespace) return;
     const parts = id.split('.');
     const stateId = parts[parts.length - 1];
@@ -281,7 +281,7 @@ function assignClickEvents() {
 
 // Read language settings
 function loadSystemConfig(callback) {
-    socket.emit('getObject', 'system.config', function (err, res) {
+    socket.emit('getObject', 'system.config', function (err, res) { // eslint-disable-line no-undef
         if (!err && res && res.common) {
             // @ts-ignore
             systemLang = res.common.language || systemLang; // eslint-disable-line no-global-assign
@@ -293,5 +293,5 @@ function loadSystemConfig(callback) {
 }
 
 function sendTo(_adapter_instance, command, message, callback) {
-    socket.emit('sendTo', _adapter_instance, command, message, callback);
+    socket.emit('sendTo', _adapter_instance, command, message, callback); // eslint-disable-line no-undef
 }
