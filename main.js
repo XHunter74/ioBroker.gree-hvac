@@ -338,8 +338,8 @@ class GreeHvac extends utils.Adapter {
                 case 'getDevices':
                     await this.processGetDevicesCommand(obj);
                     break;
-                case 'sendCommand':
-                    await this.processSendCommand(obj);
+                case 'remoteCommand':
+                    await this.processRemoteCommand(obj);
                     break;
                 case 'renameDevice':
                     await this.processRenameDevice(obj);
@@ -356,15 +356,15 @@ class GreeHvac extends utils.Adapter {
     async processRenameDevice(obj) {
         const result = {};
         try {
-        const deviceId = obj.message.deviceId;
-        const deviceName = obj.message.name;
-        const deviceObject = await this.getObjectAsync(deviceId);
-        if (!deviceObject) {
-            this.log.warn(`Device ${deviceId} not found`);
-            return;
-        }
-        await this.extendObjectAsync(deviceId, { common: { name: deviceName } });
-        this.log.info(`Device ${deviceObject.common.name} renamed to ${deviceName}`);
+            const deviceId = obj.message.deviceId;
+            const deviceName = obj.message.name;
+            const deviceObject = await this.getObjectAsync(deviceId);
+            if (!deviceObject) {
+                this.log.warn(`Device ${deviceId} not found`);
+                return;
+            }
+            await this.extendObjectAsync(deviceId, { common: { name: deviceName } });
+            this.log.info(`Device ${deviceObject.common.name} renamed to ${deviceName}`);
             result.result = { deviceId: deviceId, name: deviceName };
         }
         catch (error) {
@@ -373,77 +373,77 @@ class GreeHvac extends utils.Adapter {
         if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
     }
 
-    async processSendCommand(obj) {
-const result = {};
+    async processRemoteCommand(obj) {
+        const result = {};
         try {
-        const command = obj.message.command;
-        const deviceId = obj.message.deviceId;
-        let state;
-        const powerState = (await this.getStateAsync(`${deviceId}.power`)).val;
-        const isAlive = (await this.getStateAsync(`${deviceId}.alive`)).val;
-        let newState;
-        switch (command) {
-            case 'on-off-btn':
-                if (isAlive === false) return;
-                newState = powerState === 1 ? 0 : 1;
-                await this.setStateAsync(`${deviceId}.power`, newState);
-                break;
-            case 'temperature-up-btn':
-                if (powerState === 0 || isAlive === false) return;
-                state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
-                newState = Number(state) + 1;
-                if (newState > 30) {
-                    newState = 30;
-                }
-                await this.setStateAsync(`${deviceId}.target-temperature`, newState);
-                break;
-            case 'temperature-down-btn':
-                if (powerState === 0 || isAlive === false) return;
-                state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
-                newState = Number(state) - 1;
-                if (newState < 16) {
-                    newState = 16;
-                }
-                await this.setStateAsync(`${deviceId}.target-temperature`, newState);
-                break;
-            case 'mode-btn':
-                if (powerState === 0 || isAlive === false) return;
-                state = (await this.getStateAsync(`${deviceId}.mode`)).val;
-                newState = Number(state) + 1;
-                if (newState > 4) {
-                    newState = 0;
-                }
-                await this.setStateAsync(`${deviceId}.mode`, newState);
-                break;
-            case 'fan-btn':
-                if (powerState === 0 || isAlive === false) return;
-                const fan_speeds = [0, 1, 3, 5]; // eslint-disable-line no-case-declarations
-                state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
-                let idx = fan_speeds.indexOf(Number(state)); // eslint-disable-line no-case-declarations
-                idx++;
-                if (idx >= fan_speeds.length) idx = 0;
-                newState = fan_speeds[idx];
-                await this.setStateAsync(`${deviceId}.fan-speed`, newState);
-                break;
-            case 'turbo-btn':
-                if (powerState === 0 || isAlive === false) return;
-                state = (await this.getStateAsync(`${deviceId}.turbo`)).val;
-                newState = Number(state) + 1;
-                if (newState > 1) {
-                    newState = 0;
-                }
-                await this.setStateAsync(`${deviceId}.turbo`, newState);
-                break;
-            case 'display-btn':
-                if (isAlive === false) return;
-                state = (await this.getStateAsync(`${deviceId}.display-state`)).val;
-                newState = Number(state) + 1;
-                if (newState > 1) {
-                    newState = 0;
-                }
-                await this.setStateAsync(`${deviceId}.display-state`, newState);
-                break;
-        }
+            const command = obj.message.command;
+            const deviceId = obj.message.deviceId;
+            let state;
+            const powerState = (await this.getStateAsync(`${deviceId}.power`)).val;
+            const isAlive = (await this.getStateAsync(`${deviceId}.alive`)).val;
+            let newState;
+            switch (command) {
+                case 'on-off-btn':
+                    if (isAlive === false) return;
+                    newState = powerState === 1 ? 0 : 1;
+                    await this.setStateAsync(`${deviceId}.power`, newState);
+                    break;
+                case 'temperature-up-btn':
+                    if (powerState === 0 || isAlive === false) return;
+                    state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
+                    newState = Number(state) + 1;
+                    if (newState > 30) {
+                        newState = 30;
+                    }
+                    await this.setStateAsync(`${deviceId}.target-temperature`, newState);
+                    break;
+                case 'temperature-down-btn':
+                    if (powerState === 0 || isAlive === false) return;
+                    state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
+                    newState = Number(state) - 1;
+                    if (newState < 16) {
+                        newState = 16;
+                    }
+                    await this.setStateAsync(`${deviceId}.target-temperature`, newState);
+                    break;
+                case 'mode-btn':
+                    if (powerState === 0 || isAlive === false) return;
+                    state = (await this.getStateAsync(`${deviceId}.mode`)).val;
+                    newState = Number(state) + 1;
+                    if (newState > 4) {
+                        newState = 0;
+                    }
+                    await this.setStateAsync(`${deviceId}.mode`, newState);
+                    break;
+                case 'fan-btn':
+                    if (powerState === 0 || isAlive === false) return;
+                    const fan_speeds = [0, 1, 3, 5]; // eslint-disable-line no-case-declarations
+                    state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
+                    let idx = fan_speeds.indexOf(Number(state)); // eslint-disable-line no-case-declarations
+                    idx++;
+                    if (idx >= fan_speeds.length) idx = 0;
+                    newState = fan_speeds[idx];
+                    await this.setStateAsync(`${deviceId}.fan-speed`, newState);
+                    break;
+                case 'turbo-btn':
+                    if (powerState === 0 || isAlive === false) return;
+                    state = (await this.getStateAsync(`${deviceId}.turbo`)).val;
+                    newState = Number(state) + 1;
+                    if (newState > 1) {
+                        newState = 0;
+                    }
+                    await this.setStateAsync(`${deviceId}.turbo`, newState);
+                    break;
+                case 'display-btn':
+                    if (isAlive === false) return;
+                    state = (await this.getStateAsync(`${deviceId}.display-state`)).val;
+                    newState = Number(state) + 1;
+                    if (newState > 1) {
+                        newState = 0;
+                    }
+                    await this.setStateAsync(`${deviceId}.display-state`, newState);
+                    break;
+            }
             result.result = 'Ok';
         } catch (error) {
             result.error = error;
@@ -454,7 +454,7 @@ const result = {};
     async processGetDevicesCommand(obj) {
         const result = {};
         try {
-        const devices = await this.collectDeviceInfo();
+            const devices = await this.collectDeviceInfo();
             result.result = devices;
         } catch (error) {
             result.error = error;
