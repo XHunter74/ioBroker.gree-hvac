@@ -1,22 +1,15 @@
 /*global $, location,  document, window, io, systemLang, translateAll*/
+const debugServer = 'http://172.23.215.95:8081/';
 const path = location.pathname;
 
 let isDebug = false;
-
-if (location.host === 'localhost:5500') {
-    isDebug = true;
-}
 
 const parts = path.split('/');
 parts.splice(-3);
 
 let socket;
 
-if (isDebug) {
-    socket = io.connect('http://172.23.215.95:8081/', { path: 'socket.io' });
-} else {
-    socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
-}
+
 
 const query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
 const args = {};
@@ -41,6 +34,10 @@ query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(functi
     }
 });
 
+if (args.debug) {
+    isDebug = true;
+}
+
 let instance = args.instance;
 
 if (typeof instance === 'undefined') {
@@ -49,6 +46,12 @@ if (typeof instance === 'undefined') {
 
 const namespace = 'gree-hvac.' + instance;
 // const namespace = 'gree-hvac.0';
+
+if (isDebug) {
+    socket = io.connect(debugServer, { path: 'socket.io' });
+} else {
+    socket = io.connect('/', { path: parts.join('/') + '/socket.io' });
+}
 
 const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disable-line no-undef
 
@@ -109,11 +112,11 @@ function processStateChange(deviceId, stateId, stateVal) {
             break;
         case 'fan-speed':
             if (stateVal === 0) {
-                $('#' + `${deviceId}-fan-mode`).css('display', 'block');
-                $('#' + `${deviceId}-fan-speed`).css('display', 'none');
+                $('#' + `${deviceId}-fan-mode`).addClass('show-element');
+                $('#' + `${deviceId}-fan-speed`).addClass('hide-element');
             } else {
-                $('#' + `${deviceId}-fan-mode`).css('display', 'none');
-                $('#' + `${deviceId}-fan-speed`).css('display', 'block');
+                $('#' + `${deviceId}-fan-mode`).addClass('hide-element');
+                $('#' + `${deviceId}-fan-speed`).addClass('show-element');
                 if (stateVal === 1) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_1_bar');
                 } else if (stateVal === 3) {
@@ -125,9 +128,9 @@ function processStateChange(deviceId, stateId, stateVal) {
             break;
         case 'alive':
             if (stateVal === true) {
-                $('#' + `${deviceId}-alive`).css('display', 'none');
+                $('#' + `${deviceId}-alive`).addClass('hide-element');
             } else {
-                $('#' + `${deviceId}-alive`).css('display', 'block');
+                $('#' + `${deviceId}-alive`).addClass('show-element');
             }
             break;
     }
@@ -190,7 +193,7 @@ function getCard(device) {
     let html = '';
     html += `<div id="${device.id}" class="device-card">`;
     html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
-    html += `       <span id="${device.id}-alive" class="material-symbols-outlined alive-icon">wifi_off</span>`;
+    html += `       <span id="${device.id}-alive" class="material-symbols-outlined alive-icon hide-element">wifi_off</span>`;
     html += `       <span id="${device.id}-device-name" style="font-size: 14px;">${device.name}</span>`;
     html += `       <span id="${device.id}-edit" class="material-symbols-outlined edit-btn">edit</span>`;
     html += `   </div>`;
@@ -245,7 +248,7 @@ function assignClickEvents() {
                 if (data.error) {
                     console.log('Error: ' + data.error);
                 } else {
-                    console.log('msg: ' + data);
+                    console.log('msg: ' + JSON.stringify(data));
                 }
             }
         });

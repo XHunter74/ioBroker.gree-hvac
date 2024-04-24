@@ -90,19 +90,19 @@
     background-color: rgb(248, 209, 176) !important;
 }
 
-.display-on{
+.display-on {
     background-color: rgb(248, 209, 176) !important;
 }
 
 .edit-btn {
-    font-size: 17px!important;
+    font-size: 17px !important;
     color: blue;
     cursor: pointer;
     margin-left: 10px;
 }
 
-.alive-icon{
-    font-size: 17px!important;
+.alive-icon {
+    font-size: 17px !important;
     color: red;
     margin-right: 10px;
 }
@@ -111,11 +111,19 @@
     position: relative;
     height: 50px;
     padding: 20px 20px 5px 20px;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
-.m .modal.modal-fixed-footer.modal-fixed-header .modal-content{
-    height: calc(100% - 140px)!important;
+
+.m .modal.modal-fixed-footer.modal-fixed-header .modal-content {
+    height: calc(100% - 140px) !important;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
+.hide-element {
+    display: none!important;
+}
+
+.show-element {
+    display: block!important;
+}
