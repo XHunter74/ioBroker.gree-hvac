@@ -25,8 +25,6 @@ All devices which can be controlled via EWPE Smart app should be supported, incl
 ### 0.0.10 (2024-04-15)
  - First version of the adapter
 
-### **WORK IN PROGRESS**
-
 ## License
 MIT License
 
