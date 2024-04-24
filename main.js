@@ -465,7 +465,8 @@ class GreeHvac extends utils.Adapter {
     async processGetDevicesCommand(obj) {
         const result = {};
         try {
-            const devices = await this.collectDeviceInfo();
+            let devices = await this.collectDeviceInfo();
+            devices = devices.sort((a, b) => (a.last_nom > b.last_nom) ? 1 : ((b.last_nom > a.last_nom) ? -1 : 0));
             result.result = devices;
         } catch (error) {
             result.error = error.message;
@@ -479,24 +480,26 @@ class GreeHvac extends utils.Adapter {
         for (const deviceId in devices) {
             const device = devices[deviceId];
             const deviceObject = await this.getObjectAsync(device.mac);
-            const deviceInfo = {
-                id: device.mac,
-                ip: device.address,
-                name: deviceObject.common.name
-            };
-            const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
-            for (const key in deviceStatus) {
-                if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
-                    const value = deviceStatus[key];
-                    const mapItem = propertiesMap.find(item => item.hvacName === key);
-                    if (!mapItem) {
-                        this.log.warn(`Property ${key} not found in the map`);
-                        continue;
+            if (deviceObject) {
+                const deviceInfo = {
+                    id: device.mac,
+                    ip: device.address,
+                    name: deviceObject.common.name
+                };
+                const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
+                for (const key in deviceStatus) {
+                    if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
+                        const value = deviceStatus[key];
+                        const mapItem = propertiesMap.find(item => item.hvacName === key);
+                        if (!mapItem) {
+                            this.log.warn(`Property ${key} not found in the map`);
+                            continue;
+                        }
+                        deviceInfo[mapItem.name] = value;
                     }
-                    deviceInfo[mapItem.name] = value;
                 }
+                devicesInfo.push(deviceInfo);
             }
-            devicesInfo.push(deviceInfo);
         }
         return devicesInfo;
     }
