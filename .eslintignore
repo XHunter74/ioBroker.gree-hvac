@@ -1,7 +1,0 @@
-**/.eslintrc.js
-admin/words.js
-/**/node_modules/*
-node_modules/
-socket.io/
-lib/js/
-js/

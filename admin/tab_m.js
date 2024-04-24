@@ -1,4 +1,4 @@
-/*global $, location,  window, io, systemLang, translateAll*/
+/*global $, io, systemLang, translateAll*/
 const debugServer = 'http://172.23.215.95:8081/';
 const path = location.pathname;
 
