@@ -43,6 +43,6 @@ export default [
     }
   },
   {
-    ignores: ["**/.eslintrc.js", "admin/words.js", "/**/node_modules/*", "node_modules/", "socket.io/", "lib/js/", "js/", "eslint.config.mjs", "test/"],
+    ignores: ["admin/words.js", "/**/node_modules/*", "node_modules/", "socket.io/", "lib/js/", "js/", "eslint.config.mjs", "**/test/", "main.test.js"],
   }
 ];
