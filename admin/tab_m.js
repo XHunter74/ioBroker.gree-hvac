@@ -1,4 +1,4 @@
-/*global $, location,  document, window, io, systemLang, translateAll*/
+/*global $, location,  window, io, systemLang, translateAll*/
 const debugServer = 'http://172.23.215.95:8081/';
 const path = location.pathname;
 
@@ -135,9 +135,9 @@ function processStateChange(deviceId, stateId, stateVal) {
 let systemConfig; // eslint-disable-line no-unused-vars
 let devices = [];
 
-$(document).ready(function () {
+$(() => {
     'use strict';
-    loadSystemConfig(function () {
+    loadSystemConfig(() => {
         if (typeof translateAll === 'function') {
             translateAll();
         }
