@@ -9,11 +9,11 @@ interface Window {
     save: typeof save;
 }
 
-declare const instance: number;
+declare let instance: number;
 declare const adapter: string;
 /** Translates text */
 declare function _(text: string, arg1?: string, arg2?: string, arg3?: string): string;
-declare const socket: ioBrokerSocket;
+declare let socket: ioBrokerSocket;
 declare function sendTo(
     instance: any | null,
     command: string,
@@ -72,9 +72,21 @@ interface ioBrokerSocket {
         callback: (err: string | undefined, result?: ioBroker.State) => void,
     ): void;
     emit(
+        event: 'getObject',
+        id: string,
+        callback: (err: string | undefined, result?: ioBroker.State) => void,
+    ): void;
+    emit(
         event: 'setState',
         id: string,
         state: unknown,
+        callback: (err: string | undefined, result?: any) => void,
+    ): void;
+    emit(
+        event: 'sendTo',
+        adapterInstance: string,
+        command: string,
+        message: any,
         callback: (err: string | undefined, result?: any) => void,
     ): void;
 

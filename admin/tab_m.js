@@ -7,10 +7,6 @@ let isDebug = false;
 const parts = path.split('/');
 parts.splice(-3);
 
-let socket;
-
-
-
 const query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, '');
 const args = {};
 
@@ -38,7 +34,7 @@ if (args.debug) {
     isDebug = true;
 }
 
-let instance = args.instance;
+instance = args.instance;
 
 if (typeof instance === 'undefined') {
     instance = 0;
@@ -55,7 +51,7 @@ if (isDebug) {
 
 const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disable-line no-undef
 
-socket.emit('subscribe', namespace + '.*');
+socket.emit('subscribeStates', namespace + '.*');
 
 socket.on('stateChange', function (id, state) {
     if (id.substring(0, namespace.length) !== namespace) return;
@@ -151,13 +147,13 @@ $(document).ready(function () {
 
 
 function getDevices() {
-    sendTo(namespace, 'getDevices', {}, function (msg) {
-        if (msg) {
-            if (msg.error) {
-                console.log('Error: ' + msg.error);
+    sendTo(namespace, 'getDevices', {}, function (data) {
+        if (data) {
+            if (data.error) {
+                console.log('Error: ' + data.error);
             } else {
-                console.log('msg: ' + msg);
-                devices = JSON.parse(msg);
+                console.log('Devices: ' + JSON.stringify(data.result));
+                devices = data.result;
                 showDevices();
             }
         }
@@ -248,7 +244,7 @@ function assignClickEvents() {
                 if (data.error) {
                     console.log('Error: ' + data.error);
                 } else {
-                    console.log('msg: ' + JSON.stringify(data));
+                    console.log('Result: ' + data.result);
                 }
             }
         });
@@ -268,8 +264,8 @@ function assignClickEvents() {
                     if (data.error) {
                         console.log('Error: ' + data.error);
                     } else {
-                        // console.log('msg: ' + JSON.stringify(data));
-                        $(`#${deviceId}-device-name`).text(newName);
+                        console.log('New device name: ' + data.result.name);
+                        $(`#${deviceId}-device-name`).text(data.result.name);
                     }
                 }
             });
