@@ -466,7 +466,7 @@ class GreeHvac extends utils.Adapter {
         const result = {};
         try {
             let devices = await this.collectDeviceInfo();
-            devices = devices.sort((a, b) => (a.last_nom > b.last_nom) ? 1 : ((b.last_nom > a.last_nom) ? -1 : 0));
+            devices = devices.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
             result.result = devices;
         } catch (error) {
             result.error = error.message;
