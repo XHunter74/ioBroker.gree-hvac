@@ -109,10 +109,14 @@ function processStateChange(deviceId, stateId, stateVal) {
         case 'fan-speed':
             if (stateVal === 0) {
                 $('#' + `${deviceId}-fan-mode`).addClass('show-element');
+                $('#' + `${deviceId}-fan-mode`).removeClass('hide-element');
                 $('#' + `${deviceId}-fan-speed`).addClass('hide-element');
+                $('#' + `${deviceId}-fan-speed`).removeClass('show-element');
             } else {
                 $('#' + `${deviceId}-fan-mode`).addClass('hide-element');
+                $('#' + `${deviceId}-fan-mode`).removeClass('show-element');
                 $('#' + `${deviceId}-fan-speed`).addClass('show-element');
+                $('#' + `${deviceId}-fan-speed`).removeClass('hide-element');
                 if (stateVal === 1) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_1_bar');
                 } else if (stateVal === 3) {
@@ -125,8 +129,10 @@ function processStateChange(deviceId, stateId, stateVal) {
         case 'alive':
             if (stateVal === true) {
                 $('#' + `${deviceId}-alive`).addClass('hide-element');
+                $('#' + `${deviceId}-alive`).removeClass('show-element');
             } else {
                 $('#' + `${deviceId}-alive`).addClass('show-element');
+                $('#' + `${deviceId}-alive`).removeClass('hide-element');
             }
             break;
     }
