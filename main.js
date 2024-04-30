@@ -512,7 +512,7 @@ class GreeHvac extends utils.Adapter {
                     const property = propertiesMap[j];
                     const state = (await this.getStateAsync(`${deviceItem.id}.${property.name}`)).val;
                     deviceInfo[property.name] = state;
-                } catch { }
+                } catch { }// eslint-disable-line no-empty
             }
             const aliveState = (await this.getStateAsync(`${deviceItem.id}.alive`)).val;
             deviceInfo.alive = aliveState;
