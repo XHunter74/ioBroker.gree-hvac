@@ -227,7 +227,7 @@ class GreeHvac extends utils.Adapter {
 
 
     /**
-     * @param {string[]} ipList
+     * @param {any[]} ipList
      */
     validateIPList(ipList) {
         try {
@@ -470,7 +470,24 @@ class GreeHvac extends utils.Adapter {
     async processGetDevicesCommand(obj) {
         const result = {};
         try {
-            let devices = await this.collectDeviceInfo();
+            const allObjects = await this.getAdapterObjectsAsync();
+            const deviceObjects = Object.keys(allObjects).map((key) => {
+                const item = {
+                    id: key,
+                    value: allObjects[key]
+                };
+                return item;
+            }
+            )
+                .filter((item) => item.id.split('.').length === 3 && item.value.type === 'device')
+                .map((item) => {
+                    const device = {
+                        id: item.id,
+                        name: item.value.common.name
+                    };
+                    return device;
+                });
+            let devices = await this.collectDeviceInfo(deviceObjects);
             devices = devices.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
             result.result = devices;
         } catch (error) {
@@ -479,32 +496,27 @@ class GreeHvac extends utils.Adapter {
         if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
     }
 
-    async collectDeviceInfo() {
+    async collectDeviceInfo(deviceObjects) {
         const devicesInfo = [];
-        const devices = this.deviceManager.getDevices();
-        for (const deviceId in devices) {
-            const device = devices[deviceId];
-            const deviceObject = await this.getObjectAsync(device.mac);
-            if (deviceObject) {
-                const deviceInfo = {
-                    id: device.mac,
-                    ip: device.address,
-                    name: deviceObject.common.name
-                };
-                const deviceStatus = await this.deviceManager.getDeviceStatus(device.mac);
-                for (const key in deviceStatus) {
-                    if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
-                        const value = deviceStatus[key];
-                        const mapItem = propertiesMap.find(item => item.hvacName === key);
-                        if (!mapItem) {
-                            this.log.warn(`Property ${key} not found in the map`);
-                            continue;
-                        }
-                        deviceInfo[mapItem.name] = value;
-                    }
-                }
-                devicesInfo.push(deviceInfo);
+        for (let i = 0; i < deviceObjects.length; i++) {
+            const deviceItem = deviceObjects[i];
+            const deviceInfoState = (await this.getStateAsync(`${deviceItem.id}.deviceInfo`)).val.toString();
+            const deviceObject = JSON.parse(deviceInfoState);
+            const deviceInfo = {
+                id: deviceObject.mac,
+                ip: deviceObject.address,
+                name: deviceItem.name,
+            };
+            for (let j = 0; j < propertiesMap.length; j++) {
+                try {
+                    const property = propertiesMap[j];
+                    const state = (await this.getStateAsync(`${deviceItem.id}.${property.name}`)).val;
+                    deviceInfo[property.name] = state;
+                } catch { }
             }
+            const aliveState = (await this.getStateAsync(`${deviceItem.id}.alive`)).val;
+            deviceInfo.alive = aliveState;
+            devicesInfo.push(deviceInfo);
         }
         return devicesInfo;
     }
