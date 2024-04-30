@@ -45,7 +45,7 @@
             "zh-cn": "Gree 和 C&H 调制器的适配器"
         },
         "authors": [
-            "Author <xhunter74@gmail.com>"
+            "Serhiy Krasovskyy <xhunter74@gmail.com>"
         ],
         "keywords": [
             "home automation",
@@ -63,7 +63,7 @@
         "icon": "air-conditioner.png",
         "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/XHunter74/ioBroker.gree-hvac/main/admin/air-conditioner.png",
-        "readme": "https://github.com/Author/ioBroker.template/blob/main/README.md",
+        "readme": "https://github.com/XHunter74//ioBroker.gree-hvac/blob/master/README.md",
         "loglevel": "info",
         "tier": 3,
         "mode": "daemon",
@@ -101,12 +101,12 @@
         },
         "dependencies": [
             {
-                "js-controller": ">=3.3.22"
+                "js-controller": ">=5.0.19"
             }
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.1.13"
+                "admin": ">=6.13.16"
             }
         ]
     },
