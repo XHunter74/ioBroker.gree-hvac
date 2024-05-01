@@ -8,12 +8,11 @@ const utils = require('@iobroker/adapter-core');
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
 const CheckDeviceTimeoutMs = 1000;
-let CheckDeviceTimeout = null;
 
 class GreeHvac extends utils.Adapter {
 
     deviceManager;
-    intervals = {};
+    timeouts = {};
     activeDevices = [];
 
     /**
@@ -106,24 +105,24 @@ class GreeHvac extends utils.Adapter {
                 await this.getDeviceStatus(deviceId);
             } catch { } // eslint-disable-line no-empty
         }
-        this.intervals[deviceId] = this.setTimeout(async () => {
+        this.timeouts[deviceId] = this.setTimeout(async () => {
             try {
                 await this.getDeviceStatus(deviceId);
-                this.clearTimeout(this.intervals[deviceId]);
+                this.clearTimeout(this.timeouts[deviceId]);
             } catch { } // eslint-disable-line no-empty
             await this.pollDevices(deviceId, false);
         }, this.config.pollInterval);
     }
 
     checkDevices() {
-        CheckDeviceTimeout = this.setTimeout(async () => {
+        this.timeouts['CheckDevice'] = this.setTimeout(async () => {
             const inactiveDevices = this.activeDevices.filter(device => device.isActive === false);
             if (inactiveDevices.length > 0) {
                 await this.setStateAsync('info.connection', { val: false, ack: true });
             } else {
                 await this.setStateAsync('info.connection', { val: true, ack: true });
             }
-            this.clearTimeout(CheckDeviceTimeout);
+            this.clearTimeout(this.timeouts['CheckDevice']);
             this.checkDevices();
         }, CheckDeviceTimeoutMs);
     }
@@ -274,11 +273,8 @@ class GreeHvac extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            for (const deviceId in this.intervals) {
-                this.clearInterval(this.intervals[deviceId]);
-            }
-            if (CheckDeviceTimeout) {
-                this.clearTimeout(CheckDeviceTimeout);
+            for (const deviceId in this.timeouts) {
+                this.clearTimeout(this.timeouts[deviceId]);
             }
             callback();
         } catch (error) {
