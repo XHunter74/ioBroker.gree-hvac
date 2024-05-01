@@ -82,12 +82,8 @@ class GreeHvac extends utils.Adapter {
             this.deviceManager.on('device_bound', async (deviceId, device) => {
                 try {
                     await this.processDevice(deviceId, device);
-                    const deviceInterval = this.setInterval(async () => {
-                        try {
-                            await this.getDeviceStatus(deviceId), this.config.pollInterval
-                        } catch { }
-                    });
-                    this.intervals[deviceId] = deviceInterval;
+                    await this.pollDevices(deviceId, true);
+
                 } catch (error) {
                     this.log.error(`Error in device_bound event for device ${deviceId}: ${error}`);
                     // this.sendError(error, `Error in device_bound event for device ${deviceId}`);
@@ -100,7 +96,24 @@ class GreeHvac extends utils.Adapter {
         }
     }
 
-
+    /**
+     * @param {string} deviceId
+     * @param {boolean} isFirst
+     */
+    async pollDevices(deviceId, isFirst) {
+        if (isFirst) {
+            try {
+                await this.getDeviceStatus(deviceId);
+            } catch { }
+        }
+        this.intervals[deviceId] = this.setTimeout(async () => {
+            try {
+                await this.getDeviceStatus(deviceId);
+                this.clearTimeout(this.intervals[deviceId]);
+            } catch { }
+            await this.pollDevices(deviceId, false);
+        }, this.config.pollInterval)
+    }
 
     checkDevices() {
         CheckDeviceTimeout = this.setTimeout(async () => {
