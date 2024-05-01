@@ -104,15 +104,15 @@ class GreeHvac extends utils.Adapter {
         if (isFirst) {
             try {
                 await this.getDeviceStatus(deviceId);
-            } catch { }
+            } catch { } // eslint-disable-line no-empty
         }
         this.intervals[deviceId] = this.setTimeout(async () => {
             try {
                 await this.getDeviceStatus(deviceId);
                 this.clearTimeout(this.intervals[deviceId]);
-            } catch { }
+            } catch { } // eslint-disable-line no-empty
             await this.pollDevices(deviceId, false);
-        }, this.config.pollInterval)
+        }, this.config.pollInterval);
     }
 
     checkDevices() {
