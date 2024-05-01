@@ -7,7 +7,8 @@ const utils = require('@iobroker/adapter-core');
 
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
-const CheckDeviceTimeoutMs = 1000;
+const CheckDevicesTimeoutMs = 1000;
+const CheckDevicesTimeout = 'CheckDevices';
 
 class GreeHvac extends utils.Adapter {
 
@@ -115,16 +116,16 @@ class GreeHvac extends utils.Adapter {
     }
 
     checkDevices() {
-        this.timeouts['CheckDevice'] = this.setTimeout(async () => {
+        this.timeouts[CheckDevicesTimeout] = this.setTimeout(async () => {
             const inactiveDevices = this.activeDevices.filter(device => device.isActive === false);
             if (inactiveDevices.length > 0) {
                 await this.setStateAsync('info.connection', { val: false, ack: true });
             } else {
                 await this.setStateAsync('info.connection', { val: true, ack: true });
             }
-            this.clearTimeout(this.timeouts['CheckDevice']);
+            this.clearTimeout(this.timeouts[CheckDevicesTimeout]);
             this.checkDevices();
-        }, CheckDeviceTimeoutMs);
+        }, CheckDevicesTimeoutMs);
     }
 
     /**
