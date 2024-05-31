@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "0.0.14",
+        "version": "1.0.0",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -15,6 +15,19 @@
                 "pl": "Pierwsze wydanie",
                 "uk": "Початкова версія",
                 "zh-cn": "首次出版"
+            },
+            "1.0.0"{
+                "en": "Small fixes. Ready to production.",
+                "de": "Kleine Reparaturen. Bereit zur Produktion.",
+                "ru": "Небольшие фиксы. Готов к использованию.",
+                "pt": "Pequenas correções. Pronto para a produção.",
+                "nl": "Kleine aanpassingen. Klaar voor productie.",
+                "fr": "Petites réparations. Prêt à la production.",
+                "it": "Piccole correzioni. Pronti alla produzione.",
+                "es": "Pequeñas correcciones. Listo para la producción.",
+                "pl": "Małe poprawki. Gotowy do produkcji.",
+                "uk": "Маленькі правки. Готовий до використання.",
+                "zh-cn": "小修补. 准备生产."
             }
         },
         "title": "Gree-Hvac adapter",
