@@ -348,9 +348,20 @@ class GreeHvac extends utils.Adapter {
                 if (await this.objectExists(`${deviceId}.${property.name}`) === true) {
                     const state = await this.getStateAsync(`${deviceId}.${property.name}`);
                     if (state && state.val !== null) {
+                        const definition = JSON.parse(property.definition);
+                        if (definition.native && definition.native.valuesMap) {
+                            const valuesMap = definition.native.valuesMap;
+                            const valueMap = valuesMap.find(item => item.value === state.val);
+                            if (valueMap) {
+                                payload[property.hvacName] = valueMap.targetValue;
+                            } else {
+                                payload[property.hvacName] = state.val;
+                            }
+                        } else {
                         payload[property.hvacName] = state.val;
                     }
                 }
+            }
             }
             return payload;
         } catch (error) {
