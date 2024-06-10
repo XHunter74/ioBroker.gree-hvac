@@ -71,7 +71,6 @@
             "license": "MIT"
         },
         "platform": "Javascript/Node.js",
-        "main": "main.js",
         "icon": "air-conditioner.png",
         "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/XHunter74/ioBroker.gree-hvac/main/admin/air-conditioner.png",
