@@ -358,10 +358,10 @@ class GreeHvac extends utils.Adapter {
                                 payload[property.hvacName] = state.val;
                             }
                         } else {
-                        payload[property.hvacName] = state.val;
+                            payload[property.hvacName] = state.val;
+                        }
                     }
                 }
-            }
             }
             return payload;
         } catch (error) {
@@ -490,12 +490,9 @@ class GreeHvac extends utils.Adapter {
                     if (powerState === 0) {
                         throw new Error('Device power is off');
                     }
-                    const fan_speeds = [0, 1, 3, 5]; // eslint-disable-line no-case-declarations
                     state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
-                    let idx = fan_speeds.indexOf(Number(state)); // eslint-disable-line no-case-declarations
-                    idx++;
-                    if (idx >= fan_speeds.length) idx = 0;
-                    newState = fan_speeds[idx];
+                    newState = Number(state) + 1;
+                    if (newState > 3) newState = 0;
                     await this.setStateAsync(`${deviceId}.fan-speed`, newState);
                     break;
                 case 'turbo-btn':
