@@ -168,7 +168,18 @@ class GreeHvac extends utils.Adapter {
                         this.log.warn(`Property ${key} not found in the map`);
                         continue;
                     }
-                    await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+                    const definition = JSON.parse(mapItem.definition);
+                    if (definition.native && definition.native.valuesMap) {
+                        const valuesMap = definition.native.valuesMap;
+                        const valueMap = valuesMap.find(item => item.targetValue === value);
+                        if (valueMap) {
+                            await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: valueMap.value, ack: true });
+                        } else {
+                            await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+                        }
+                    } else {
+                        await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+                    }
                 }
             }
         } catch (error) {
