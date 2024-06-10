@@ -11,7 +11,7 @@ const query = (window.location.search || '').replace(/^\?/, '').replace(/#.*$/, 
 const args = {};
 
 // parse parameters
-query.trim().split('&').filter(function (t) { return t.trim(); }).forEach(function (b, i) {
+query.trim().split('&').filter((t) => { return t.trim(); }).forEach((b, i) => {
     const parts = b.split('=');
     if (!i && parts.length === 1 && !isNaN(parseInt(b, 10))) {
         args.instance = parseInt(b, 10);
@@ -53,7 +53,7 @@ const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disab
 
 socket.emit('subscribeStates', namespace + '.*'); // eslint-disable-line no-undef
 
-socket.on('stateChange', function (id, state) { // eslint-disable-line no-undef
+socket.on('stateChange', (id, state) => { // eslint-disable-line no-undef
     if (id.substring(0, namespace.length) !== namespace) return;
     const parts = id.split('.');
     const stateId = parts[parts.length - 1];
@@ -153,7 +153,7 @@ $(() => {
 
 
 function getDevices() {
-    sendTo(namespace, 'getDevices', {}, function (data) {
+    sendTo(namespace, 'getDevices', {}, (data) => {
         if (data) {
             if (data.error) {
                 console.log('Error: ' + data.error);
@@ -241,15 +241,15 @@ function getCard(device) {
 }
 
 function assignClickEvents() {
-    $('.ctrl-btn').click(function () {
-        const btn = this.id;
+    $('.ctrl-btn').click((event) => {
+        const btn = event.currentTarget.id;
         const parts = btn.split('-');
         const command = parts.slice(1).join('-');
         console.log('clicked: ' + btn);
-        const deviceId = $(this).parents('.device-card').attr('id');
+        const deviceId = $(event.currentTarget).parents('.device-card').attr('id');
         // console.log('deviceId: ' + deviceId);
         // console.log('command: ' + command);
-        sendTo(namespace, 'remoteCommand', { deviceId: deviceId, command: command }, function (data) {
+        sendTo(namespace, 'remoteCommand', { deviceId: deviceId, command: command }, (data) => {
             if (data) {
                 if (data.error) {
                     console.log('Error: ' + data.error);
@@ -259,8 +259,8 @@ function assignClickEvents() {
             }
         });
     });
-    $('.edit-btn').click(function () {
-        const deviceId = $(this).parents('.device-card').attr('id');
+    $('.edit-btn').click((event) => {
+        const deviceId = $(event.currentTarget).parents('.device-card').attr('id');
         const deviceName = $(`#${deviceId}-device-name`).text();
         // console.log('deviceId: ' + deviceId);
         // console.log('deviceName: ' + deviceName);
@@ -269,7 +269,7 @@ function assignClickEvents() {
         $('#modaledit a.btn[name=\'save\']').click(() => {
             const newName = $('#modaledit').find('input[id=\'d_name\']').val();
             console.log('newName: ' + newName);
-            sendTo(namespace, 'renameDevice', { deviceId: deviceId, name: newName }, function (data) {
+            sendTo(namespace, 'renameDevice', { deviceId: deviceId, name: newName }, (data) => {
                 if (data) {
                     if (data.error) {
                         console.log('Error: ' + data.error);
@@ -291,7 +291,7 @@ function assignClickEvents() {
 
 // Read language settings
 function loadSystemConfig(callback) {
-    socket.emit('getObject', 'system.config', function (err, res) { // eslint-disable-line no-undef
+    socket.emit('getObject', 'system.config', (err, res) => { // eslint-disable-line no-undef
         if (!err && res && res.common) {
             // @ts-ignore
             systemLang = res.common.language || systemLang; // eslint-disable-line no-global-assign
