@@ -106,13 +106,12 @@ jobs:
         run: |
           VERSION="${{ github.ref }}"
           VERSION=${VERSION##*/v}
-          # VERSION=0.0.6
-          echo "::set-output name=VERSION::$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           BODY=$(git show -s --format=%b)
           BODY="${BODY//'%'/'%25'}"
           BODY="${BODY//$'\n'/'%0A'}"
           BODY="${BODY//$'\r'/'%0D'}"
-          echo "::set-output name=BODY::$BODY"
+          echo "BODY=$BODY" >> $GITHUB_OUTPUT
 
       - name: Publish package to npm
         run: |
