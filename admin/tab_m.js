@@ -191,6 +191,10 @@ function showDevices() {
     assignClickEvents();
 }
 
+function isDeviceShown(deviceId) {
+    return $('#' + deviceId).length > 0;
+}
+
 function getCard(device) {
     let html = '';
     html += `<div id="${device.id}" class="device-card">`;
