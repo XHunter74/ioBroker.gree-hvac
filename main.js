@@ -1,4 +1,7 @@
 'use strict';
+
+import { get } from 'jquery';
+
 const DeviceManager = require('./lib/device_manager');
 const propertiesMap = require('./lib/properties_map');
 const DeviceState = require('./lib/device-state');
@@ -222,7 +225,14 @@ class GreeHvac extends utils.Adapter {
 
             for (const property of propertiesMap) {
                 try {
-                    await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+                    const propertyObjectName = `${deviceId}.${property.name}`;
+                    if (await this.objectExists(propertyObjectName) === true) {
+                        const propertyObject = await this.getObjectAsync(propertyObjectName);
+                        if (JSON.stringify(propertyObject) != property.definition) {
+                            await this.extendObjectAsync(propertyObjectName, JSON.parse(property.definition));
+                        }
+                    }
+                    await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
                 }
                 catch (error) {
                     this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
