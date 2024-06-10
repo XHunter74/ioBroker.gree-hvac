@@ -1,7 +1,5 @@
 'use strict';
 
-import { get } from 'jquery';
-
 const DeviceManager = require('./lib/device_manager');
 const propertiesMap = require('./lib/properties_map');
 const DeviceState = require('./lib/device-state');
@@ -228,11 +226,13 @@ class GreeHvac extends utils.Adapter {
                     const propertyObjectName = `${deviceId}.${property.name}`;
                     if (await this.objectExists(propertyObjectName) === true) {
                         const propertyObject = await this.getObjectAsync(propertyObjectName);
-                        if (JSON.stringify(propertyObject) != property.definition) {
-                            await this.extendObjectAsync(propertyObjectName, JSON.parse(property.definition));
+                        if (this.areObjectsTheSame(propertyObject, JSON.parse(property.definition)) === false) {
+                            await this.delObjectAsync(propertyObjectName);
+                            await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
                         }
+                    } else {
+                        await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
                     }
-                    await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
                 }
                 catch (error) {
                     this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
@@ -245,6 +245,16 @@ class GreeHvac extends utils.Adapter {
             this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
             this.sendError(error, `Error in processDevice for device ${deviceId}`);
         }
+    }
+
+    /**
+     * @param {ioBroker.Object} adapterObject
+     * @param {{ common: any; native: any; }} definition
+     */
+    areObjectsTheSame(adapterObject, definition) {
+        let result = JSON.stringify(adapterObject.common) === JSON.stringify(definition.common);
+        result = result && JSON.stringify(adapterObject.native) === JSON.stringify(definition.native);
+        return result;
     }
 
     /**
