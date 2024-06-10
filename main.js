@@ -1,4 +1,5 @@
 'use strict';
+
 const DeviceManager = require('./lib/device_manager');
 const propertiesMap = require('./lib/properties_map');
 const DeviceState = require('./lib/device-state');
@@ -167,7 +168,18 @@ class GreeHvac extends utils.Adapter {
                         this.log.warn(`Property ${key} not found in the map`);
                         continue;
                     }
-                    await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+                    const definition = JSON.parse(mapItem.definition);
+                    if (definition.native && definition.native.valuesMap) {
+                        const valuesMap = definition.native.valuesMap;
+                        const valueMap = valuesMap.find(item => item.targetValue === value);
+                        if (valueMap) {
+                            await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: valueMap.value, ack: true });
+                        } else {
+                            await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+                        }
+                    } else {
+                        await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
+                    }
                 }
             }
         } catch (error) {
@@ -222,7 +234,16 @@ class GreeHvac extends utils.Adapter {
 
             for (const property of propertiesMap) {
                 try {
-                    await this.setObjectNotExistsAsync(`${deviceId}.${property.name}`, JSON.parse(property.definition));
+                    const propertyObjectName = `${deviceId}.${property.name}`;
+                    if (await this.objectExists(propertyObjectName) === true) {
+                        const propertyObject = await this.getObjectAsync(propertyObjectName);
+                        if (this.areObjectsTheSame(propertyObject, JSON.parse(property.definition)) === false) {
+                            await this.delObjectAsync(propertyObjectName);
+                            await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
+                        }
+                    } else {
+                        await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
+                    }
                 }
                 catch (error) {
                     this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
@@ -235,6 +256,16 @@ class GreeHvac extends utils.Adapter {
             this.log.error(`Error in processDevice for device ${deviceId}: ${error}`);
             this.sendError(error, `Error in processDevice for device ${deviceId}`);
         }
+    }
+
+    /**
+     * @param {ioBroker.Object} adapterObject
+     * @param {{ common: any; native: any; }} definition
+     */
+    areObjectsTheSame(adapterObject, definition) {
+        let result = JSON.stringify(adapterObject.common) === JSON.stringify(definition.common);
+        result = result && JSON.stringify(adapterObject.native) === JSON.stringify(definition.native);
+        return result;
     }
 
     /**
@@ -317,7 +348,18 @@ class GreeHvac extends utils.Adapter {
                 if (await this.objectExists(`${deviceId}.${property.name}`) === true) {
                     const state = await this.getStateAsync(`${deviceId}.${property.name}`);
                     if (state && state.val !== null) {
-                        payload[property.hvacName] = state.val;
+                        const definition = JSON.parse(property.definition);
+                        if (definition.native && definition.native.valuesMap) {
+                            const valuesMap = definition.native.valuesMap;
+                            const valueMap = valuesMap.find(item => item.value === state.val);
+                            if (valueMap) {
+                                payload[property.hvacName] = valueMap.targetValue;
+                            } else {
+                                payload[property.hvacName] = state.val;
+                            }
+                        } else {
+                            payload[property.hvacName] = state.val;
+                        }
                     }
                 }
             }
@@ -448,12 +490,9 @@ class GreeHvac extends utils.Adapter {
                     if (powerState === 0) {
                         throw new Error('Device power is off');
                     }
-                    const fan_speeds = [0, 1, 3, 5]; // eslint-disable-line no-case-declarations
                     state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
-                    let idx = fan_speeds.indexOf(Number(state)); // eslint-disable-line no-case-declarations
-                    idx++;
-                    if (idx >= fan_speeds.length) idx = 0;
-                    newState = fan_speeds[idx];
+                    newState = Number(state) + 1;
+                    if (newState > 3) newState = 0;
                     await this.setStateAsync(`${deviceId}.fan-speed`, newState);
                     break;
                 case 'turbo-btn':

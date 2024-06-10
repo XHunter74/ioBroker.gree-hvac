@@ -119,9 +119,9 @@ function processStateChange(deviceId, stateId, stateVal) {
                 $('#' + `${deviceId}-fan-speed`).removeClass('hide-element');
                 if (stateVal === 1) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_1_bar');
-                } else if (stateVal === 3) {
+                } else if (stateVal === 2) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt_2_bar');
-                } else if (stateVal === 5) {
+                } else if (stateVal === 3) {
                     $('#' + `${deviceId}-fan-speed`).text('signal_cellular_alt');
                 }
             }
