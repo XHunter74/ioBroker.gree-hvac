@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -28,6 +28,19 @@
                 "pl": "Małe poprawki. Gotowy do produkcji.",
                 "uk": "Маленькі правки. Готовий до використання.",
                 "zh-cn": "小修补. 准备生产."
+            },
+            "1.0.1": {
+                "en": "Implemented value mapping for fan speed parameter",
+                "de": "Ergänzende Wert-Mapping für Lüfterdrehzahlparameter",
+                "ru": "Реализованное преобразование значений для скорости вентилятора",
+                "pt": "Mapeamento de valor implementado para parâmetro de velocidade do ventilador",
+                "nl": "Implementeerde waarde mapping voor ventilatorsnelheidsparameter",
+                "fr": "Mise en œuvre de la cartographie des valeurs pour le paramètre de vitesse du ventilateur",
+                "it": "Mappatura del valore implementata per il parametro velocità del ventilatore",
+                "es": "Cartografía de valor implementada para el parámetro de velocidad del ventilador",
+                "pl": "Wdrożenie mapowania wartości parametru prędkości wentylatora",
+                "uk": "Реалізовано перетворення значення для швидкості вентилятора",
+                "zh-cn": "已执行扇速参数值映射"
             }
         },
         "titleLang": {
