@@ -340,6 +340,9 @@ class GreeHvac extends utils.Adapter {
         try {
             if (state && state.ack === false) {
                 const { deviceId, devicePath, property } = this.getDeviceInfo(id);
+                if (property === 'temperature-unit') {
+                    await this.onTemperatureUnitChange(devicePath, state.val);
+                }
                 const mapItem = propertiesMap.find(item => item.name === property);
                 if (mapItem) {
                     const payload = await this.createPayload(devicePath);
@@ -353,12 +356,23 @@ class GreeHvac extends utils.Adapter {
         }
     }
 
+    async onTemperatureUnitChange(devicePath, temperatureUnit) {
+        const temperature = Number((await this.getStateAsync(`${devicePath}.target-temperature`)).val);
+        if (temperatureUnit === 0) {
+            const celsius = Math.round((temperature - 32) * 5 / 9);
+            await this.setStateAsync(`${devicePath}.target-temperature`, celsius, true);
+        } else {
+            const farenheit = Math.round((temperature * 1.8) + 32);
+            await this.setStateAsync(`${devicePath}.target-temperature`, farenheit, true);
+        }
+    }
+
     /**
      * @param {string} deviceId
      */
     async createPayload(deviceId) {
         try {
-            const payload = {};
+            let payload = {};
             for (const property of propertiesMap) {
                 if (await this.objectExists(`${deviceId}.${property.name}`) === true) {
                     const state = await this.getStateAsync(`${deviceId}.${property.name}`);
@@ -378,12 +392,23 @@ class GreeHvac extends utils.Adapter {
                     }
                 }
             }
+            payload = this.processFarenheit(payload);
             return payload;
         } catch (error) {
             this.log.error(`Error in createPayload: ${error}`);
             this.sendError(error, 'Error in createPayload');
             return {};
         }
+    }
+
+    processFarenheit(payload) {
+        if (payload['TemUn'] === 1) {
+            const celsius = Math.round((payload['SetTem'] - 32) * 5 / 9);
+            const tempRec = (((payload['SetTem'] - 32) * 5 / 9) - celsius) >= 0 ? 1 : 0;
+            payload['TemRec'] = tempRec;
+            payload['SetTem'] = celsius;
+        }
+        return payload;
     }
 
     /**
@@ -459,6 +484,13 @@ class GreeHvac extends utils.Adapter {
             let state;
             const powerState = (await this.getStateAsync(`${deviceId}.power`)).val;
             const isAlive = (await this.getStateAsync(`${deviceId}.alive`)).val;
+            const temperatureUnit = (await this.getStateAsync(`${deviceId}.temperature-unit`)).val;
+            let minTemperature = 16;
+            let maxTemperature = 30;
+            if (temperatureUnit === 1) {
+                minTemperature = 60;
+                maxTemperature = 86;
+            }
             if (isAlive === false) {
                 throw new Error('Device is not responding');
             }
@@ -474,8 +506,8 @@ class GreeHvac extends utils.Adapter {
                     }
                     state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
                     newState = Number(state) + 1;
-                    if (newState > 30) {
-                        newState = 30;
+                    if (newState > maxTemperature) {
+                        newState = maxTemperature;
                     }
                     await this.setStateAsync(`${deviceId}.target-temperature`, newState);
                     break;
@@ -485,8 +517,8 @@ class GreeHvac extends utils.Adapter {
                     }
                     state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
                     newState = Number(state) - 1;
-                    if (newState < 16) {
-                        newState = 16;
+                    if (newState < minTemperature) {
+                        newState = maxTemperature;
                     }
                     await this.setStateAsync(`${deviceId}.target-temperature`, newState);
                     break;
