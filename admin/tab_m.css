@@ -46,7 +46,8 @@
     margin-top: 42vh;
 }
 
-.round-btn {
+.round-btn,
+.round-btn-txt {
     display: block;
     height: 40px;
     width: 40px;
@@ -58,6 +59,12 @@
 
 .round-btn span {
     font-size: 30px;
+}
+
+.round-btn-txt span {
+    font-family: inherit;
+    font-size: 21px;
+    padding-top: 6px;
 }
 
 .oval-btn {
@@ -121,9 +128,9 @@
 }
 
 .hide-element {
-    display: none!important;
+    display: none !important;
 }
 
 .show-element {
-    display: block!important;
+    display: block !important;
 }

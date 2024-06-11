@@ -135,6 +135,15 @@ function processStateChange(deviceId, stateId, stateVal) {
                 $('#' + `${deviceId}-alive`).removeClass('hide-element');
             }
             break;
+        case 'temperature-unit':
+            if (stateVal === 1) {
+                $('#' + `${deviceId}-temperature-unit`).text('°F');
+                $('#' + `${deviceId}-temperature-unit-btn > span`).text('°C');
+            } else {
+                $('#' + `${deviceId}-temperature-unit`).text('°C');
+                $('#' + `${deviceId}-temperature-unit-btn > span`).text('°F');
+            }
+            break;
     }
 }
 
@@ -217,13 +226,14 @@ function getCard(device) {
     html += '           </div>';
     html += '           <div style="display: flex;justify-content: center;align-items: center;">';
     html += `               <span id="${device.id}-target-temperature" style="margin-left: 10px;" class="temperature">${device['target-temperature']}</span>`;
-    html += `               <span class="degree">°C</span>`;
+    html += `               <span id="${device.id}-temperature-unit" class="degree">°C</span>`;
     html += '           </div>';
     html += '       </div>';
     html += `   </div>`;
     html += '   <div style="display:flex;justify-content: space-between;margin-bottom: 20px;margin-left: 15px;margin-right: 15px;">';
     html += `           <a id="${device.id}-on-off-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">power_settings_new</span></a>`;
     html += `           <a id="${device.id}-display-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">wb_incandescent</span></a>`;
+    html += `           <a id="${device.id}-temperature-unit-btn" class="round-btn-txt ctrl-btn" href="#"><span class="material-symbols-outlined">°C</span></a>`;
     html += '   </div>';
     html += '   <div style="display:flex;justify-content: center;margin-bottom: 40px;">';
     html += '       <div style="display: flex;flex-direction: column;gap: 55px;">';
