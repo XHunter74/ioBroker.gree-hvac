@@ -180,10 +180,10 @@ class GreeHvac extends utils.Adapter {
     }
 
     convertValue(values, value, mapItem) {
-        if (!mapItem.converter) {
+        if (!mapItem.fromConverter) {
             return value;
         }
-        value = mapItem.converter(values, value);
+        value = mapItem.fromConverter(values, value);
         return value;
     }
 
