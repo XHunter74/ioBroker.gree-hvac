@@ -362,8 +362,8 @@ class GreeHvac extends utils.Adapter {
             const celsius = Math.round((temperature - 32) * 5 / 9);
             await this.setStateAsync(`${devicePath}.target-temperature`, celsius, true);
         } else {
-            const farenheit = Math.round((temperature * 1.8) + 32);
-            await this.setStateAsync(`${devicePath}.target-temperature`, farenheit, true);
+            const fahrenheit = Math.round((temperature * 1.8) + 32);
+            await this.setStateAsync(`${devicePath}.target-temperature`, fahrenheit, true);
         }
     }
 
