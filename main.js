@@ -162,30 +162,45 @@ class GreeHvac extends utils.Adapter {
             await this.setStateAsync(`${deviceId}.alive`, { val: true, ack: true });
             for (const key in deviceStatus) {
                 if (Object.prototype.hasOwnProperty.call(deviceStatus, key)) {
-                    const value = deviceStatus[key];
+                    let value = deviceStatus[key];
                     const mapItem = propertiesMap.find(item => item.hvacName === key);
                     if (!mapItem) {
                         this.log.warn(`Property ${key} not found in the map`);
                         continue;
                     }
-                    const definition = JSON.parse(mapItem.definition);
-                    if (definition.native && definition.native.valuesMap) {
-                        const valuesMap = definition.native.valuesMap;
-                        const valueMap = valuesMap.find(item => item.targetValue === value);
-                        if (valueMap) {
-                            await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: valueMap.value, ack: true });
-                        } else {
-                            await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
-                        }
-                    } else {
-                        await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
-                    }
+                    value = this.mapValue(value, mapItem);
+                    value = this.convertValue(deviceStatus, value, mapItem);
+                    await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
                 }
             }
         } catch (error) {
             this.log.error(`Error in processDeviceStatus for device ${deviceId}: ${error}`);
             this.sendError(error, `Error in processDeviceStatus for device ${deviceId}`);
         }
+    }
+
+    convertValue(values, value, mapItem) {
+        if (!mapItem.converter) {
+            return value;
+        }
+        value = mapItem.converter(values, value);
+        return value;
+    }
+
+    /**
+     * @param {any} value
+     * @param {any} mapItem
+     */
+    mapValue(value, mapItem) {
+        const definition = JSON.parse(mapItem.definition);
+        if (definition.native && definition.native.valuesMap) {
+            const valuesMap = definition.native.valuesMap;
+            const valueMap = valuesMap.find(item => item.targetValue === value);
+            if (valueMap) {
+                value = valueMap.value;
+            }
+        }
+        return value;
     }
 
     /**
