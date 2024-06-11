@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -41,6 +41,19 @@
                 "pl": "Wdrożenie mapowania wartości parametru prędkości wentylatora",
                 "uk": "Реалізовано перетворення значення для швидкості вентилятора",
                 "zh-cn": "已执行扇速参数值映射"
+            },
+            "1.0.2": {
+                "en": "Added support of Fahrenheit degrees",
+                "de": "Unterstützung von Fahrenheit Grad hinzugefügt",
+                "ru": "Добавлена поддержка градусов Фаренгейта",
+                "pt": "Adicionado suporte de Fahrenheit graus",
+                "nl": "Toegevoegde ondersteuning van Fahrenheit graden",
+                "fr": "Ajout du soutien des diplômes Fahrenheit",
+                "it": "Aggiunto il supporto di gradi Fahrenheit",
+                "es": "Apoyo añadido a los grados Fahrenheit",
+                "pl": "Dodano wsparcie stopni Fahrenheita",
+                "uk": "Додано підтримку градусів Фаренгейту",
+                "zh-cn": "添加对华氏度的支持"
             }
         },
         "titleLang": {
