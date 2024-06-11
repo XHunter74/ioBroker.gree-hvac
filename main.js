@@ -512,7 +512,7 @@ class GreeHvac extends utils.Adapter {
                     state = (await this.getStateAsync(`${deviceId}.target-temperature`)).val;
                     newState = Number(state) - 1;
                     if (newState < minTemperature) {
-                        newState = maxTemperature;
+                        newState = minTemperature;
                     }
                     await this.setStateAsync(`${deviceId}.target-temperature`, newState);
                     break;
