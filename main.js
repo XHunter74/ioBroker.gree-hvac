@@ -392,23 +392,17 @@ class GreeHvac extends utils.Adapter {
                     }
                 }
             }
-            payload = this.processFarenheit(payload);
+            for (const property of propertiesMap) {
+                if (property.toConverter) {
+                    payload = property.toConverter(payload);
+                }
+            }
             return payload;
         } catch (error) {
             this.log.error(`Error in createPayload: ${error}`);
             this.sendError(error, 'Error in createPayload');
             return {};
         }
-    }
-
-    processFarenheit(payload) {
-        if (payload['TemUn'] === 1) {
-            const celsius = Math.round((payload['SetTem'] - 32) * 5 / 9);
-            const tempRec = (((payload['SetTem'] - 32) * 5 / 9) - celsius) >= 0 ? 1 : 0;
-            payload['TemRec'] = tempRec;
-            payload['SetTem'] = celsius;
-        }
-        return payload;
     }
 
     /**
