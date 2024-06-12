@@ -345,7 +345,7 @@ class GreeHvac extends utils.Adapter {
                     }
                 }
             }
-            for (const property of propertiesMap) {
+            for (const property of propertiesMap.filter(e => e.toConverter !== null)) {
                 if (property.toConverter) {
                     payload = property.toConverter(payload);
                 }
