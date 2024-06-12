@@ -11,6 +11,10 @@ const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
 const CheckDevicesTimeoutMs = 1000;
 const CheckDevicesTimeout = 'CheckDevices';
+const MinCelciusTemperature = 16;
+const MaxCelciusTemperature = 30;
+const MinFahrenheitTemperature = 60;
+const MaxFahrenheitTemperature = 86;
 
 class GreeHvac extends utils.Adapter {
 
@@ -428,11 +432,11 @@ class GreeHvac extends utils.Adapter {
             const powerState = (await this.getStateAsync(`${deviceId}.power`)).val;
             const isAlive = (await this.getStateAsync(`${deviceId}.alive`)).val;
             const temperatureUnit = (await this.getStateAsync(`${deviceId}.temperature-unit`)).val;
-            let minTemperature = 16;
-            let maxTemperature = 30;
+            let minTemperature = MinCelciusTemperature;
+            let maxTemperature = MaxCelciusTemperature;
             if (temperatureUnit === 1) {
-                minTemperature = 60;
-                maxTemperature = 86;
+                minTemperature = MinFahrenheitTemperature;
+                maxTemperature = MaxFahrenheitTemperature;
             }
             if (isAlive === false) {
                 throw new Error('Device is not responding');
