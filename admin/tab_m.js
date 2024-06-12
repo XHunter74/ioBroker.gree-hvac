@@ -41,7 +41,6 @@ if (typeof instance === 'undefined') {
 }
 
 const namespace = 'gree-hvac.' + instance; // eslint-disable-line no-undef
-// const namespace = 'gree-hvac.0';
 
 if (isDebug) {
     socket = io.connect(debugServer, { path: 'socket.io' }); // eslint-disable-line no-undef
@@ -51,15 +50,20 @@ if (isDebug) {
 
 const Materialize = (typeof M !== 'undefined') ? M : Materialize;// eslint-disable-line no-undef
 
-socket.emit('subscribeStates', namespace + '.*'); // eslint-disable-line no-undef
+subscribeStates();
 
-socket.on('stateChange', (id, state) => { // eslint-disable-line no-undef
+function subscribeStates() {
+    socket.emit('subscribeStates', namespace + '.*'); // eslint-disable-line no-undef
+    socket.on('stateChange', stateChangeHandler);
+}
+
+function stateChangeHandler(id, state) {
     if (id.substring(0, namespace.length) !== namespace) return;
     const parts = id.split('.');
     const stateId = parts[parts.length - 1];
     const deviceId = parts[parts.length - 2];
     processStateChange(deviceId, stateId, state.val);
-});
+}
 
 function processStateChange(deviceId, stateId, stateVal) {
     switch (stateId) {
@@ -158,8 +162,16 @@ $(() => {
         }
         getDevices();
     });
+    $('#refresh-btn').click(() => {
+        refreshDevices();
+    });
 });
 
+function refreshDevices() {
+    console.log('Refreshing devices...');
+    $('#devices').html('');
+    getDevices();
+}
 
 function getDevices() {
     sendTo(namespace, 'getDevices', {}, (data) => {
