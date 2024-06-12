@@ -133,5 +133,18 @@ systemDictionary = {
     "pl": "Nazwa",
     "uk": "Ім'я",
     "zh-cn": "名称"
+  },
+  'Refresh devices': {
+    "en": "Refresh devices",
+    "de": "Kühlgeräte",
+    "ru": "Обновить устройства",
+    "pt": "Dispositivos de atualização",
+    "nl": "Hulpmiddelen verversen",
+    "fr": "Rénover les appareils",
+    "it": "Dispositivi di raffreddamento",
+    "es": "Dispositivos de referencia",
+    "pl": "Urządzenia odświeżające",
+    "uk": "Оновити пристрої",
+    "zh-cn": "刷新设备"
   }
 };

@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -54,6 +54,19 @@
                 "pl": "Dodano wsparcie stopni Fahrenheita",
                 "uk": "Додано підтримку градусів Фаренгейту",
                 "zh-cn": "添加对华氏度的支持"
+            },
+            "1.0.3": {
+                "en": "Added refresh devices button on tab page",
+                "de": "Hinzugefügt Refresh-Geräte-Taste auf Tab-Seite",
+                "ru": "Добавлена кнопка обновления устройств на боковой странице",
+                "pt": "Adicionado botão de dispositivos de atualização na página da guia",
+                "nl": "Toevoegen Vernieuw apparaten knop op tabbladpagina",
+                "fr": "Ajout du bouton de rafraîchissement des appareils sur la page de l'onglet",
+                "it": "Aggiunti i dispositivi di aggiornamento pulsante sulla pagina della scheda",
+                "es": "Botón de dispositivos de actualización añadido en la página de la pestaña",
+                "pl": "Dodano przycisk odświeżania urządzeń na zakładce",
+                "uk": "Додано кнопку оновлення пристроїв на бічній сторінці",
+                "zh-cn": "在标签页上添加更新设备按钮"
             }
         },
         "titleLang": {

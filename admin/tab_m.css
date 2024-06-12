@@ -134,3 +134,13 @@
 .show-element {
     display: block !important;
 }
+
+.navbar-item-right {
+    float: right!important;
+}
+
+.refresh-btn {
+    width: 35px!important;
+    height: 35px!important;
+    margin-top: 5px!important;
+}
