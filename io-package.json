@@ -80,6 +80,19 @@
                 "pl": "Optymalizacja kodu. Naprawianie błędów.",
                 "uk": "Оптимізація коду Виправлення помилок.",
                 "zh-cn": "代码优化. 错误修正 ."
+            },
+            "1.0.5":{
+                "en": "Added time field",
+                "de": "Zeitfeld hinzugefügt",
+                "ru": "Добавлено поле времени",
+                "pt": "Adicionado campo de tempo",
+                "nl": "Tijdveld toegevoegd",
+                "fr": "Champ de temps ajouté",
+                "it": "Aggiunto campo di tempo",
+                "es": "Campo de tiempo añadido",
+                "pl": "Dodano pole czasu",
+                "uk": "Додано поле часу",
+                "zh-cn": "添加时间字段"
             }
         },
         "titleLang": {
