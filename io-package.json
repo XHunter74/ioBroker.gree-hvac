@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.3",
+        "version": "1.0.4",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -67,6 +67,19 @@
                 "pl": "Dodano przycisk odświeżania urządzeń na zakładce",
                 "uk": "Додано кнопку оновлення пристроїв на бічній сторінці",
                 "zh-cn": "在标签页上添加更新设备按钮"
+            },
+            "1.0.4": {
+                "en": "Code optimization. Bug fixes.",
+                "de": "Codeoptimierung. Fehlerbehebungen.",
+                "ru": "Оптимизация кода. Исправление ошибок.",
+                "pt": "Otimização de código. Correções de erros.",
+                "nl": "Code optimalisatie. Bugfixes.",
+                "fr": "Optimisation du code. Correction des bugs.",
+                "it": "Ottimizzazione del codice. Bug fixes.",
+                "es": "Optimización del código. Corrección de errores.",
+                "pl": "Optymalizacja kodu. Naprawianie błędów.",
+                "uk": "Оптимізація коду Виправлення помилок.",
+                "zh-cn": "代码优化. 错误修正 ."
             }
         },
         "titleLang": {
