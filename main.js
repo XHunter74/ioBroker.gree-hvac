@@ -302,12 +302,17 @@ class GreeHvac extends utils.Adapter {
 
     async onTemperatureUnitChange(devicePath, temperatureUnit) {
         const temperature = Number((await this.getStateAsync(`${devicePath}.target-temperature`)).val);
+        const roomTemperature = Number((await this.getStateAsync(`${devicePath}.room-temperature`)).val);
         if (temperatureUnit === 0) {
-            const celsius = Math.round((temperature - 32) * 5 / 9);
+            let celsius = AdapterUtils.fahrenheitToCelsius(temperature);
             await this.setStateAsync(`${devicePath}.target-temperature`, celsius, true);
+            celsius = AdapterUtils.fahrenheitToCelsius(roomTemperature);
+            await this.setStateAsync(`${devicePath}.room-temperature`, celsius, true);
         } else {
-            const fahrenheit = Math.round((temperature * 1.8) + 32);
+            let fahrenheit = AdapterUtils.celsiusToFahrenheit(temperature);
             await this.setStateAsync(`${devicePath}.target-temperature`, fahrenheit, true);
+            fahrenheit = AdapterUtils.celsiusToFahrenheit(roomTemperature);
+            await this.setStateAsync(`${devicePath}.room-temperature`, fahrenheit, true);
         }
     }
 
