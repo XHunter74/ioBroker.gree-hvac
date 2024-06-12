@@ -322,7 +322,7 @@ class GreeHvac extends utils.Adapter {
     async createPayload(deviceId) {
         try {
             let payload = {};
-            for (const property of propertiesMap) {
+            for (const property of propertiesMap.filter(e => !e.isReadOnly())) {
                 if (await this.objectExists(`${deviceId}.${property.name}`) === true) {
                     const state = await this.getStateAsync(`${deviceId}.${property.name}`);
                     if (state && state.val !== null) {
