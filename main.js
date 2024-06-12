@@ -5,6 +5,7 @@ const propertiesMap = require('./lib/properties_map');
 const DeviceState = require('./lib/device-state');
 
 const utils = require('@iobroker/adapter-core');
+const AdapterUtils = require('iobroker.gree-hvac/lib/adapter-utils');
 
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
@@ -50,7 +51,7 @@ class GreeHvac extends utils.Adapter {
             this.log.info('Device list: ' + JSON.stringify(this.config.devicelist));
             this.log.info('Poll interval: ' + this.config.pollInterval);
 
-            if (!this.config.devicelist || this.config.devicelist.length === 0 || !this.validateIPList(this.config.devicelist)) {
+            if (!this.config.devicelist || this.config.devicelist.length === 0 || !AdapterUtils.validateIPList(this.config.devicelist)) {
                 this.log.error(`Invalid device list: ${JSON.stringify(this.config.devicelist)}`);
                 this.stop();
                 return;
@@ -168,8 +169,8 @@ class GreeHvac extends utils.Adapter {
                         this.log.warn(`Property ${key} not found in the map`);
                         continue;
                     }
-                    value = this.mapValue(value, mapItem);
-                    value = this.convertValue(deviceStatus, value, mapItem);
+                    value = AdapterUtils.mapValue(value, mapItem);
+                    value = AdapterUtils.convertValue(deviceStatus, value, mapItem);
                     await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value, ack: true });
                 }
             }
@@ -177,30 +178,6 @@ class GreeHvac extends utils.Adapter {
             this.log.error(`Error in processDeviceStatus for device ${deviceId}: ${error}`);
             this.sendError(error, `Error in processDeviceStatus for device ${deviceId}`);
         }
-    }
-
-    convertValue(values, value, mapItem) {
-        if (!mapItem.fromConverter) {
-            return value;
-        }
-        value = mapItem.fromConverter(values, value);
-        return value;
-    }
-
-    /**
-     * @param {any} value
-     * @param {any} mapItem
-     */
-    mapValue(value, mapItem) {
-        const definition = JSON.parse(mapItem.definition);
-        if (definition.native && definition.native.valuesMap) {
-            const valuesMap = definition.native.valuesMap;
-            const valueMap = valuesMap.find(item => item.targetValue === value);
-            if (valueMap) {
-                value = valueMap.value;
-            }
-        }
-        return value;
     }
 
     /**
@@ -252,7 +229,7 @@ class GreeHvac extends utils.Adapter {
                     const propertyObjectName = `${deviceId}.${property.name}`;
                     if (await this.objectExists(propertyObjectName) === true) {
                         const propertyObject = await this.getObjectAsync(propertyObjectName);
-                        if (this.areObjectsTheSame(propertyObject, JSON.parse(property.definition)) === false) {
+                        if (AdapterUtils.areObjectsTheSame(propertyObject, JSON.parse(property.definition)) === false) {
                             await this.delObjectAsync(propertyObjectName);
                             await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
                         }
@@ -274,45 +251,12 @@ class GreeHvac extends utils.Adapter {
     }
 
     /**
-     * @param {ioBroker.Object} adapterObject
-     * @param {{ common: any; native: any; }} definition
-     */
-    areObjectsTheSame(adapterObject, definition) {
-        let result = JSON.stringify(adapterObject.common) === JSON.stringify(definition.common);
-        result = result && JSON.stringify(adapterObject.native) === JSON.stringify(definition.native);
-        return result;
-    }
-
-    /**
      * @param {string} pName
      */
     nameToId(pName) {
         return (pName || '').replace(this.FORBIDDEN_CHARS, '_');
     }
 
-
-    /**
-     * @param {any[]} ipList
-     */
-    validateIPList(ipList) {
-        try {
-            // Regular expression for IP address
-            const ipPattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-
-            // Validate each IP
-            for (const networkItem of ipList) {
-                if (!ipPattern.test(networkItem.deviceIp)) {
-                    return false;
-                }
-            }
-
-            // If all IPs are valid
-            return true;
-        } catch (error) {
-            this.log.error(`Error in validateIPList: ${error}`);
-            return false;
-        }
-    }
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
