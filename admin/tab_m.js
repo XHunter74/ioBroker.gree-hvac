@@ -54,7 +54,7 @@ subscribeStates();
 
 function subscribeStates() {
     socket.emit('subscribeStates', namespace + '.*'); // eslint-disable-line no-undef
-    socket.on('stateChange', stateChangeHandler);
+    socket.on('stateChange', stateChangeHandler); // eslint-disable-line no-undef
 }
 
 function stateChangeHandler(id, state) {
