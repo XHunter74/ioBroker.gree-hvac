@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.5",
+        "version": "1.0.6",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -81,7 +81,7 @@
                 "uk": "Оптимізація коду Виправлення помилок.",
                 "zh-cn": "代码优化. 错误修正 ."
             },
-            "1.0.5":{
+            "1.0.5": {
                 "en": "Added time field",
                 "de": "Zeitfeld hinzugefügt",
                 "ru": "Добавлено поле времени",
@@ -93,6 +93,19 @@
                 "pl": "Dodano pole czasu",
                 "uk": "Додано поле часу",
                 "zh-cn": "添加时间字段"
+            },
+            "1.0.6": {
+                "en": "Added button titles and translation",
+                "de": "Hinzugefügte Schaltflächentitel und Übersetzung",
+                "ru": "Добавлены заголовки кнопок и перевод",
+                "pt": "Adicionado títulos de botões e tradução",
+                "nl": "Knop titels en vertaling toegevoegd",
+                "fr": "Ajout de titres de boutons et de traduction",
+                "it": "Aggiunti titoli dei pulsanti e traduzione",
+                "es": "Añadido títulos de botones y traducción",
+                "pl": "Dodano tytuły przycisków i tłumaczenie",
+                "uk": "Додано заголовки кнопок та переклад",
+                "zh-cn": "添加按钮标题和翻译"
             }
         },
         "titleLang": {
