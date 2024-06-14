@@ -157,9 +157,6 @@ let devices = [];
 $(() => {
     'use strict';
     loadSystemConfig(() => {
-        if (typeof translateAll === 'function') {
-            translateAll();
-        }
         getDevices();
     });
     $('#refresh-btn').click(() => {
@@ -182,6 +179,9 @@ function getDevices() {
                 console.log('Devices: ' + JSON.stringify(data.result));
                 devices = data.result;
                 showDevices();
+                if (typeof translateAll === 'function') {
+                    translateAll();
+                }
             }
         }
     });
@@ -222,7 +222,7 @@ function getCard(device) {
     html += `   <div style="display:flex;justify-content: center;margin-top: 10px;">`;
     html += `       <span id="${device.id}-alive" class="material-symbols-outlined alive-icon hide-element">wifi_off</span>`;
     html += `       <span id="${device.id}-device-name" style="font-size: 14px;">${device.name}</span>`;
-    html += `       <span id="${device.id}-edit" class="material-symbols-outlined edit-btn">edit</span>`;
+    html += `       <span id="${device.id}-edit" class="material-symbols-outlined edit-btn translateT" title="Edit device name">edit</span>`;
     html += `   </div>`;
     html += `   <div class="lcd-display">`;
     html += '       <div style="margin-left: 4px;padding-top: 5px;">';
@@ -243,19 +243,19 @@ function getCard(device) {
     html += '       </div>';
     html += `   </div>`;
     html += '   <div style="display:flex;justify-content: space-between;margin-bottom: 20px;margin-left: 15px;margin-right: 15px;">';
-    html += `           <a id="${device.id}-on-off-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">power_settings_new</span></a>`;
-    html += `           <a id="${device.id}-display-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">wb_incandescent</span></a>`;
-    html += `           <a id="${device.id}-temperature-unit-btn" class="round-btn-txt ctrl-btn" href="#"><span class="material-symbols-outlined">°C</span></a>`;
+    html += `           <a id="${device.id}-on-off-btn" class="round-btn ctrl-btn translateT" title="Power On/Off" href="#"><span class="material-symbols-outlined">power_settings_new</span></a>`;
+    html += `           <a id="${device.id}-display-btn" class="round-btn ctrl-btn translateT" title="Display On/Off" href="#"><span class="material-symbols-outlined">wb_incandescent</span></a>`;
+    html += `           <a id="${device.id}-temperature-unit-btn" class="round-btn-txt ctrl-btn translateT" title="Temperature unit" href="#"><span class="material-symbols-outlined">°C</span></a>`;
     html += '   </div>';
     html += '   <div style="display:flex;justify-content: center;margin-bottom: 40px;">';
     html += '       <div style="display: flex;flex-direction: column;gap: 55px;">';
-    html += `           <a id="${device.id}-temperature-up-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
-    html += `           <a id="${device.id}-temperature-down-btn" class="round-btn ctrl-btn" href="#"><span class="material-symbols-outlined">expand_more</span></a>`;
+    html += `           <a id="${device.id}-temperature-up-btn" class="round-btn ctrl-btn translateT" title="Increase temperature" href="#"><span class="material-symbols-outlined">expand_less</span></a>`;
+    html += `           <a id="${device.id}-temperature-down-btn" class="round-btn ctrl-btn translateT" title="Decrease temperature" href="#"><span class="material-symbols-outlined">expand_more</span></a>`;
     html += `       </div>`;
     html += '       <div style="display: flex;flex-direction: column;">';
-    html += `           <a id="${device.id}-mode-btn" class="oval-btn ctrl-btn" href="#"><span>Mode</span></a>`;
-    html += `           <a id="${device.id}-fan-btn" class="oval-btn ctrl-btn" href="#"><span>Fan</span></a>`;
-    html += `           <a id="${device.id}-turbo-btn" class="oval-btn ctrl-btn" href="#"><span>Turbo</span></a>`;
+    html += `           <a id="${device.id}-mode-btn" class="oval-btn ctrl-btn translateT" title="Mode" href="#"><span>Mode</span></a>`;
+    html += `           <a id="${device.id}-fan-btn" class="oval-btn ctrl-btn translateT" title="Fan speed" href="#"><span>Fan</span></a>`;
+    html += `           <a id="${device.id}-turbo-btn" class="oval-btn ctrl-btn translateT" title="Turbo On/Off" href="#"><span>Turbo</span></a>`;
     html += '       </div>';
     html += '   </div>';
     html += '</div>';
