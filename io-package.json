@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.6",
+        "version": "1.0.7",
         "news": {
             "0.0.14": {
                 "en": "initial release",
@@ -106,6 +106,19 @@
                 "pl": "Dodano tytuły przycisków i tłumaczenie",
                 "uk": "Додано заголовки кнопок та переклад",
                 "zh-cn": "添加按钮标题和翻译"
+            },
+            "1.0.7": {
+                "en": "Host Google icons locally. Updated dependencies.",
+                "de": "Hosten Sie Google-Symbole lokal. Aktualisierte Abhängigkeiten.",
+                "ru": "Локальные иконки Google. Обновленные зависимости.",
+                "pt": "Hospede ícones do Google localmente. Dependências atualizadas.",
+                "nl": "Host Google-pictogrammen lokaal. Bijgewerkte afhankelijkheden.",
+                "fr": "Hébergez les icônes Google localement. Dépendances mises à jour.",
+                "it": "Ospita le icone di Google localmente. Dipendenze aggiornate.",
+                "es": "Hospede los iconos de Google localmente. Dependencias actualizadas.",
+                "pl": "Hostuj lokalnie ikony Google. Zaktualizowane zależności.",
+                "uk": "Локальні іконки Google. Оновлені залежності.",
+                "zh-cn": "在本地托管 Google 图标。更新的依赖项。"
             }
         },
         "titleLang": {
