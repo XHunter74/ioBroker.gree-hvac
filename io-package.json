@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.0.7",
+        "version": "1.1.0",
         "news": {
-            "1.0.1": {
-                "en": "Implemented value mapping for fan speed parameter",
-                "de": "Ergänzende Wert-Mapping für Lüfterdrehzahlparameter",
-                "ru": "Реализованное преобразование значений для скорости вентилятора",
-                "pt": "Mapeamento de valor implementado para parâmetro de velocidade do ventilador",
-                "nl": "Implementeerde waarde mapping voor ventilatorsnelheidsparameter",
-                "fr": "Mise en œuvre de la cartographie des valeurs pour le paramètre de vitesse du ventilateur",
-                "it": "Mappatura del valore implementata per il parametro velocità del ventilatore",
-                "es": "Cartografía de valor implementada para el parámetro de velocidad del ventilador",
-                "pl": "Wdrożenie mapowania wartości parametru prędkości wentylatora",
-                "uk": "Реалізовано перетворення значення для швидкості вентилятора",
-                "zh-cn": "已执行扇速参数值映射"
-            },
             "1.0.2": {
                 "en": "Added support of Fahrenheit degrees",
                 "de": "Unterstützung von Fahrenheit Grad hinzugefügt",
@@ -93,6 +80,19 @@
                 "pl": "Hostuj lokalnie ikony Google. Zaktualizowane zależności.",
                 "uk": "Локальні іконки Google. Оновлені залежності.",
                 "zh-cn": "在本地托管 Google 图标。更新的依赖项。"
+            },
+            "1.1.0": {
+                "en": "Added the AES-GCM encryption which is needed for some devices with newer firmware versions (e.g. gree model 32776, v1.23)",
+                "de": "Hinzugefügt die AES-GCM-Verschlüsselung, die für einige Geräte mit neueren Firmware-Versionen erforderlich ist (z. B. gree Modell 32776, v1.23)",
+                "ru": "Добавлено шифрование AES-GCM, которое необходимо для некоторых устройств с более новыми версиями прошивки (например, gree модель 32776, v1.23)",
+                "pt": "Adicionada a criptografia AES-GCM que é necessária para alguns dispositivos com versões de firmware mais recentes (por exemplo, modelo gree 32776, v1.23)",
+                "nl": "Toegevoegd de AES-GCM-encryptie die nodig is voor sommige apparaten met nieuwere firmwareversies (bijv. gree model 32776, v1.23)",
+                "fr": "Ajouté le cryptage AES-GCM qui est nécessaire pour certains appareils avec des versions de firmware plus récentes (par exemple, modèle gree 32776, v1.23)",
+                "it": "Aggiunta la crittografia AES-GCM necessaria per alcuni dispositivi con versioni firmware più recenti (ad esempio, modello gree 32776, v1.23)",
+                "es": "Añadida la encriptación AES-GCM que se necesita para algunos dispositivos con versiones de firmware más recientes (por ejemplo, modelo gree 32776, v1.23)",
+                "pl": "Dodano szyfrowanie AES-GCM, które jest wymagane dla niektórych urządzeń z nowszymi wersjami oprogramowania (np. model gree 32776, v1.23)",
+                "uk": "Додано шифрування AES-GCM, яке необхідно для деяких пристроїв з новішими версіями прошивки (наприклад, модель gree 32776, v1.23)",
+                "zh-cn": "添加了AES-GCM加密，这对于某些具有更新固件版本的设备是必需的（例如，gree型号32776，v1.23）"
             }
         },
         "titleLang": {
