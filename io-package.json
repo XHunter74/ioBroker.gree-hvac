@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.1.1",
+        "version": "1.1.2",
         "news": {
             "1.0.3": {
                 "en": "Added refresh devices button on tab page",
@@ -81,7 +81,7 @@
                 "uk": "Додано шифрування AES-GCM, яке необхідно для деяких пристроїв з новішими версіями прошивки (наприклад, модель gree 32776, v1.23)",
                 "zh-cn": "添加了AES-GCM加密，这对于某些具有更新固件版本的设备是必需的（例如，gree型号32776，v1.23）"
             },
-            "1.1.1": {
+            "1.1.2": {
                 "en": "Updated dependencies. Adjusted admin layout.",
                 "de": "Abhängigkeiten aktualisiert. Admin-Layout angepasst.",
                 "ru": "Обновлены зависимости. Модифицирована панель настроек.",
