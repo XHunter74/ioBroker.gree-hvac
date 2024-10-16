@@ -3,5 +3,6 @@
     "pollInterval": "Intervallo di inquinamento in millisecondi",
     "deviceList": "IP del dispositivo",
     "deviceIp": "IP del dispositivo",
-    "enterDeviceIp": "Inserisci l'IP del dispositivo"
+    "enterDeviceIp": "Inserisci l'IP del dispositivo",
+    "Main settings": "Impostazioni principali"
 }

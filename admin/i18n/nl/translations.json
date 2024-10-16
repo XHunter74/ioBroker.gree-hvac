@@ -3,5 +3,6 @@
     "pollInterval": "Berekeninterval in milliseconden",
     "deviceList": "Apparaat-IP's",
     "deviceIp": "Apparaat-IP",
-    "enterDeviceIp": "Voer het apparaat-IP in"
+    "enterDeviceIp": "Voer het apparaat-IP in",
+    "Main settings": "Hoofd instellingen"
 }

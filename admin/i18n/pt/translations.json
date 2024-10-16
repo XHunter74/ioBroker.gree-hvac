@@ -3,5 +3,6 @@
     "pollInterval": "Intervalo de polimento em milissegundos",
     "deviceList": "IPs de dispositivos",
     "deviceIp": "IP do dispositivo",
-    "enterDeviceIp": "Insira o IP do dispositivo"
+    "enterDeviceIp": "Insira o IP do dispositivo",
+    "Main settings": "Configurações principais"
 }

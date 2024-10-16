@@ -3,5 +3,6 @@
     "pollInterval": "Intervalle de scrutin en millisecondes",
     "deviceList": "IP des appareils",
     "deviceIp": "IP de l'appareil",
-    "enterDeviceIp": "Entrez l'adresse IP de l'appareil"
+    "enterDeviceIp": "Entrez l'adresse IP de l'appareil",
+    "Main settings": "Paramètres principaux"
 }

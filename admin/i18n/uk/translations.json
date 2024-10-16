@@ -3,5 +3,6 @@
     "devicelist": "IP пристроїв",
     "pollInterval": "Інтервал опитування в міллісекундах",
     "deviceIp":"IP адреса пристрою",
-    "enterDeviceIp": "Введіть IP адресу пристрою"
+    "enterDeviceIp": "Введіть IP адресу пристрою",
+    "Main settings": "Основні налаштування"
 }

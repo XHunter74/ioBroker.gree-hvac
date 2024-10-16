@@ -3,5 +3,6 @@
     "pollInterval": "投票间隔( 毫秒)",
     "deviceList": "设备IP",
     "deviceIp": "设备IP",
-    "enterDeviceIp": "输入设备IP"
+    "enterDeviceIp": "输入设备IP",
+    "Main settings": "主要设置"
 }

@@ -3,5 +3,6 @@
     "pollInterval": "Intervalo de votación en milisegundos",
     "deviceList": "IP del dispositivo",
     "deviceIp": "IP del dispositivo",
-    "enterDeviceIp": "Ingrese la IP del dispositivo"
+    "enterDeviceIp": "Ingrese la IP del dispositivo",
+    "Main settings": "Configuraciones principales"
 }
