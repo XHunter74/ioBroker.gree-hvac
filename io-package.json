@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.1.0",
+        "version": "1.1.1",
         "news": {
-            "1.0.2": {
-                "en": "Added support of Fahrenheit degrees",
-                "de": "Unterstützung von Fahrenheit Grad hinzugefügt",
-                "ru": "Добавлена поддержка градусов Фаренгейта",
-                "pt": "Adicionado suporte de Fahrenheit graus",
-                "nl": "Toegevoegde ondersteuning van Fahrenheit graden",
-                "fr": "Ajout du soutien des diplômes Fahrenheit",
-                "it": "Aggiunto il supporto di gradi Fahrenheit",
-                "es": "Apoyo añadido a los grados Fahrenheit",
-                "pl": "Dodano wsparcie stopni Fahrenheita",
-                "uk": "Додано підтримку градусів Фаренгейту",
-                "zh-cn": "添加对华氏度的支持"
-            },
             "1.0.3": {
                 "en": "Added refresh devices button on tab page",
                 "de": "Hinzugefügt Refresh-Geräte-Taste auf Tab-Seite",
@@ -93,6 +80,19 @@
                 "pl": "Dodano szyfrowanie AES-GCM, które jest wymagane dla niektórych urządzeń z nowszymi wersjami oprogramowania (np. model gree 32776, v1.23)",
                 "uk": "Додано шифрування AES-GCM, яке необхідно для деяких пристроїв з новішими версіями прошивки (наприклад, модель gree 32776, v1.23)",
                 "zh-cn": "添加了AES-GCM加密，这对于某些具有更新固件版本的设备是必需的（例如，gree型号32776，v1.23）"
+            },
+            "1.1.1": {
+                "en": "Updated dependencies. Adjusted admin layout.",
+                "de": "Abhängigkeiten aktualisiert. Admin-Layout angepasst.",
+                "ru": "Обновлены зависимости. Модифицирована панель настроек.",
+                "pt": "Dependências atualizadas. Layout do administrador ajustado.",
+                "nl": "Bijgewerkte afhankelijkheden. Beheerlay-out aangepast.",
+                "fr": "Dépendances mises à jour. Mise en page de l'administrateur ajustée.",
+                "it": "Dipendenze aggiornate. Layout amministrativo regolato.",
+                "es": "Dependencias actualizadas. Diseño de administrador ajustado.",
+                "pl": "Zaktualizowane zależności. Dostosowano układ administratora.",
+                "uk": "Оновлені залежності. Відкоригована панель налаштуваннь.",
+                "zh-cn": "更新的依赖项。 调整了管理员布局。"
             }
         },
         "titleLang": {
