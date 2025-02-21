@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.1.2",
+        "version": "1.1.3",
         "news": {
-            "1.0.3": {
-                "en": "Added refresh devices button on tab page",
-                "de": "Hinzugefügt Refresh-Geräte-Taste auf Tab-Seite",
-                "ru": "Добавлена кнопка обновления устройств на боковой странице",
-                "pt": "Adicionado botão de dispositivos de atualização na página da guia",
-                "nl": "Toevoegen Vernieuw apparaten knop op tabbladpagina",
-                "fr": "Ajout du bouton de rafraîchissement des appareils sur la page de l'onglet",
-                "it": "Aggiunti i dispositivi di aggiornamento pulsante sulla pagina della scheda",
-                "es": "Botón de dispositivos de actualización añadido en la página de la pestaña",
-                "pl": "Dodano przycisk odświeżania urządzeń na zakładce",
-                "uk": "Додано кнопку оновлення пристроїв на бічній сторінці",
-                "zh-cn": "在标签页上添加更新设备按钮"
-            },
             "1.0.4": {
                 "en": "Code optimization. Bug fixes.",
                 "de": "Codeoptimierung. Fehlerbehebungen.",
@@ -93,6 +80,19 @@
                 "pl": "Zaktualizowane zależności. Dostosowano układ administratora.",
                 "uk": "Оновлені залежності. Відкоригована панель налаштуваннь.",
                 "zh-cn": "更新的依赖项。 调整了管理员布局。"
+            },
+            "1.1.3": {
+                "en": "Updated dependencies",
+                "de": "Abhängigkeiten aktualisiert",
+                "ru": "Обновлены зависимости",
+                "pt": "Dependências atualizadas",
+                "nl": "Bijgewerkte afhankelijkheden",
+                "fr": "Dépendances mises à jour",
+                "it": "Dipendenze aggiornate",
+                "es": "Dependencias actualizadas",
+                "pl": "Zaktualizowane zależności",
+                "uk": "Оновлені залежності",
+                "zh-cn": "更新的依赖项"
             }
         },
         "titleLang": {
