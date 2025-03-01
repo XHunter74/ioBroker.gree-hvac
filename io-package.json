@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "1.1.4",
+        "version": "1.1.5",
         "news": {
             "1.0.4": {
                 "en": "Code optimization. Bug fixes.",
@@ -81,7 +81,7 @@
                 "uk": "Оновлені залежності. Відкоригована панель налаштуваннь.",
                 "zh-cn": "更新的依赖项。 调整了管理员布局。"
             },
-            "1.1.4": {
+            "1.1.5": {
                 "en": "Updated dependencies",
                 "de": "Abhängigkeiten aktualisiert",
                 "ru": "Обновлены зависимости",
