@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "news": {
-            "1.0.5": {
-                "en": "Added time field",
-                "de": "Zeitfeld hinzugefügt",
-                "ru": "Добавлено поле времени",
-                "pt": "Adicionado campo de tempo",
-                "nl": "Tijdveld toegevoegd",
-                "fr": "Champ de temps ajouté",
-                "it": "Aggiunto campo di tempo",
-                "es": "Campo de tiempo añadido",
-                "pl": "Dodano pole czasu",
-                "uk": "Додано поле часу",
-                "zh-cn": "添加时间字段"
-            },
             "1.0.6": {
                 "en": "Added button titles and translation",
                 "de": "Hinzugefügte Schaltflächentitel und Übersetzung",
@@ -93,6 +80,19 @@
                 "pl": "BREAKING! Zmieniona minimalna wersja nodejs na 20. Zaktualizowane zależności.",
                 "uk": "BREAKING! Змінено мінімальну версію nodejs на 20. Оновлені залежності.",
                 "zh-cn": "重大更新！将 nodejs 的最低版本更改为 20。更新了依赖项。"
+            },
+            "2.0.1": {
+                "en": "Updated dependencies",
+                "de": "Abhängigkeiten aktualisiert",
+                "ru": "Обновлены зависимости",
+                "pt": "Dependências atualizadas",
+                "nl": "Bijgewerkte afhankelijkheden",
+                "fr": "Dépendances mises à jour",
+                "it": "Dipendenze aggiornate",
+                "es": "Dependencias actualizadas",
+                "pl": "Zaktualizowane zależności",
+                "uk": "Оновлені залежності",
+                "zh-cn": "更新的依赖项"
             }
         },
         "titleLang": {
