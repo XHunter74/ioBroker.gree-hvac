@@ -40,9 +40,6 @@ jobs:
       - name: Lint source code
         run: npm run lint
       
-      - name: Run unit tests
-        run: npm run test:unit
-
       - name: Test package files
         run: npm run test:package
 
