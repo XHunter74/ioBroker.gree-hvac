@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.2",
+        "version": "2.0.3",
         "news": {
             "1.0.6": {
                 "en": "Added button titles and translation",
@@ -81,7 +81,7 @@
                 "uk": "BREAKING! Змінено мінімальну версію nodejs на 20. Оновлені залежності.",
                 "zh-cn": "重大更新！将 nodejs 的最低版本更改为 20。更新了依赖项。"
             },
-            "2.0.2": {
+            "2.0.3": {
                 "en": "Updated dependencies",
                 "de": "Abhängigkeiten aktualisiert",
                 "ru": "Обновлены зависимости",
