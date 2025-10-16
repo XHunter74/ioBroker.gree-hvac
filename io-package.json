@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.3",
+        "version": "2.0.4",
         "news": {
-            "1.0.6": {
-                "en": "Added button titles and translation",
-                "de": "Hinzugefügte Schaltflächentitel und Übersetzung",
-                "ru": "Добавлены заголовки кнопок и перевод",
-                "pt": "Adicionado títulos de botões e tradução",
-                "nl": "Knop titels en vertaling toegevoegd",
-                "fr": "Ajout de titres de boutons et de traduction",
-                "it": "Aggiunti titoli dei pulsanti e traduzione",
-                "es": "Añadido títulos de botones y traducción",
-                "pl": "Dodano tytuły przycisków i tłumaczenie",
-                "uk": "Додано заголовки кнопок та переклад",
-                "zh-cn": "添加按钮标题和翻译"
-            },
             "1.0.7": {
                 "en": "Host Google icons locally. Updated dependencies.",
                 "de": "Hosten Sie Google-Symbole lokal. Aktualisierte Abhängigkeiten.",
@@ -93,6 +80,19 @@
                 "pl": "Zaktualizowane zależności",
                 "uk": "Оновлені залежності",
                 "zh-cn": "更新的依赖项"
+            },
+            "2.0.4": {
+                "en": "Migration to Trusted Publishing",
+                "de": "Migration zu Trusted Publishing",
+                "ru": "Миграция на Trusted Publishing",
+                "pt": "Migração para Publicação Confiável",
+                "nl": "Migratie naar Trusted Publishing",
+                "fr": "Migration vers Trusted Publishing",
+                "it": "Migrazione a Trusted Publishing",
+                "es": "Migración a Publicación Confiable",
+                "pl": "Migracja do Trusted Publishing",
+                "uk": "Міграція до Trusted Publishing",
+                "zh-cn": "迁移到受信任的发布"
             }
         },
         "titleLang": {
