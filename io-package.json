@@ -3,19 +3,6 @@
         "name": "gree-hvac",
         "version": "2.0.4",
         "news": {
-            "1.0.7": {
-                "en": "Host Google icons locally. Updated dependencies.",
-                "de": "Hosten Sie Google-Symbole lokal. Aktualisierte Abhängigkeiten.",
-                "ru": "Локальные иконки Google. Обновленные зависимости.",
-                "pt": "Hospede ícones do Google localmente. Dependências atualizadas.",
-                "nl": "Host Google-pictogrammen lokaal. Bijgewerkte afhankelijkheden.",
-                "fr": "Hébergez les icônes Google localement. Dépendances mises à jour.",
-                "it": "Ospita le icone di Google localmente. Dipendenze aggiornate.",
-                "es": "Hospede los iconos de Google localmente. Dependencias actualizadas.",
-                "pl": "Hostuj lokalnie ikony Google. Zaktualizowane zależności.",
-                "uk": "Локальні іконки Google. Оновлені залежності.",
-                "zh-cn": "在本地托管 Google 图标。更新的依赖项。"
-            },
             "1.1.0": {
                 "en": "Added the AES-GCM encryption which is needed for some devices with newer firmware versions (e.g. gree model 32776, v1.23)",
                 "de": "Hinzugefügt die AES-GCM-Verschlüsselung, die für einige Geräte mit neueren Firmware-Versionen erforderlich ist (z. B. gree Modell 32776, v1.23)",
@@ -93,6 +80,19 @@
                 "pl": "Migracja do Trusted Publishing",
                 "uk": "Міграція до Trusted Publishing",
                 "zh-cn": "迁移到受信任的发布"
+            },
+            "2.0.5": {
+                "en": "Added request timeout property.",
+                "de": "Eigenschaft für Anforderungs-Timeout hinzugefügt.",
+                "ru": "Добавлено свойство тайм-аута запроса.",
+                "pt": "Adicionada propriedade de tempo limite de solicitação.",
+                "nl": "Toegevoegd verzoek time-out eigenschap.",
+                "fr": "Ajout de la propriété de délai d'attente de la requête.",
+                "it": "Aggiunta la proprietà di timeout della richiesta.",
+                "es": "Se agregó la propiedad de tiempo de espera de la solicitud.",
+                "pl": "Dodano właściwość limitu czasu żądania.",
+                "uk": "Додано поле налаштування для тайм-ауту запиту.",
+                "zh-cn": "添加了请求超时属性。"
             }
         },
         "titleLang": {
@@ -188,7 +188,8 @@
     },
     "native": {
         "devicelist": [],
-        "pollInterval": 5000
+        "pollInterval": 5000,
+        "requestTimeoutMs": 1000
     },
     "objects": [],
     "instanceObjects": [

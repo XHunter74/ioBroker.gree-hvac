@@ -83,7 +83,7 @@ class GreeHvac extends utils.Adapter {
 
             this.subscribeStates('*');
 
-            this.deviceManager = new DeviceManager(devices, this.log);
+            this.deviceManager = new DeviceManager(devices, this.log, this.config.requestTimeoutMs);
 
             this.deviceManager.on('device_bound', async (deviceId, device) => {
                 try {

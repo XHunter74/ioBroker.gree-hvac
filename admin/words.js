@@ -43,6 +43,19 @@ systemDictionary = {
     "uk": "Інтервал опитування в мілісекундах",
     "zh-cn": "投票间隔( 毫秒)"
   },
+  'requestTimeoutMs': {
+    "en": "Request timeout in milliseconds",
+    "de": "Anforderungs-Timeout in Millisekunden",
+    "ru": "Тайм-аут запроса в миллисекундах",
+    "pt": "Tempo limite de solicitação em milissegundos",
+    "nl": "Aanvraag time-out in milliseconden",
+    "fr": "Délai d'attente de la demande en millisecondes",
+    "it": "Timeout di richiesta in millisecondi",
+    "es": "Tiempo de espera de la solicitud en milisegundos",
+    "pl": "Limit czasu żądania w milisekundach",
+    "uk": "Тайм-аут запиту в мілісекундах",
+    "zh-cn": "请求超时( 毫秒)"
+  },
   'Gree-HVAC adapter': {
     "en": "Gree-HVAC adapter",
     "de": "Gree-HVAC-Adapter",

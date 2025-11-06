@@ -44,6 +44,20 @@
                     "newLine": true,
                     "step": 1000,
                     "default": 5000
+                },
+                "requestTimeoutMs": {
+                    "type": "number",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2,
+                    "label": "requestTimeoutMs",
+                    "min": 1000,
+                    "max": 10000,
+                    "newLine": true,
+                    "step": 100,
+                    "default": 1000
                 }
             }
         }
