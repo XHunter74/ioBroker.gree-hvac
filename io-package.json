@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.4",
+        "version": "2.0.5",
         "news": {
             "1.1.0": {
                 "en": "Added the AES-GCM encryption which is needed for some devices with newer firmware versions (e.g. gree model 32776, v1.23)",
