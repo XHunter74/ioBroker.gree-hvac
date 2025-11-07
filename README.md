@@ -23,7 +23,7 @@ All devices which can be controlled via EWPE Smart app should be supported, incl
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
-### 2.0.5 (2025-11-06)
+### 2.0.6 (2025-11-07)
  - Added request timeout property.
 ### 2.0.4 (2025-10-16)
  - Migration to Trusted Publishing

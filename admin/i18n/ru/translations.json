@@ -4,5 +4,6 @@
     "pollInterval": "Интервал опроса в миллисекундах",
     "deviceIp":"IP адрес устройства",
     "enterDeviceIp": "Введите IP адрес устройства",
-    "Main settings": "Основные настройки"
+    "Main settings": "Основные настройки",
+    "requestTimeoutMs": "Тайм-аут запроса в миллисекундах"
 }

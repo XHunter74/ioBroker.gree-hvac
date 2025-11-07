@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.5",
+        "version": "2.0.6",
         "news": {
             "1.1.0": {
                 "en": "Added the AES-GCM encryption which is needed for some devices with newer firmware versions (e.g. gree model 32776, v1.23)",
@@ -81,7 +81,7 @@
                 "uk": "Міграція до Trusted Publishing",
                 "zh-cn": "迁移到受信任的发布"
             },
-            "2.0.5": {
+            "2.0.6": {
                 "en": "Added request timeout property.",
                 "de": "Eigenschaft für Anforderungs-Timeout hinzugefügt.",
                 "ru": "Добавлено свойство тайм-аута запроса.",

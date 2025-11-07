@@ -4,5 +4,6 @@
     "deviceList": "IP del dispositivo",
     "deviceIp": "IP del dispositivo",
     "enterDeviceIp": "Ingrese la IP del dispositivo",
-    "Main settings": "Configuraciones principales"
+    "Main settings": "Configuraciones principales",
+    "requestTimeoutMs": "Tiempo de espera de la solicitud en milisegundos"
 }

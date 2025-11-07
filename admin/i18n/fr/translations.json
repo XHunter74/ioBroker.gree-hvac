@@ -4,5 +4,6 @@
     "deviceList": "IP des appareils",
     "deviceIp": "IP de l'appareil",
     "enterDeviceIp": "Entrez l'adresse IP de l'appareil",
-    "Main settings": "Paramètres principaux"
+    "Main settings": "Paramètres principaux",
+    "requestTimeoutMs": "Délai d'attente de la requête en millisecondes"
 }

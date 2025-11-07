@@ -4,5 +4,6 @@
     "deviceList": "Adresy IP urządzeń",
     "deviceIp": "Adres IP urządzenia",
     "enterDeviceIp": "Wprowadź adres IP urządzenia",
-    "Main settings": "Ustawienia główne"
+    "Main settings": "Ustawienia główne",
+    "requestTimeoutMs": "Limit czasu żądania w milisekundach"
 }
