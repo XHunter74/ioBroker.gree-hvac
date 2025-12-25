@@ -167,8 +167,7 @@
                 "uk": "Адаптер Gree-HVAC",
                 "zh-cn": "适应器 Gree-HVAC"
             },
-            "link": "",
-            "fa-icon": "info"
+            "link": ""
         },
         "plugins": {
             "sentry": {
