@@ -1,47 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.6",
+        "version": "2.0.7",
         "news": {
-            "1.1.0": {
-                "en": "Added the AES-GCM encryption which is needed for some devices with newer firmware versions (e.g. gree model 32776, v1.23)",
-                "de": "Hinzugefügt die AES-GCM-Verschlüsselung, die für einige Geräte mit neueren Firmware-Versionen erforderlich ist (z. B. gree Modell 32776, v1.23)",
-                "ru": "Добавлено шифрование AES-GCM, которое необходимо для некоторых устройств с более новыми версиями прошивки (например, gree модель 32776, v1.23)",
-                "pt": "Adicionada a criptografia AES-GCM que é necessária para alguns dispositivos com versões de firmware mais recentes (por exemplo, modelo gree 32776, v1.23)",
-                "nl": "Toegevoegd de AES-GCM-encryptie die nodig is voor sommige apparaten met nieuwere firmwareversies (bijv. gree model 32776, v1.23)",
-                "fr": "Ajouté le cryptage AES-GCM qui est nécessaire pour certains appareils avec des versions de firmware plus récentes (par exemple, modèle gree 32776, v1.23)",
-                "it": "Aggiunta la crittografia AES-GCM necessaria per alcuni dispositivi con versioni firmware più recenti (ad esempio, modello gree 32776, v1.23)",
-                "es": "Añadida la encriptación AES-GCM que se necesita para algunos dispositivos con versiones de firmware más recientes (por ejemplo, modelo gree 32776, v1.23)",
-                "pl": "Dodano szyfrowanie AES-GCM, które jest wymagane dla niektórych urządzeń z nowszymi wersjami oprogramowania (np. model gree 32776, v1.23)",
-                "uk": "Додано шифрування AES-GCM, яке необхідно для деяких пристроїв з новішими версіями прошивки (наприклад, модель gree 32776, v1.23)",
-                "zh-cn": "添加了AES-GCM加密，这对于某些具有更新固件版本的设备是必需的（例如，gree型号32776，v1.23）"
-            },
-            "1.1.2": {
-                "en": "Updated dependencies. Adjusted admin layout.",
-                "de": "Abhängigkeiten aktualisiert. Admin-Layout angepasst.",
-                "ru": "Обновлены зависимости. Модифицирована панель настроек.",
-                "pt": "Dependências atualizadas. Layout do administrador ajustado.",
-                "nl": "Bijgewerkte afhankelijkheden. Beheerlay-out aangepast.",
-                "fr": "Dépendances mises à jour. Mise en page de l'administrateur ajustée.",
-                "it": "Dipendenze aggiornate. Layout amministrativo regolato.",
-                "es": "Dependencias actualizadas. Diseño de administrador ajustado.",
-                "pl": "Zaktualizowane zależności. Dostosowano układ administratora.",
-                "uk": "Оновлені залежності. Відкоригована панель налаштуваннь.",
-                "zh-cn": "更新的依赖项。 调整了管理员布局。"
-            },
-            "1.1.5": {
-                "en": "Updated dependencies",
-                "de": "Abhängigkeiten aktualisiert",
-                "ru": "Обновлены зависимости",
-                "pt": "Dependências atualizadas",
-                "nl": "Bijgewerkte afhankelijkheden",
-                "fr": "Dépendances mises à jour",
-                "it": "Dipendenze aggiornate",
-                "es": "Dependencias actualizadas",
-                "pl": "Zaktualizowane zależności",
-                "uk": "Оновлені залежності",
-                "zh-cn": "更新的依赖项"
-            },
             "2.0.0": {
                 "en": "BREAKING! Changed the minimal version of nodejs to 20. Updated dependencies.",
                 "de": "BREAKING! Minimale Version von nodejs auf 20 geändert. Abhängigkeiten aktualisiert.",
@@ -93,6 +54,19 @@
                 "pl": "Dodano właściwość limitu czasu żądania.",
                 "uk": "Додано поле налаштування для тайм-ауту запиту.",
                 "zh-cn": "添加了请求超时属性。"
+            },
+            "2.0.7": {
+                "en": "Updated dependencies.",
+                "de": "Abhängigkeiten aktualisiert.",
+                "ru": "Обновлены зависимости.",
+                "pt": "Dependências atualizadas.",
+                "nl": "Bijgewerkte afhankelijkheden.",
+                "fr": "Dépendances mises à jour.",
+                "it": "Dipendenze aggiornate.",
+                "es": "Dependencias actualizadas.",
+                "pl": "Zaktualizowane zależności.",
+                "uk": "Оновлені залежності.",
+                "zh-cn": "更新的依赖项。"
             }
         },
         "titleLang": {
