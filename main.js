@@ -5,7 +5,7 @@ const propertiesMap = require('./lib/properties_map');
 const DeviceState = require('./lib/device-state');
 
 const utils = require('@iobroker/adapter-core');
-const AdapterUtils = require('iobroker.gree-hvac/lib/adapter-utils');
+const AdapterUtils = require('./lib/adapter-utils');
 
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
