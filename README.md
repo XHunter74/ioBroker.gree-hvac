@@ -46,6 +46,12 @@ All devices which can be controlled via EWPE Smart app should be supported, incl
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
+## Acknowledgments
+- [tomikaa87](https://github.com/tomikaa87) for reverse-engineering the Gree protocol
+- [stas-demydiuk](https://github.com/stas-demydiuk) for code of DeviceManager
+- Sizenko Alexander for Digital-7 fonts
+- [cont1nuity] for adding AES-GCM encryption
+
 ## License
 MIT License
 
@@ -68,9 +74,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-## Acknowledgments
-- [tomikaa87](https://github.com/tomikaa87) for reverse-engineering the Gree protocol
-- [stas-demydiuk](https://github.com/stas-demydiuk) for code of DeviceManager
-- Sizenko Alexander for Digital-7 fonts
-- [cont1nuity] for adding AES-GCM encryption
