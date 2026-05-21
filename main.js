@@ -11,8 +11,8 @@ const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
 const CheckDevicesTimeoutMs = 1000;
 const CheckDevicesTimeout = 'CheckDevices';
-const MinCelciusTemperature = 16;
-const MaxCelciusTemperature = 30;
+const MinCelsiusTemperature = 16;
+const MaxCelsiusTemperature = 30;
 const MinFahrenheitTemperature = 60;
 const MaxFahrenheitTemperature = 86;
 
@@ -123,12 +123,9 @@ class GreeHvac extends utils.Adapter {
 
     checkDevices() {
         this.timeouts[CheckDevicesTimeout] = this.setTimeout(async () => {
-            const inactiveDevices = this.activeDevices.filter(device => device.isActive === false);
-            if (inactiveDevices.length > 0) {
-                await this.setStateAsync('info.connection', { val: false, ack: true });
-            } else {
-                await this.setStateAsync('info.connection', { val: true, ack: true });
-            }
+            const allActive = this.activeDevices.length > 0 &&
+                this.activeDevices.every(device => device.isActive === true);
+            await this.setStateAsync('info.connection', { val: allActive, ack: true });
             this.clearTimeout(this.timeouts[CheckDevicesTimeout]);
             this.checkDevices();
         }, CheckDevicesTimeoutMs);
@@ -271,6 +268,9 @@ class GreeHvac extends utils.Adapter {
             for (const deviceId in this.timeouts) {
                 this.clearTimeout(this.timeouts[deviceId]);
             }
+            if (this.deviceManager) {
+                this.deviceManager.close();
+            }
             callback();
         } catch (error) {
             this.log.error(`Error in onUnload: ${error}`);
@@ -305,8 +305,8 @@ class GreeHvac extends utils.Adapter {
     }
 
     async onTemperatureUnitChange(devicePath, temperatureUnit) {
-        const temperature = Number((await this.getStateAsync(`${devicePath}.target-temperature`)).val);
-        const roomTemperature = Number((await this.getStateAsync(`${devicePath}.room-temperature`)).val);
+        const temperature = Number((await this.getStateAsync(`${devicePath}.target-temperature`))?.val ?? 0);
+        const roomTemperature = Number((await this.getStateAsync(`${devicePath}.room-temperature`))?.val ?? 0);
         if (temperatureUnit === 0) {
             let celsius = AdapterUtils.fahrenheitToCelsius(temperature);
             await this.setStateAsync(`${devicePath}.target-temperature`, celsius, true);
@@ -429,11 +429,11 @@ class GreeHvac extends utils.Adapter {
             const command = obj.message.command;
             const deviceId = obj.message.deviceId;
             let state;
-            const powerState = (await this.getStateAsync(`${deviceId}.power`)).val;
-            const isAlive = (await this.getStateAsync(`${deviceId}.alive`)).val;
-            const temperatureUnit = (await this.getStateAsync(`${deviceId}.temperature-unit`)).val;
-            let minTemperature = MinCelciusTemperature;
-            let maxTemperature = MaxCelciusTemperature;
+            const powerState = (await this.getStateAsync(`${deviceId}.power`))?.val;
+            const isAlive = (await this.getStateAsync(`${deviceId}.alive`))?.val;
+            const temperatureUnit = (await this.getStateAsync(`${deviceId}.temperature-unit`))?.val ?? 0;
+            let minTemperature = MinCelsiusTemperature;
+            let maxTemperature = MaxCelsiusTemperature;
             if (temperatureUnit === 1) {
                 minTemperature = MinFahrenheitTemperature;
                 maxTemperature = MaxFahrenheitTemperature;
@@ -486,7 +486,7 @@ class GreeHvac extends utils.Adapter {
                     }
                     state = (await this.getStateAsync(`${deviceId}.fan-speed`)).val;
                     newState = Number(state) + 1;
-                    if (newState > 3) newState = 0;
+                    if (newState > 4) newState = 0;
                     await this.setStateAsync(`${deviceId}.fan-speed`, newState);
                     break;
                 case 'turbo-btn':
@@ -553,7 +553,7 @@ class GreeHvac extends utils.Adapter {
         const devicesInfo = [];
         for (let i = 0; i < deviceObjects.length; i++) {
             const deviceItem = deviceObjects[i];
-            const deviceInfoState = (await this.getStateAsync(`${deviceItem.id}.deviceInfo`)).val.toString();
+            const deviceInfoState = ((await this.getStateAsync(`${deviceItem.id}.deviceInfo`))?.val ?? '{}').toString();
             const deviceObject = JSON.parse(deviceInfoState);
             const deviceInfo = {
                 id: deviceObject.mac,
@@ -563,7 +563,7 @@ class GreeHvac extends utils.Adapter {
             for (let j = 0; j < propertiesMap.length; j++) {
                 try {
                     const property = propertiesMap[j];
-                    const state = (await this.getStateAsync(`${deviceItem.id}.${property.name}`)).val;
+                    const state = (await this.getStateAsync(`${deviceItem.id}.${property.name}`))?.val;
                     deviceInfo[property.name] = state;
                 } catch { }// eslint-disable-line no-empty
             }
