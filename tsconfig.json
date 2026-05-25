@@ -5,17 +5,14 @@
         "module": "CommonJS",
         "moduleResolution": "node",
         "ignoreDeprecations": "6.0",
-        "outDir": "build",
-        "rootDir": "src",
-        "declaration": true,
-        "declarationMap": true,
-        "sourceMap": true,
+        "noEmit": true,
         "strict": true,
         "noImplicitAny": true,
         "useUnknownInCatchVariables": false,
         "esModuleInterop": true,
         "resolveJsonModule": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "sourceMap": true
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "build"]
