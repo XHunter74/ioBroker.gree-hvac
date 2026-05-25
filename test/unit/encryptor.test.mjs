@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { encryptV1, decryptV1, encryptV2, decryptV2, defaultKeyGCM } from '../../lib/encryptor.js';
+import { encryptV1, decryptV1, encryptV2, decryptV2, defaultKeyGCM } from '../../build/lib/encryptor.js';
 
 describe('Encrypt and Decrypt data using AES-128-ECB', () => {
     const expectedEncryptedData = 'LP24Ek0OaYogxs3iQLjL4CVWHqmPoWzCNdstE6VtRN5YT1PXPBDouOPiWHaG4G8lz22fUZtUbkblUYF5BzlKDV9xeQzMlsaP4RKBtrnsDrPgJXA+/2/qaGLK2Z7N/04mLjfzIBDIkDxmTYsl4aiW1+80HbfgK3MNVtBb+mRtQFwvWGtrb35TAKQLbuUeHhrjkywWYwaOwxo65kKReDaAYU+t/W6ao6KLeI6AQs8sVr6ZbdEmdMsvWjDwsWTPw4iozbbXHI8ghbocDlA7fUL03g==';

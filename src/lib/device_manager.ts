@@ -1,31 +1,33 @@
-const EventEmitter = require('node:events');
-const Connection = require('./connection');
-const { defaultKey, defaultKeyGCM } = require('./encryptor');
-const TEMPERATURE_SENSOR_OFFSET = -40;
+import { EventEmitter } from 'node:events';
+import * as dgram from 'node:dgram';
+import { Connection } from './connection';
+import { defaultKey, defaultKeyGCM } from './encryptor';
+import type { Device, DeviceStatus } from './types';
 
 // https://github.com/tomikaa87/gree-remote
 const statusKeys = [
     'Pow', 'Mod', 'TemUn', 'SetTem', 'TemRec', 'WdSpd', 'Air',
     'Blo', 'Health', 'SwhSlp', 'Lig', 'SwingLfRig', 'SwUpDn',
-    'Quiet', 'Tur', 'StHt', 'SvSt', 'TemSen', 'time'
+    'Quiet', 'Tur', 'StHt', 'SvSt', 'TemSen', 'time',
 ];
 
+const TEMPERATURE_SENSOR_OFFSET = -40;
 const DeviceScanTimeoutMs = 5000;
 
-class DeviceManager extends EventEmitter {
+export class DeviceManager extends EventEmitter {
+    private logger: ioBroker.Logger;
+    private connection: Connection;
+    private devices: Record<string, Device> = {};
 
-    logger;
-
-    constructor(devicesList, logger, requestTimeoutMs = 1000) {
+    constructor(devicesList: string, logger: ioBroker.Logger, requestTimeoutMs = 1000) {
         super();
         this.logger = logger;
         this.connection = new Connection(devicesList, logger, requestTimeoutMs);
-        this.devices = {};
         this.rescanDevices(devicesList);
         this.connection.on('dev', this._registerDevice.bind(this));
     }
 
-    rescanDevices(devicesList) {
+    rescanDevices(devicesList: string): void {
         const rescanTimeout = setTimeout(() => {
             const items = devicesList.split(';');
             const readyDevices = Object.keys(this.devices).map((key) => this.devices[key].address);
@@ -36,39 +38,41 @@ class DeviceManager extends EventEmitter {
             const addresses = rescanItems.join(';');
             try {
                 this.connection.scan(addresses);
-            } catch { } // eslint-disable-line no-empty
+            } catch { /* ignore scan errors */ }
             clearTimeout(rescanTimeout);
             this.rescanDevices(devicesList);
         }, DeviceScanTimeoutMs);
     }
 
-    async sendRegisterDevice(message, rinfo, encVersion) {
-        const deviceId = message.cid || message.mac;
+    async sendRegisterDevice(message: Record<string, unknown>, rinfo: dgram.RemoteInfo, encVersion: 1 | 2): Promise<Device | null> {
+        const deviceId = (message.cid || message.mac) as string;
         this.logger.info(`New device found: ${message.name} (mac: ${deviceId}), binding encVer ${encVersion}...`);
         const { address, port } = rinfo;
 
         try {
-            const { key } = await this.connection.sendRequest(address, port, {
+            const response = await this.connection.sendRequest(address, port, {
                 cid: 'app',
                 tcid: deviceId,
                 mac: deviceId,
                 t: 'bind',
-                uid: 0
+                uid: 0,
             }, encVersion);
 
+            const key = response.key;
+
             if (key) {
-                const device = {
+                const device: Device = {
                     ...message,
+                    mac: message.mac as string,
+                    name: message.name as string,
                     address,
                     port,
-                    key,
+                    key: key as string,
                     encVersion,
-                    t: undefined
                 };
 
                 this.devices[deviceId] = device;
-
-                this.connection.registerKey(rinfo.address, key);
+                this.connection.registerKey(rinfo.address, key as string);
                 this.connection.registerEncVersion(address, encVersion);
 
                 this.emit('device_bound', deviceId, device);
@@ -78,44 +82,44 @@ class DeviceManager extends EventEmitter {
             }
             return null;
         } catch (e) {
-            this.logger.error(`Failed to bind device ${deviceId}: ${e.message}`);
-            this.logger.error(e.stack);
+            this.logger.error(`Failed to bind device ${deviceId}: ${(e as Error).message}`);
+            this.logger.error((e as Error).stack ?? String(e));
             return null;
         }
     }
 
-    async _registerDevice(message, rinfo) {
+    async _registerDevice(message: Record<string, unknown>, rinfo: dgram.RemoteInfo): Promise<Device | null | undefined> {
         let encVersion = this.connection.getEncVersion(rinfo.address);
-        let device;
+        let device: Device | null;
         try {
             device = await this.sendRegisterDevice(message, rinfo, encVersion);
             if (!device) {
-                this.logger.info(`Registering failed, trying next encVer...`);
-                this.connection.registerEncVersion(rinfo.address, (encVersion) % 2 + 1); //increase encryption version
+                this.logger.info('Registering failed, trying next encVer...');
+                this.connection.registerEncVersion(rinfo.address, (encVersion % 2 + 1) as 1 | 2);
                 encVersion = this.connection.getEncVersion(rinfo.address);
-                //set proper default keys for binding
-                if (encVersion == 1) {
+                if (encVersion === 1) {
                     this.connection.registerKey(rinfo.address, defaultKey);
-                } else if (encVersion == 2) {
+                } else if (encVersion === 2) {
                     this.connection.registerKey(rinfo.address, defaultKeyGCM);
                 }
                 device = await this.sendRegisterDevice(message, rinfo, encVersion);
             }
         } catch (e) {
-            this.logger.error(e.stack);
+            this.logger.error((e as Error).stack ?? String(e));
+            return undefined;
         }
         return device;
     }
 
-    close() {
+    close(): void {
         this.connection.close();
     }
 
-    getDevices() {
+    getDevices(): Device[] {
         return Object.values(this.devices);
     }
 
-    async getDeviceStatus(deviceId) {
+    async getDeviceStatus(deviceId: string): Promise<DeviceStatus> {
         const device = this.devices[deviceId];
 
         if (!device) {
@@ -125,24 +129,27 @@ class DeviceManager extends EventEmitter {
         const payload = {
             cols: statusKeys,
             mac: device.mac,
-            t: 'status'
+            t: 'status',
         };
 
         const response = await this.connection.sendRequest(device.address, device.port, payload);
-        const deviceStatus = response.cols.reduce((acc, key, index) => ({
+        const cols = response.cols as string[];
+        const dat = response.dat as (number | string | boolean)[];
+
+        const deviceStatus: DeviceStatus = cols.reduce((acc, key, index) => ({
             ...acc,
-            [key]: response.dat[index]
+            [key]: dat[index],
         }), {});
 
         if ('TemSen' in deviceStatus) {
-            deviceStatus['TemSen'] += TEMPERATURE_SENSOR_OFFSET;
+            deviceStatus['TemSen'] = (deviceStatus['TemSen'] as number) + TEMPERATURE_SENSOR_OFFSET;
         }
 
         this.emit('device_status', deviceId, deviceStatus);
         return deviceStatus;
     }
 
-    async setDeviceState(deviceId, state) {
+    async setDeviceState(deviceId: string, state: Record<string, number | string | boolean>): Promise<DeviceStatus | null> {
         const device = this.devices[deviceId];
 
         if (!device) {
@@ -153,18 +160,19 @@ class DeviceManager extends EventEmitter {
             mac: device.mac,
             opt: Object.keys(state),
             p: Object.values(state),
-            t: 'cmd'
+            t: 'cmd',
         };
 
         const response = await this.connection.sendRequest(device.address, device.port, payload);
-        const deviceStatus = response.opt.reduce((acc, key, index) => ({
+        const opt = response.opt as string[];
+        const p = response.p as (number | string | boolean)[];
+
+        const deviceStatus: DeviceStatus = opt.reduce((acc, key, index) => ({
             ...acc,
-            [key]: response.p[index]
+            [key]: p[index],
         }), {});
 
         this.emit('device_status', deviceId, deviceStatus);
         return deviceStatus;
     }
 }
-
-module.exports = DeviceManager;

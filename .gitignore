@@ -25,3 +25,4 @@ iobroker-data/
 lib/img/
 !admin/fonts
 .commitinfo
+build/

@@ -1,11 +1,20 @@
-class PropertyMapItem {
-    name = '';
-    hvacName = '';
-    definition = '';
-    fromConverter = null;
-    toConverter = null;
+export type ConverterFunction = (values: Record<string, unknown>, value: unknown) => unknown;
+export type PayloadConverterFunction = (payload: Record<string, number | string | boolean>) => Record<string, number | string | boolean>;
 
-    constructor(name, hvacName, definition, fromConverter = null, toConverter = null) {
+export class PropertyMapItem {
+    name: string;
+    hvacName: string;
+    definition: string;
+    fromConverter: ConverterFunction | null;
+    toConverter: PayloadConverterFunction | null;
+
+    constructor(
+        name: string,
+        hvacName: string,
+        definition: string,
+        fromConverter: ConverterFunction | null = null,
+        toConverter: PayloadConverterFunction | null = null,
+    ) {
         this.name = name;
         this.hvacName = hvacName;
         this.definition = definition;
@@ -13,13 +22,28 @@ class PropertyMapItem {
         this.toConverter = toConverter;
     }
 
-    isReadOnly() {
-        const definition = JSON.parse(this.definition);
+    isReadOnly(): boolean {
+        const definition = JSON.parse(this.definition) as { common: { write?: boolean } };
         return !definition.common.write;
     }
 }
 
-const propertiesMap = [
+function temperatureConverter(values: Record<string, unknown>, value: unknown): unknown {
+    const tempUnit = values['TemUn'] as number;
+    if (tempUnit === 0) {
+        return value;
+    }
+    let fahrenheitValue = (value as number) * 1.8 + 32;
+    const tempRec = values['TemRec'] as number;
+    if (tempRec === 0) {
+        fahrenheitValue = Math.floor(fahrenheitValue);
+    } else {
+        fahrenheitValue = Math.ceil(fahrenheitValue);
+    }
+    return fahrenheitValue;
+}
+
+const propertiesMap: PropertyMapItem[] = [
     new PropertyMapItem('power', 'Pow',
         '{"type": "state", ' +
         '"common": { ' +
@@ -84,8 +108,8 @@ const propertiesMap = [
         temperatureConverter,
         (payload) => {
             if (payload['TemUn'] === 1) {
-                const celsius = Math.round((payload['SetTem'] - 32) * 5 / 9);
-                const tempRec = (((payload['SetTem'] - 32) * 5 / 9) - celsius) >= 0 ? 1 : 0;
+                const celsius = Math.round(((payload['SetTem'] as number) - 32) * 5 / 9);
+                const tempRec = ((((payload['SetTem'] as number) - 32) * 5 / 9) - celsius) >= 0 ? 1 : 0;
                 payload['TemRec'] = tempRec;
                 payload['SetTem'] = celsius;
             }
@@ -330,22 +354,7 @@ const propertiesMap = [
         '}, ' +
         '"native": {} ' +
         '}'
-    )
+    ),
 ];
 
-function temperatureConverter(values, value) {
-    const tempUnit = values['TemUn'];
-    if (tempUnit === 0) {
-        return value;
-    }
-    let fahrenheitValue = value * 1.8 + 32;
-    const tempRec = values['TemRec'];
-    if (tempRec === 0) {
-        fahrenheitValue = Math.floor(fahrenheitValue);
-    } else {
-        fahrenheitValue = Math.ceil(fahrenheitValue);
-    }
-    return fahrenheitValue;
-}
-
-module.exports = propertiesMap;
+export default propertiesMap;
