@@ -1,34 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "2.0.9",
+        "version": "3.0.0",
         "news": {
-            "2.0.9": {
-                "en": "Fixed connection status indicator, fan speed cycling, memory leak on request timeout, maintain-room-temperature polling, and null safety issues. Closed UDP sockets on shutdown.",
-                "de": "Verbesserte Verbindungsstatusanzeige, Lüftergeschwindigkeitssteuerung, Speicherleck bei Zeitüberschreitung, Temperaturhalte-Polling und Nullzeiger-Fehler. UDP-Sockets werden beim Herunterfahren geschlossen.",
-                "ru": "Исправлены: индикатор состояния соединения, цикл скорости вентилятора, утечка памяти при таймауте запроса, опрос поддержания температуры и ошибки null. Закрытие UDP-сокетов при выключении.",
-                "pt": "Corrigidos indicador de status de conexão, ciclo de velocidade do ventilador, vazamento de memória no tempo limite, polling de manutenção de temperatura e problemas de referência nula. Fechamento de sockets UDP no desligamento.",
-                "nl": "Verbeterd verbindingsstatus, ventilatorsnelheidscyclus, geheugenlek bij time-out, temperatuurbehoud polling en null-veiligheid. UDP-sockets worden gesloten bij afsluiten.",
-                "fr": "Correction de l'indicateur d'état de connexion, du cycle de vitesse du ventilateur, d'une fuite mémoire en cas de délai, de l'interrogation de maintien de température et des problèmes de valeur nulle. Fermeture des sockets UDP à l'arrêt.",
-                "it": "Corretti indicatore di stato connessione, ciclo velocità ventola, perdita di memoria al timeout, polling mantenimento temperatura e problemi di riferimento nullo. Chiusura socket UDP allo spegnimento.",
-                "es": "Corregidos indicador de estado de conexión, ciclo de velocidad del ventilador, fuga de memoria en tiempo de espera, sondeo de mantenimiento de temperatura y problemas de referencia nula. Cierre de sockets UDP al apagar.",
-                "pl": "Poprawiono wskaźnik stanu połączenia, cykl prędkości wentylatora, wyciek pamięci przy przekroczeniu limitu czasu, odpytywanie utrzymania temperatury oraz problemy z wartościami null. Zamknięcie gniazd UDP przy wyłączeniu.",
-                "uk": "Виправлено: індикатор стану з'єднання, цикл швидкості вентилятора, витік пам'яті при таймауті, опитування підтримки температури та помилки null. Закриття UDP-сокетів при вимкненні.",
-                "zh-cn": "修复了连接状态指示器、风速循环、请求超时内存泄漏、保温轮询和空引用问题。关闭时关闭UDP套接字。"
-            },
-            "2.0.3": {
-                "en": "Updated dependencies",
-                "de": "Abhängigkeiten aktualisiert",
-                "ru": "Обновлены зависимости",
-                "pt": "Dependências atualizadas",
-                "nl": "Bijgewerkte afhankelijkheden",
-                "fr": "Dépendances mises à jour",
-                "it": "Dipendenze aggiornate",
-                "es": "Dependencias actualizadas",
-                "pl": "Zaktualizowane zależności",
-                "uk": "Оновлені залежності",
-                "zh-cn": "更新的依赖项"
-            },
             "2.0.4": {
                 "en": "Migration to Trusted Publishing",
                 "de": "Migration zu Trusted Publishing",
@@ -80,6 +54,32 @@
                 "pl": "Zaktualizowano mapowanie właściwości.",
                 "uk": "Оновлено відображення властивостей.",
                 "zh-cn": "更新的属性映射。"
+            },
+            "2.0.9": {
+                "en": "Fixed connection status indicator, fan speed cycling, memory leak on request timeout, maintain-room-temperature polling, and null safety issues. Closed UDP sockets on shutdown.",
+                "de": "Verbesserte Verbindungsstatusanzeige, Lüftergeschwindigkeitssteuerung, Speicherleck bei Zeitüberschreitung, Temperaturhalte-Polling und Nullzeiger-Fehler. UDP-Sockets werden beim Herunterfahren geschlossen.",
+                "ru": "Исправлены: индикатор состояния соединения, цикл скорости вентилятора, утечка памяти при таймауте запроса, опрос поддержания температуры и ошибки null. Закрытие UDP-сокетов при выключении.",
+                "pt": "Corrigidos indicador de status de conexão, ciclo de velocidade do ventilador, vazamento de memória no tempo limite, polling de manutenção de temperatura e problemas de referência nula. Fechamento de sockets UDP no desligamento.",
+                "nl": "Verbeterd verbindingsstatus, ventilatorsnelheidscyclus, geheugenlek bij time-out, temperatuurbehoud polling en null-veiligheid. UDP-sockets worden gesloten bij afsluiten.",
+                "fr": "Correction de l'indicateur d'état de connexion, du cycle de vitesse du ventilateur, d'une fuite mémoire en cas de délai, de l'interrogation de maintien de température et des problèmes de valeur nulle. Fermeture des sockets UDP à l'arrêt.",
+                "it": "Corretti indicatore di stato connessione, ciclo velocità ventola, perdita di memoria al timeout, polling mantenimento temperatura e problemi di riferimento nullo. Chiusura socket UDP allo spegnimento.",
+                "es": "Corregidos indicador de estado de conexión, ciclo de velocidad del ventilador, fuga de memoria en tiempo de espera, sondeo de mantenimiento de temperatura y problemas de referencia nula. Cierre de sockets UDP al apagar.",
+                "pl": "Poprawiono wskaźnik stanu połączenia, cykl prędkości wentylatora, wyciek pamięci przy przekroczeniu limitu czasu, odpytywanie utrzymania temperatury oraz problemy z wartościami null. Zamknięcie gniazd UDP przy wyłączeniu.",
+                "uk": "Виправлено: індикатор стану з'єднання, цикл швидкості вентилятора, витік пам'яті при таймауті, опитування підтримки температури та помилки null. Закриття UDP-сокетів при вимкненні.",
+                "zh-cn": "修复了连接状态指示器、风速循环、请求超时内存泄漏、保温轮询和空引用问题。关闭时关闭UDP套接字。"
+            },
+            "3.0.0": {
+                "en": "Migrated adapter source code to TypeScript. Updated build pipeline and CI/CD workflow.",
+                "de": "Quellcode des Adapters auf TypeScript migriert. Build-Pipeline und CI/CD-Workflow aktualisiert.",
+                "ru": "Исходный код адаптера переведён на TypeScript. Обновлены конвейер сборки и CI/CD-воркфлоу.",
+                "pt": "Código-fonte do adaptador migrado para TypeScript. Pipeline de compilação e fluxo de trabalho CI/CD atualizados.",
+                "nl": "Adaptercode gemigreerd naar TypeScript. Build-pipeline en CI/CD-workflow bijgewerkt.",
+                "fr": "Code source de l'adaptateur migré vers TypeScript. Pipeline de build et workflow CI/CD mis à jour.",
+                "it": "Codice sorgente dell'adattatore migrato in TypeScript. Pipeline di build e workflow CI/CD aggiornati.",
+                "es": "Código fuente del adaptador migrado a TypeScript. Pipeline de compilación y flujo de trabajo CI/CD actualizados.",
+                "pl": "Kod źródłowy adaptera zmigrowany do TypeScript. Zaktualizowano pipeline budowania i przepływ pracy CI/CD.",
+                "uk": "Вихідний код адаптера перенесено на TypeScript. Оновлено конвеєр збірки та CI/CD-воркфлоу.",
+                "zh-cn": "将适配器源代码迁移至 TypeScript。更新了构建流水线和 CI/CD 工作流。"
             }
         },
         "titleLang": {
