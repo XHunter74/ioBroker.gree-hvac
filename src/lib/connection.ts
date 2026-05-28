@@ -252,6 +252,6 @@ export class Connection extends EventEmitter {
             return;
         }
 
-        this.emit(response.t, response, rinfo, encVersion);
+        this.emit(response.t as string, response, rinfo, encVersion);
     }
 }

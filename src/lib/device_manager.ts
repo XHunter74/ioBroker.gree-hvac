@@ -111,7 +111,7 @@ export class DeviceManager extends EventEmitter {
                 };
 
                 this.devices[deviceId] = device;
-                this.connection.registerKey(rinfo.address, key);
+                this.connection.registerKey(rinfo.address, key as string | Buffer);
                 this.connection.registerEncVersion(address, encVersion);
 
                 this.emit('device_bound', deviceId, device);

@@ -61,7 +61,7 @@ class GreeHvac extends utils.Adapter {
                 !AdapterUtils.validateIPList(this.config.devicelist)
             ) {
                 this.log.error(`Invalid device list: ${JSON.stringify(this.config.devicelist)}`);
-                this.stop?.();
+                void this.stop?.();
                 return;
             }
 
@@ -71,7 +71,7 @@ class GreeHvac extends utils.Adapter {
                 this.config.pollInterval > MaxPollInterval
             ) {
                 this.log.error(`Invalid poll interval: ${this.config.pollInterval}`);
-                this.stop?.();
+                void this.stop?.();
                 return;
             }
 
@@ -334,10 +334,10 @@ class GreeHvac extends utils.Adapter {
                             if (valueMap) {
                                 payload[property.hvacName] = valueMap.targetValue;
                             } else {
-                                payload[property.hvacName] = state.val as number | string | boolean;
+                                payload[property.hvacName] = state.val;
                             }
                         } else {
-                            payload[property.hvacName] = state.val as number | string | boolean;
+                            payload[property.hvacName] = state.val;
                         }
                     }
                 }
@@ -527,13 +527,13 @@ class GreeHvac extends utils.Adapter {
                 .filter(item => item.id.split('.').length === 3 && item.value.type === 'device')
                 .map(item => ({
                     id: item.id,
-                    name: item.value.common.name as ioBroker.StringOrTranslated,
+                    name: item.value.common.name,
                 }));
 
             let devices = await this.collectDeviceInfo(deviceObjects);
             devices = devices.sort((a, b) => {
-                const nameA = String(a.name);
-                const nameB = String(b.name);
+                const nameA = typeof a.name === 'string' ? a.name : (a.name?.en ?? '');
+                const nameB = typeof b.name === 'string' ? b.name : (b.name?.en ?? '');
                 return nameA > nameB ? 1 : nameB > nameA ? -1 : 0;
             });
             result.result = devices;
