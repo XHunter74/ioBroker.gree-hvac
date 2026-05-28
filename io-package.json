@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "3.0.1",
+        "version": "3.0.2",
         "news": {
-            "2.0.6": {
-                "en": "Added request timeout property.",
-                "de": "Eigenschaft für Anforderungs-Timeout hinzugefügt.",
-                "ru": "Добавлено свойство тайм-аута запроса.",
-                "pt": "Adicionada propriedade de tempo limite de solicitação.",
-                "nl": "Toegevoegd verzoek time-out eigenschap.",
-                "fr": "Ajout de la propriété de délai d'attente de la requête.",
-                "it": "Aggiunta la proprietà di timeout della richiesta.",
-                "es": "Se agregó la propiedad de tiempo de espera de la solicitud.",
-                "pl": "Dodano właściwość limitu czasu żądania.",
-                "uk": "Додано поле налаштування для тайм-ауту запиту.",
-                "zh-cn": "添加了请求超时属性。"
-            },
             "2.0.7": {
                 "en": "Updated dependencies.",
                 "de": "Abhängigkeiten aktualisiert.",
@@ -80,6 +67,19 @@
                 "pl": "Poprawiono pliki tłumaczeń i18n.",
                 "uk": "Виправлено файли перекладів i18n.",
                 "zh-cn": "修复了 i18n 翻译文件。"
+            },
+            "3.0.2": {
+                "en": "Filtered network-related errors from Sentry reporting.",
+                "de": "Netzwerkfehler werden nicht mehr an Sentry gemeldet.",
+                "ru": "Сетевые ошибки исключены из отчётов Sentry.",
+                "pt": "Erros de rede filtrados dos relatórios do Sentry.",
+                "nl": "Netwerkgerelateerde fouten uitgefilterd uit Sentry-rapportage.",
+                "fr": "Erreurs réseau exclues des rapports Sentry.",
+                "it": "Errori di rete esclusi dalla segnalazione a Sentry.",
+                "es": "Errores de red filtrados de los informes de Sentry.",
+                "pl": "Błędy sieciowe wykluczone z raportowania do Sentry.",
+                "uk": "Мережеві помилки виключено зі звітів Sentry.",
+                "zh-cn": "过滤与网络相关的错误，不再上报至 Sentry。"
             }
         },
         "titleLang": {

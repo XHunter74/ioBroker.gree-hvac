@@ -573,7 +573,37 @@ class GreeHvac extends utils.Adapter {
         return devicesInfo;
     }
 
+    private isNetworkError(error: Error | string): boolean {
+        const networkErrorCodes = new Set([
+            'ECONNREFUSED',
+            'ECONNRESET',
+            'ETIMEDOUT',
+            'ENETUNREACH',
+            'EHOSTUNREACH',
+            'ENETDOWN',
+            'ENOTFOUND',
+            'ENONET',
+            'ECONNABORTED',
+            'EADDRNOTAVAIL',
+            'EADDRINUSE',
+        ]);
+        if (error instanceof Error) {
+            const code = (error as NodeJS.ErrnoException).code;
+            if (code && networkErrorCodes.has(code)) {
+                return true;
+            }
+            const msg = error.message.toLowerCase();
+            if (msg.includes('timed out') || msg.includes('socket') || msg.includes('network')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     sendError(error: Error | string, message?: string): void {
+        if (this.isNetworkError(error)) {
+            return;
+        }
         try {
             const adapter = this as unknown as {
                 supportsFeature?: (feature: string) => boolean;
