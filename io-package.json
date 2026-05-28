@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "3.0.0",
+        "version": "3.0.1",
         "news": {
-            "2.0.4": {
-                "en": "Migration to Trusted Publishing",
-                "de": "Migration zu Trusted Publishing",
-                "ru": "Миграция на Trusted Publishing",
-                "pt": "Migração para Publicação Confiável",
-                "nl": "Migratie naar Trusted Publishing",
-                "fr": "Migration vers Trusted Publishing",
-                "it": "Migrazione a Trusted Publishing",
-                "es": "Migración a Publicación Confiable",
-                "pl": "Migracja do Trusted Publishing",
-                "uk": "Міграція до Trusted Publishing",
-                "zh-cn": "迁移到受信任的发布"
-            },
             "2.0.6": {
                 "en": "Added request timeout property.",
                 "de": "Eigenschaft für Anforderungs-Timeout hinzugefügt.",
@@ -80,6 +67,19 @@
                 "pl": "Kod źródłowy adaptera zmigrowany do TypeScript. Zaktualizowano pipeline budowania i przepływ pracy CI/CD.",
                 "uk": "Вихідний код адаптера перенесено на TypeScript. Оновлено конвеєр збірки та CI/CD-воркфлоу.",
                 "zh-cn": "将适配器源代码迁移至 TypeScript。更新了构建流水线和 CI/CD 工作流。"
+            },
+            "3.0.1": {
+                "en": "Fixed i18n translation files.",
+                "de": "I18n-Übersetzungsdateien korrigiert.",
+                "ru": "Исправлены файлы переводов i18n.",
+                "pt": "Arquivos de tradução i18n corrigidos.",
+                "nl": "I18n-vertaalbestanden gecorrigeerd.",
+                "fr": "Fichiers de traduction i18n corrigés.",
+                "it": "File di traduzione i18n corretti.",
+                "es": "Archivos de traducción i18n corregidos.",
+                "pl": "Poprawiono pliki tłumaczeń i18n.",
+                "uk": "Виправлено файли перекладів i18n.",
+                "zh-cn": "修复了 i18n 翻译文件。"
             }
         },
         "titleLang": {
