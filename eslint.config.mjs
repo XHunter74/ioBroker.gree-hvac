@@ -1,30 +1,20 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import ioBrokerConfig from '@iobroker/eslint-config';
 
 export default [
-    { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
-    { languageOptions: { globals: { ...globals.node } } },
-    pluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...ioBrokerConfig,
     {
         rules: {
-            'indent': ['error', 4, { 'SwitchCase': 1 }],
-            'no-console': 'off',
-            'no-unused-vars': ['error', { 'ignoreRestSiblings': true, 'argsIgnorePattern': '^_' }],
-            'no-var': 'error',
-            'no-trailing-spaces': 'error',
-            'prefer-const': 'error',
-            'quotes': ['error', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': true }],
-            'semi': ['error', 'always'],
-        }
-    },
-    {
-        files: ['**/*.ts'],
-        rules: {
-            'no-unused-vars': 'off',
-            '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true, 'argsIgnorePattern': '^_' }],
-        }
+            // JSDoc is not required for this adapter
+            'jsdoc/require-jsdoc': 'off',
+            'jsdoc/require-param': 'off',
+            'jsdoc/require-returns': 'off',
+            'jsdoc/no-blank-blocks': 'off',
+            'jsdoc/tag-lines': 'off',
+            // Buffer and NodeJS.Timeout are typed as any in some @types packages, causing false positives
+            '@typescript-eslint/no-redundant-type-constituents': 'off',
+            // Template expressions with unknown/object types are common in adapter logging
+            '@typescript-eslint/restrict-template-expressions': 'off',
+        },
     },
     {
         ignores: [
@@ -37,6 +27,6 @@ export default [
             'eslint.config.mjs',
             'test/',
             'main.test.js',
-        ]
-    }
+        ],
+    },
 ];

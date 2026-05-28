@@ -3,11 +3,14 @@ import { EventEmitter } from 'node:events';
 import { encryptV1, decryptV1, defaultKey, defaultKeyGCM, encryptV2, decryptV2 } from './encryptor';
 
 const commandsMap: Record<string, string> = {
-    'bind': 'bindok',
-    'status': 'dat',
-    'cmd': 'res',
+    bind: 'bindok',
+    status: 'dat',
+    cmd: 'res',
 };
 
+/**
+ *
+ */
 export class Connection extends EventEmitter {
     private requestTimeoutMs: number;
     private logger: ioBroker.Logger;
@@ -16,6 +19,9 @@ export class Connection extends EventEmitter {
     private devices: Record<string, string | Buffer> = {};
     private deviceEncVer: Record<string, 1 | 2> = {};
 
+    /**
+     *
+     */
     constructor(address: string, logger: ioBroker.Logger, requestTimeoutMs = 1000) {
         super();
         this.logger = logger;
@@ -31,10 +37,10 @@ export class Connection extends EventEmitter {
             this.scan(address);
         });
 
-        this.socket.on('error', (error) => {
+        this.socket.on('error', error => {
             this.logger.error(error.message);
         });
-        this.socketScan.on('error', (error) => {
+        this.socketScan.on('error', error => {
             this.logger.error(error.message);
         });
 
@@ -42,32 +48,50 @@ export class Connection extends EventEmitter {
         this.socketScan.bind();
     }
 
+    /**
+     *
+     */
     registerKey(deviceId: string, key: string | Buffer): void {
         this.logger.debug(`Registering key: ${deviceId} - ${key}`);
         this.devices[deviceId] = key;
     }
 
+    /**
+     *
+     */
     getEncryptionKey(deviceId: string): string | Buffer {
         return this.devices[deviceId] || defaultKey;
     }
 
+    /**
+     *
+     */
     registerEncVersion(deviceId: string, encVer: 1 | 2): void {
         this.logger.debug(`Registering encVer: ${deviceId} - ${encVer}`);
         this.deviceEncVer[deviceId] = encVer;
     }
 
+    /**
+     *
+     */
     getEncVersion(deviceId: string): 1 | 2 {
         return this.deviceEncVer[deviceId] || 1;
     }
 
+    /**
+     *
+     */
     scan(ipAddresses: string): void {
         const message = Buffer.from(JSON.stringify({ cid: 'app', t: 'scan', i: 1, uid: 0 }));
-        ipAddresses.split(';').forEach((deviceAddress) => {
+        ipAddresses.split(';').forEach(deviceAddress => {
             this.logger.debug(`Test address ${deviceAddress} for available device with message: ${message}`);
             this.socketScan.send(message, 0, message.length, 7000, deviceAddress);
         });
     }
 
+    /**
+     *
+     */
     async sendRequest(
         address: string,
         port: number,
@@ -107,9 +131,11 @@ export class Connection extends EventEmitter {
                     tag,
                 };
 
-                const messageHandler = (msg: Buffer, rinfo: dgram.RemoteInfo) => {
+                const messageHandler = (msg: Buffer, rinfo: dgram.RemoteInfo): void => {
                     const message = JSON.parse(msg.toString()) as Record<string, unknown>;
-                    this.logger.debug(`Received message from ${message.cid} (${rinfo.address}:${rinfo.port}) ${msg.toString()} - ${JSON.stringify(rinfo)}`);
+                    this.logger.debug(
+                        `Received message from ${message.cid} (${rinfo.address}:${rinfo.port}) ${msg.toString()} - ${JSON.stringify(rinfo)}`,
+                    );
 
                     if (rinfo.address !== address || rinfo.port !== port) {
                         return;
@@ -133,11 +159,16 @@ export class Connection extends EventEmitter {
                         if (resolvedEncVersion === 1) {
                             response = decryptV1(message.pack as string, decKey) as Record<string, unknown>;
                         } else {
-                            response = decryptV2(message.pack as string, decKey as Buffer, decTag) as Record<string, unknown>;
+                            response = decryptV2(message.pack as string, decKey as Buffer, decTag) as Record<
+                                string,
+                                unknown
+                            >;
                         }
                         this.logger.debug(`sendRequest - Response data: ${JSON.stringify(response)}`);
                     } catch (e) {
-                        this.logger.error(`Can not decrypt message from ${message.cid} (${rinfo.address}:${rinfo.port}) with key ${decKey} and tag ${decTag}`);
+                        this.logger.error(
+                            `Can not decrypt message from ${message.cid} (${rinfo.address}:${rinfo.port}) with key ${decKey} and tag ${decTag}`,
+                        );
                         this.logger.error((e as Error).stack ?? String(e));
                         return;
                     }
@@ -170,16 +201,22 @@ export class Connection extends EventEmitter {
                 }, this.requestTimeoutMs);
             } catch (e) {
                 this.logger.error((e as Error).stack ?? String(e));
-                reject(e);
+                reject(e instanceof Error ? e : new Error(String(e)));
             }
         });
     }
 
+    /**
+     *
+     */
     close(): void {
         this.socket.close();
         this.socketScan.close();
     }
 
+    /**
+     *
+     */
     handleResponse(msg: Buffer, rinfo: dgram.RemoteInfo): void {
         let message: Record<string, unknown>;
 
@@ -208,11 +245,13 @@ export class Connection extends EventEmitter {
             }
             this.logger.debug(`handleResponse - Response data: ${JSON.stringify(response)}`);
         } catch (e) {
-            this.logger.error(`handleResponse - Can not decrypt message from ${message.cid} (${rinfo.address}:${rinfo.port}) with key ${key} and tag ${tag}`);
+            this.logger.error(
+                `handleResponse - Can not decrypt message from ${message.cid} (${rinfo.address}:${rinfo.port}) with key ${key} and tag ${tag}`,
+            );
             this.logger.error((e as Error).stack ?? String(e));
             return;
         }
 
-        this.emit(response.t as string, response, rinfo, encVersion);
+        this.emit(response.t, response, rinfo, encVersion);
     }
 }

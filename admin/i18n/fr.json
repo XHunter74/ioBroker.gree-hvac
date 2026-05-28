@@ -1,0 +1,9 @@
+{
+    "Main settings": "Paramètres principaux",
+    "deviceIp": "IP de l'appareil",
+    "devicelist": "IP des appareils",
+    "enterDeviceIp": "Entrez l'adresse IP de l'appareil",
+    "gree-hvac adapter settings": "Paramètres de l'adaptateur Gree CVC",
+    "pollInterval": "Intervalle de scrutin en millisecondes",
+    "requestTimeoutMs": "Délai d'attente de la requête en millisecondes"
+}

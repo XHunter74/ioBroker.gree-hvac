@@ -1,0 +1,9 @@
+{
+    "Main settings": "Impostazioni principali",
+    "deviceIp": "IP del dispositivo",
+    "devicelist": "IP del dispositivo",
+    "enterDeviceIp": "Inserisci l'IP del dispositivo",
+    "gree-hvac adapter settings": "Impostazioni dell'adattatore Gree HVAC",
+    "pollInterval": "Intervallo di inquinamento in millisecondi",
+    "requestTimeoutMs": "Timeout della richiesta in millisecondi"
+}

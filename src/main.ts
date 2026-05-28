@@ -30,7 +30,6 @@ interface CollectedDeviceInfo {
 }
 
 class GreeHvac extends utils.Adapter {
-
     private deviceManager: DeviceManager | undefined;
     private timeouts: Record<string, ioBroker.Timeout | undefined> = {};
     private activeDevices: DeviceState[] = [];
@@ -53,17 +52,25 @@ class GreeHvac extends utils.Adapter {
 
     async onReady(): Promise<void> {
         try {
-            this.log.info('Device list: ' + JSON.stringify(this.config.devicelist));
-            this.log.info('Poll interval: ' + this.config.pollInterval);
+            this.log.info(`Device list: ${JSON.stringify(this.config.devicelist)}`);
+            this.log.info(`Poll interval: ${this.config.pollInterval}`);
 
-            if (!this.config.devicelist || this.config.devicelist.length === 0 || !AdapterUtils.validateIPList(this.config.devicelist)) {
+            if (
+                !this.config.devicelist ||
+                this.config.devicelist.length === 0 ||
+                !AdapterUtils.validateIPList(this.config.devicelist)
+            ) {
                 this.log.error(`Invalid device list: ${JSON.stringify(this.config.devicelist)}`);
                 this.stop?.();
                 return;
             }
 
-            if (this.config.pollInterval < MinPollInterval || isNaN(this.config.pollInterval) || this.config.pollInterval > MaxPollInterval) {
-                this.log.error('Invalid poll interval: ' + this.config.pollInterval);
+            if (
+                this.config.pollInterval < MinPollInterval ||
+                isNaN(this.config.pollInterval) ||
+                this.config.pollInterval > MaxPollInterval
+            ) {
+                this.log.error(`Invalid poll interval: ${this.config.pollInterval}`);
                 this.stop?.();
                 return;
             }
@@ -73,8 +80,7 @@ class GreeHvac extends utils.Adapter {
             const adapterObjects = await this.getAdapterObjectsAsync();
 
             for (const key in adapterObjects) {
-                if (Object.prototype.hasOwnProperty.call(adapterObjects, key)
-                    && key.endsWith('.alive') === true) {
+                if (Object.prototype.hasOwnProperty.call(adapterObjects, key) && key.endsWith('.alive') === true) {
                     await this.setStateAsync(key, { val: false, ack: true });
                 }
             }
@@ -105,21 +111,25 @@ class GreeHvac extends utils.Adapter {
         if (isFirst) {
             try {
                 await this.getDeviceStatus(deviceId);
-            } catch { /* ignore first-poll errors */ }
+            } catch {
+                /* ignore first-poll errors */
+            }
         }
         this.timeouts[deviceId] = this.setTimeout(async () => {
             try {
                 await this.getDeviceStatus(deviceId);
                 this.clearTimeout(this.timeouts[deviceId]);
-            } catch { /* ignore polling errors */ }
+            } catch {
+                /* ignore polling errors */
+            }
             await this.pollDevices(deviceId, false);
         }, this.config.pollInterval);
     }
 
     checkDevices(): void {
         this.timeouts[CheckDevicesTimeout] = this.setTimeout(async () => {
-            const allActive = this.activeDevices.length > 0 &&
-                this.activeDevices.every(device => device.isActive === true);
+            const allActive =
+                this.activeDevices.length > 0 && this.activeDevices.every(device => device.isActive === true);
             await this.setStateAsync('info.connection', { val: allActive, ack: true });
             this.clearTimeout(this.timeouts[CheckDevicesTimeout]);
             this.checkDevices();
@@ -138,7 +148,7 @@ class GreeHvac extends utils.Adapter {
             if (deviceItem) {
                 deviceItem.lastSeen = new Date();
             }
-            this.processDeviceStatus(deviceId, deviceStatus);
+            void this.processDeviceStatus(deviceId, deviceStatus);
         } catch (error) {
             await this.setStateAsync(`${deviceId}.alive`, { val: false, ack: true });
             if (deviceItem && deviceItem.isActive === true) {
@@ -161,8 +171,11 @@ class GreeHvac extends utils.Adapter {
                         continue;
                     }
                     value = AdapterUtils.mapValue(value, mapItem);
-                    value = AdapterUtils.convertValue(deviceStatus as Record<string, unknown>, value, mapItem);
-                    await this.setStateAsync(`${deviceId}.${mapItem.name}`, { val: value as ioBroker.StateValue, ack: true });
+                    value = AdapterUtils.convertValue(deviceStatus, value, mapItem);
+                    await this.setStateAsync(`${deviceId}.${mapItem.name}`, {
+                        val: value as ioBroker.StateValue,
+                        ack: true,
+                    });
                 }
             }
         } catch (error) {
@@ -214,9 +227,12 @@ class GreeHvac extends utils.Adapter {
             for (const property of propertiesMap) {
                 try {
                     const propertyObjectName = `${deviceId}.${property.name}`;
-                    if (await this.objectExists(propertyObjectName) === true) {
+                    if ((await this.objectExists(propertyObjectName)) === true) {
                         const propertyObject = await this.getObjectAsync(propertyObjectName);
-                        if (propertyObject && AdapterUtils.areObjectsTheSame(propertyObject, JSON.parse(property.definition)) === false) {
+                        if (
+                            propertyObject &&
+                            AdapterUtils.areObjectsTheSame(propertyObject, JSON.parse(property.definition)) === false
+                        ) {
                             await this.delObjectAsync(propertyObjectName);
                             await this.setObjectNotExistsAsync(propertyObjectName, JSON.parse(property.definition));
                         }
@@ -259,7 +275,9 @@ class GreeHvac extends utils.Adapter {
         try {
             if (state && state.ack === false) {
                 const deviceInfo = this.getDeviceInfo(id);
-                if (!deviceInfo) return;
+                if (!deviceInfo) {
+                    return;
+                }
                 const { deviceId, devicePath, property } = deviceInfo;
                 if (property === 'temperature-unit') {
                     await this.onTemperatureUnitChange(devicePath, state.val as number);
@@ -299,11 +317,16 @@ class GreeHvac extends utils.Adapter {
         try {
             let payload: Record<string, number | string | boolean> = {};
             for (const property of propertiesMap.filter(e => !e.isReadOnly())) {
-                if (await this.objectExists(`${deviceId}.${property.name}`) === true) {
+                if ((await this.objectExists(`${deviceId}.${property.name}`)) === true) {
                     const state = await this.getStateAsync(`${deviceId}.${property.name}`);
                     if (state && state.val !== null) {
                         const definition = JSON.parse(property.definition) as {
-                            native?: { valuesMap?: Array<{ value: number | string | boolean; targetValue: number | string | boolean }> };
+                            native?: {
+                                valuesMap?: Array<{
+                                    value: number | string | boolean;
+                                    targetValue: number | string | boolean;
+                                }>;
+                            };
                         };
                         if (definition.native?.valuesMap) {
                             const valuesMap = definition.native.valuesMap;
@@ -362,7 +385,9 @@ class GreeHvac extends utils.Adapter {
                 default: {
                     this.log.warn(`Unknown command ${obj.command}`);
                     const result = { error: `Unknown command ${obj.command}` };
-                    if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, result, obj.callback);
+                    }
                     break;
                 }
             }
@@ -386,7 +411,9 @@ class GreeHvac extends utils.Adapter {
         } catch (error) {
             result.error = (error as Error).message;
         }
-        if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
+        if (obj.callback) {
+            this.sendTo(obj.from, obj.command, result, obj.callback);
+        }
     }
 
     async processRemoteCommand(obj: ioBroker.Message): Promise<void> {
@@ -453,7 +480,9 @@ class GreeHvac extends utils.Adapter {
                     }
                     state = (await this.getStateAsync(`${deviceId}.fan-speed`))?.val ?? 0;
                     newState = Number(state) + 1;
-                    if (newState > 4) newState = 0;
+                    if (newState > 4) {
+                        newState = 0;
+                    }
                     await this.setStateAsync(`${deviceId}.fan-speed`, newState);
                     break;
                 case 'turbo-btn':
@@ -484,7 +513,9 @@ class GreeHvac extends utils.Adapter {
         } catch (error) {
             result.error = (error as Error).message;
         }
-        if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
+        if (obj.callback) {
+            this.sendTo(obj.from, obj.command, result, obj.callback);
+        }
     }
 
     async processGetDevicesCommand(obj: ioBroker.Message): Promise<void> {
@@ -492,9 +523,9 @@ class GreeHvac extends utils.Adapter {
         try {
             const allObjects = await this.getAdapterObjectsAsync();
             const deviceObjects: DeviceObjectInfo[] = Object.keys(allObjects)
-                .map((key) => ({ id: key, value: allObjects[key] }))
-                .filter((item) => item.id.split('.').length === 3 && item.value.type === 'device')
-                .map((item) => ({
+                .map(key => ({ id: key, value: allObjects[key] }))
+                .filter(item => item.id.split('.').length === 3 && item.value.type === 'device')
+                .map(item => ({
                     id: item.id,
                     name: item.value.common.name as ioBroker.StringOrTranslated,
                 }));
@@ -509,7 +540,9 @@ class GreeHvac extends utils.Adapter {
         } catch (error) {
             result.error = (error as Error).message;
         }
-        if (obj.callback) this.sendTo(obj.from, obj.command, result, obj.callback);
+        if (obj.callback) {
+            this.sendTo(obj.from, obj.command, result, obj.callback);
+        }
     }
 
     async collectDeviceInfo(deviceObjects: DeviceObjectInfo[]): Promise<CollectedDeviceInfo[]> {
@@ -529,7 +562,9 @@ class GreeHvac extends utils.Adapter {
                     const property = propertiesMap[j];
                     const state = (await this.getStateAsync(`${deviceItem.id}.${property.name}`))?.val;
                     deviceInfo[property.name] = state;
-                } catch { /* ignore property state errors */ }
+                } catch {
+                    /* ignore property state errors */
+                }
             }
             const aliveState = (await this.getStateAsync(`${deviceItem.id}.alive`))?.val ?? false;
             deviceInfo.alive = aliveState;
@@ -547,17 +582,21 @@ class GreeHvac extends utils.Adapter {
             if (adapter.supportsFeature && adapter.supportsFeature('PLUGINS')) {
                 const sentryInstance = adapter.getPluginInstance?.('sentry');
                 if (sentryInstance) {
-                    const Sentry = (sentryInstance as { getSentryObject?: () => unknown }).getSentryObject?.() as {
-                        configureScope?: (fn: (scope: unknown) => void) => void;
-                        captureException?: (err: unknown) => void;
-                        Severity?: { Error: string };
-                    } | undefined;
+                    const Sentry = sentryInstance.getSentryObject?.() as
+                        | {
+                              configureScope?: (fn: (scope: unknown) => void) => void;
+                              captureException?: (err: unknown) => void;
+                              Severity?: { Error: string };
+                          }
+                        | undefined;
                     if (Sentry) {
                         if (message) {
-                            Sentry.configureScope?.((scope) => {
-                                (scope as {
-                                    addBreadcrumb?: (b: unknown) => void;
-                                }).addBreadcrumb?.({
+                            Sentry.configureScope?.(scope => {
+                                (
+                                    scope as {
+                                        addBreadcrumb?: (b: unknown) => void;
+                                    }
+                                ).addBreadcrumb?.({
                                     type: 'error',
                                     category: 'error message',
                                     level: Sentry.Severity?.Error,

@@ -1,0 +1,9 @@
+{
+    "Main settings": "主要设置",
+    "deviceIp": "设备IP",
+    "devicelist": "设备IP",
+    "enterDeviceIp": "输入设备IP",
+    "gree-hvac adapter settings": "Gree HVAC 适配器设置",
+    "pollInterval": "投票间隔( 毫秒)",
+    "requestTimeoutMs": "请求超时(毫秒)"
+}

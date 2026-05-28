@@ -1,9 +1,0 @@
-{
-    "gree-hvac adapter settings": "Configurações do adaptador de HVAC da Gree",
-    "pollInterval": "Intervalo de polimento em milissegundos",
-    "deviceList": "IPs de dispositivos",
-    "deviceIp": "IP do dispositivo",
-    "enterDeviceIp": "Insira o IP do dispositivo",
-    "Main settings": "Configurações principais",
-    "requestTimeoutMs": "Tempo limite de solicitação em milissegundos"
-}

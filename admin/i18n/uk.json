@@ -1,0 +1,9 @@
+{
+    "Main settings": "Основні налаштування",
+    "deviceIp": "IP адреса пристрою",
+    "devicelist": "IP пристроїв",
+    "enterDeviceIp": "Введіть IP адресу пристрою",
+    "gree-hvac adapter settings": "Налаштування адаптеру Gree HVAC",
+    "pollInterval": "Інтервал опитування в міллісекундах",
+    "requestTimeoutMs": "Тайм-аут запиту в міллісекундах"
+}

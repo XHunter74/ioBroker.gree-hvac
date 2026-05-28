@@ -1,9 +1,0 @@
-{
-    "gree-hvac adapter settings": "Ustawienia adaptera Gree HVAC",
-    "pollInterval": "Odstęp między badaniami w milisekundach",
-    "deviceList": "Adresy IP urządzeń",
-    "deviceIp": "Adres IP urządzenia",
-    "enterDeviceIp": "Wprowadź adres IP urządzenia",
-    "Main settings": "Ustawienia główne",
-    "requestTimeoutMs": "Limit czasu żądania w milisekundach"
-}

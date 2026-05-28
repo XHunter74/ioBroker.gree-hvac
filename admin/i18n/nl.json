@@ -1,0 +1,9 @@
+{
+    "Main settings": "Hoofd instellingen",
+    "deviceIp": "Apparaat-IP",
+    "devicelist": "Apparaat-IP's",
+    "enterDeviceIp": "Voer het apparaat-IP in",
+    "gree-hvac adapter settings": "Gree HVAC-adapterinstellingen",
+    "pollInterval": "Berekeninterval in milliseconden",
+    "requestTimeoutMs": "Aanvraag time-out in milliseconden"
+}
