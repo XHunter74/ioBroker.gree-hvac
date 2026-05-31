@@ -161,6 +161,7 @@
                 "dsn": "https://0b5a9ab175f617f1d0e75219bc758fda@o1146681.ingest.us.sentry.io/4507094441918464"
             }
         },
+        "nogit": true,
         "dependencies": [
             {
                 "js-controller": ">=6.0.11"
