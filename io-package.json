@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "3.0.2",
+        "version": "3.0.3",
         "news": {
-            "2.0.7": {
-                "en": "Updated dependencies.",
-                "de": "Abhängigkeiten aktualisiert.",
-                "ru": "Обновлены зависимости.",
-                "pt": "Dependências atualizadas.",
-                "nl": "Bijgewerkte afhankelijkheden.",
-                "fr": "Dépendances mises à jour.",
-                "it": "Dipendenze aggiornate.",
-                "es": "Dependencias actualizadas.",
-                "pl": "Zaktualizowane zależności.",
-                "uk": "Оновлені залежності.",
-                "zh-cn": "更新的依赖项。"
-            },
             "2.0.8":{
                 "en": "Updated properties mapping.",
                 "de": "Aktualisierte Eigenschaften Zuordnung.",
@@ -80,6 +67,19 @@
                 "pl": "Błędy sieciowe wykluczone z raportowania do Sentry.",
                 "uk": "Мережеві помилки виключено зі звітів Sentry.",
                 "zh-cn": "过滤与网络相关的错误，不再上报至 Sentry。"
+            },
+            "3.0.3": {
+                "en": "Fixed adapter runtime dependencies and updated CI workflow.",
+                "de": "Laufzeitabhängigkeiten des Adapters behoben und CI-Workflow aktualisiert.",
+                "ru": "Исправлены зависимости времени выполнения адаптера и обновлён CI-воркфлоу.",
+                "pt": "Dependências de tempo de execução do adaptador corrigidas e fluxo de trabalho CI atualizado.",
+                "nl": "Runtimeafhankelijkheden van de adapter gecorrigeerd en CI-workflow bijgewerkt.",
+                "fr": "Dépendances d'exécution de l'adaptateur corrigées et workflow CI mis à jour.",
+                "it": "Dipendenze runtime dell'adattatore corrette e workflow CI aggiornato.",
+                "es": "Dependencias de tiempo de ejecución del adaptador corregidas y flujo de trabajo CI actualizado.",
+                "pl": "Naprawiono zależności czasu wykonania adaptera i zaktualizowano przepływ pracy CI.",
+                "uk": "Виправлено залежності часу виконання адаптера та оновлено CI-воркфлоу.",
+                "zh-cn": "修复了适配器运行时依赖项并更新了 CI 工作流。"
             }
         },
         "titleLang": {

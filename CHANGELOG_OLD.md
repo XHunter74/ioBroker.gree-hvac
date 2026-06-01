@@ -1,4 +1,6 @@
 # Older changes
+### 2.0.7 (2025-12-25)
+ - Updated dependencies
 ### 2.0.6 (2025-11-07)
  - Added request timeout property
 ### 2.0.4 (2025-10-16)
