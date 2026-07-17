@@ -123,8 +123,13 @@ export class DeviceManager extends EventEmitter {
             }
             return null;
         } catch (e) {
-            this.logger.error(`Failed to bind device ${deviceId}: ${(e as Error).message}`);
-            this.logger.error((e as Error).stack ?? String(e));
+            const errorMessage = (e as Error).message;
+            if (errorMessage.includes('timed out')) {
+                this.logger.info(`Failed to bind device ${deviceId}: ${errorMessage}`);
+            } else {
+                this.logger.error(`Failed to bind device ${deviceId}: ${errorMessage}`);
+                this.logger.error((e as Error).stack ?? String(e));
+            }
             return null;
         }
     }
