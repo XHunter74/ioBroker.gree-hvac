@@ -1,0 +1,66 @@
+/*
+ * The faceplate of the remote control - deliberately theme independent:
+ * a real remote's LCD is green in light and dark mode alike.
+ * Ported from the former admin/tab_m.css.
+ */
+
+@font-face {
+    font-family: 'Digital-7 Mono';
+    src:
+        url('./assets/Digital-7Mono.woff2') format('woff2'),
+        url('./assets/Digital-7Mono.woff') format('woff'),
+        url('./assets/Digital-7Mono.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 400;
+    /* `block`, not `swap`: with `swap` the raw ligature text ("power_settings_new")
+       would be painted for a moment before the font arrives. */
+    font-display: block;
+    src: url('./assets/material-symbols-outlined-v192-latin-regular.woff2') format('woff2');
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+}
+
+.gree-lcd {
+    display: flex;
+    width: 90%;
+    margin: 20px 10px 45px;
+    padding: 5px 4px;
+    background-color: rgb(77, 138, 77);
+    border-radius: 5px;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+    user-select: none;
+}
+
+.gree-temperature {
+    font-family: 'Digital-7 Mono';
+    font-weight: normal;
+    font-size: 78px;
+    line-height: 1;
+}
+
+.gree-degree {
+    font-size: 20px;
+}

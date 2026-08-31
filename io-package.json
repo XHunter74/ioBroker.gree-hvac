@@ -1,21 +1,8 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "3.0.3",
+        "version": "4.0.0",
         "news": {
-            "2.0.8":{
-                "en": "Updated properties mapping.",
-                "de": "Aktualisierte Eigenschaften Zuordnung.",
-                "ru": "Обновлено отображение свойств.",
-                "pt": "Mapeamento de propriedades atualizado.",
-                "nl": "Bijgewerkte eigenschappen mapping.",
-                "fr": "Mise à jour de la cartographie des propriétés.",
-                "it": "Mappatura delle proprietà aggiornata.",
-                "es": "Mapeo de propiedades actualizado.",
-                "pl": "Zaktualizowano mapowanie właściwości.",
-                "uk": "Оновлено відображення властивостей.",
-                "zh-cn": "更新的属性映射。"
-            },
             "2.0.9": {
                 "en": "Fixed connection status indicator, fan speed cycling, memory leak on request timeout, maintain-room-temperature polling, and null safety issues. Closed UDP sockets on shutdown.",
                 "de": "Verbesserte Verbindungsstatusanzeige, Lüftergeschwindigkeitssteuerung, Speicherleck bei Zeitüberschreitung, Temperaturhalte-Polling und Nullzeiger-Fehler. UDP-Sockets werden beim Herunterfahren geschlossen.",
@@ -80,6 +67,19 @@
                 "pl": "Naprawiono zależności czasu wykonania adaptera i zaktualizowano przepływ pracy CI.",
                 "uk": "Виправлено залежності часу виконання адаптера та оновлено CI-воркфлоу.",
                 "zh-cn": "修复了适配器运行时依赖项并更新了 CI 工作流。"
+            },
+            "4.0.0": {
+                "en": "Admin tab rewritten in React; it now follows the admin theme and is translated into all adapter languages.",
+                "de": "Admin-Tab in React neu geschrieben; er folgt jetzt dem Admin-Theme und ist in alle Adaptersprachen übersetzt.",
+                "ru": "Вкладка администратора переписана на React; теперь она следует теме admin и переведена на все языки адаптера.",
+                "pt": "Aba de administração reescrita em React; agora segue o tema do admin e está traduzida para todos os idiomas do adaptador.",
+                "nl": "Admin-tabblad herschreven in React; het volgt nu het admin-thema en is vertaald in alle adaptertalen.",
+                "fr": "Onglet d'administration réécrit en React ; il suit désormais le thème admin et est traduit dans toutes les langues de l'adaptateur.",
+                "it": "Scheda di amministrazione riscritta in React; ora segue il tema dell'admin ed è tradotta in tutte le lingue dell'adattatore.",
+                "es": "Pestaña de administración reescrita en React; ahora sigue el tema del admin y está traducida a todos los idiomas del adaptador.",
+                "pl": "Zakładka administratora napisana od nowa w React; podąża teraz za motywem admina i jest przetłumaczona na wszystkie języki adaptera.",
+                "uk": "Вкладку адміністратора переписано на React; тепер вона слідує темі admin і перекладена всіма мовами адаптера.",
+                "zh-cn": "管理选项卡已用 React 重写；现在会跟随 admin 主题，并已翻译成适配器的所有语言。"
             }
         },
         "titleLang": {
@@ -137,7 +137,7 @@
         "messagebox": true,
         "adminUI": {
             "config": "json",
-            "tab": "materialize"
+            "tab": "html"
         },
         "adminTab": {
             "singleton": true,
@@ -154,6 +154,7 @@
                 "uk": "Адаптер Gree-HVAC",
                 "zh-cn": "适应器 Gree-HVAC"
             },
+            "icon": "air-conditioner.png",
             "link": ""
         },
         "plugins": {

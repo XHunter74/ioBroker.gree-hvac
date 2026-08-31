@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#000000" />
+    <title>Gree-HVAC [ioBroker]</title>
+    <script>
+        // Paint the theme background before React mounts, otherwise the iframe flashes white.
+        (function () {
+            var themeName;
+            try {
+                themeName = window.localStorage.getItem('App.themeName');
+            } catch (e) {
+                // localStorage can be blocked inside an iframe
+            }
+            if (!themeName || themeName === 'auto') {
+                themeName = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            // must stay in sync with Theme() of @iobroker/adapter-react-v5
+            var backgrounds = {
+                dark: '#121212',
+                blue: '#151d21',
+                light: '#ffffff',
+                colored: '#ffffff',
+            };
+            document.documentElement.style.backgroundColor = backgrounds[themeName] || '#ffffff';
+        })();
+
+        // socket.io handshake expected by Connection.waitForSocketLib() of @iobroker/socket-client.
+        // Do not let this block start with `var script = document...` - patchHtmlFile() of
+        // @iobroker/build-tools would then replace it and hard-code the production path,
+        // which breaks the vite dev server.
+        (function () {
+            var script = document.createElement('script');
+            window.registerSocketOnLoad = function (cb) {
+                window.socketLoadedHandler = cb;
+            };
+            var query = {};
+            (window.location.search || '')
+                .replace(/^\?/, '')
+                .split('&')
+                .forEach(function (item) {
+                    if (!item) {
+                        return;
+                    }
+                    var kv = item.split('=');
+                    query[decodeURIComponent(kv[0])] = kv[1] !== undefined ? decodeURIComponent(kv[1]) : true;
+                });
+            script.onload = function () {
+                typeof window.socketLoadedHandler === 'function' && window.socketLoadedHandler();
+            };
+            var port = parseInt(window.location.port, 10);
+            script.src =
+                port >= 3000 && port <= 3100
+                    ? window.location.protocol +
+                      '//' +
+                      (query.host || window.location.hostname) +
+                      ':' +
+                      (query.port || 8081) +
+                      '/lib/js/socket.io.js'
+                    : '../../lib/js/socket.io.js';
+            document.head.appendChild(script);
+        })();
+    </script>
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+</body>
+</html>

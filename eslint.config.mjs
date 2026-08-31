@@ -1,4 +1,4 @@
-import ioBrokerConfig from '@iobroker/eslint-config';
+import ioBrokerConfig, { reactConfig } from '@iobroker/eslint-config';
 
 export default [
     ...ioBrokerConfig,
@@ -16,15 +16,38 @@ export default [
             '@typescript-eslint/restrict-template-expressions': 'off',
         },
     },
+    // The React admin tab lives in its own project (src-admin) with its own tsconfig,
+    // which typescript-eslint's projectService picks up on its own.
+    ...reactConfig.map(config => ({
+        ...config,
+        files: ['src-admin/src/**/*.{ts,tsx}'],
+        rules: {
+            ...config.rules,
+            // the automatic JSX runtime (jsx: "react-jsx") does not need React in scope
+            'react/react-in-jsx-scope': 'off',
+            'react/jsx-uses-react': 'off',
+        },
+        settings: {
+            ...config.settings,
+            react: {
+                // Pinned instead of 'detect': eslint-plugin-react's auto-detection still
+                // uses context.getFilename(), which ESLint 10 removed.
+                version: '18.3',
+            },
+        },
+    })),
     {
         ignores: [
-            'admin/words.js',
             'node_modules/',
             'socket.io/',
             'lib/js/',
             'js/',
             'build/',
+            'admin/',
+            'src-admin/build/',
+            'src-admin/node_modules/',
             'eslint.config.mjs',
+            'tasks.js',
             'test/',
             'main.test.js',
         ],

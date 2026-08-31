@@ -33,6 +33,30 @@ jobs:
           type-checking: 'true'
           lint: 'true'
 
+  # Builds the React admin tab and verifies that the committed admin/ output is up to date
+  gui-build:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24.x'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Install GUI dependencies
+        run: npm ci --prefix src-admin
+      - name: Type-check the GUI
+        run: npm run gui:check
+      - name: Build the GUI
+        run: npm run build:gui
+      # admin/ is committed, so a stale build has to fail the pipeline
+      - name: Verify that the committed admin/ output is up to date
+        run: git diff --exit-code -- admin/
+
   # Runs adapter tests on all supported node versions and OSes
   adapter-tests:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
@@ -53,9 +77,10 @@ jobs:
           build: 'true'
           extra-tests: 'npm run test:js'
 
-  # Publishes Sentry release first — npm deploy is blocked until this succeeds
+  # Publishes Sentry release first — npm deploy is blocked until this succeeds.
+  # gui-build is a hard gate: admin/ is committed, so a stale tab must never be released.
   deploy-sentry:
-    needs: [adapter-tests]
+    needs: [adapter-tests, gui-build]
 
     if: |
       contains(github.event.head_commit.message, '[skip ci]') == false &&

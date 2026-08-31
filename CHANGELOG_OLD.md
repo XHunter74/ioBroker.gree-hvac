@@ -1,4 +1,6 @@
 # Older changes
+### 2.0.8 (2026-02-14)
+ - Updated properties mapping
 ### 2.0.7 (2025-12-25)
  - Updated dependencies
 ### 2.0.6 (2025-11-07)
