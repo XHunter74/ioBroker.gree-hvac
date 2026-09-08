@@ -1,5 +1,10 @@
 'use strict';
 
+// Side-effect import: @iobroker/adapter-core does an unconditional runtime
+// require('@iobroker/types') (build/cjs/index.js), so the package must stay a
+// runtime dependency. Importing it here makes that explicit and provides the
+// global `ioBroker.*` namespace used throughout src/.
+import '@iobroker/types';
 import * as utils from '@iobroker/adapter-core';
 import { DeviceManager } from './lib/device_manager';
 import propertiesMap from './lib/properties_map';
