@@ -14,7 +14,11 @@ updates:
     open-pull-requests-limit: 15
 
   - package-ecosystem: 'npm'
-    directory: '/'
+    # 'directory' and 'directories' are mutually exclusive - the list also covers
+    # src-admin/package.json (the React admin GUI has its own dependency tree).
+    directories:
+      - '/'
+      - '/src-admin'
     schedule:
       interval: 'cron'
       timezone: 'Europe/Berlin'
