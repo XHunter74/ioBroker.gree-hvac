@@ -176,7 +176,7 @@
     "native": {
         "devicelist": [],
         "pollInterval": 5000,
-        "requestTimeoutMs": 1000
+        "requestTimeoutMs": 2000
     },
     "objects": [],
     "instanceObjects": [

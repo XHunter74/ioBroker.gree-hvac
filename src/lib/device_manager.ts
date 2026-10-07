@@ -29,6 +29,7 @@ const statusKeys = [
 
 const TEMPERATURE_SENSOR_OFFSET = -40;
 const DeviceScanTimeoutMs = 5000;
+const StatusRetries = 2;
 
 /**
  *
@@ -188,9 +189,20 @@ export class DeviceManager extends EventEmitter {
             t: 'status',
         };
 
-        const response = await this.connection.sendRequest(device.address, device.port, payload);
-        const cols = response.cols as string[];
-        const dat = response.dat as (number | string | boolean)[];
+        let response: Record<string, unknown> | undefined;
+        for (let attempt = 0; attempt <= StatusRetries; attempt++) {
+            try {
+                response = await this.connection.sendRequest(device.address, device.port, payload);
+                break;
+            } catch (error) {
+                if (attempt === StatusRetries) {
+                    throw error;
+                }
+                this.logger.debug(`Status request to ${deviceId} failed (attempt ${attempt + 1}), retrying: ${error}`);
+            }
+        }
+        const cols = response!.cols as string[];
+        const dat = response!.dat as (number | string | boolean)[];
 
         const deviceStatus: DeviceStatus = cols.reduce(
             (acc, key, index) => ({

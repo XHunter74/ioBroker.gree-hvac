@@ -10,6 +10,7 @@ import type { Device, DeviceStatus } from './lib/types';
 const MinPollInterval = 1000;
 const MaxPollInterval = 60000;
 const CheckDevicesTimeoutMs = 1000;
+const OfflineFailureThreshold = 3;
 const CheckDevicesTimeout = 'CheckDevices';
 const MinCelsiusTemperature = 16;
 const MaxCelsiusTemperature = 30;
@@ -147,12 +148,27 @@ class GreeHvac extends utils.Adapter {
             }
             if (deviceItem) {
                 deviceItem.lastSeen = new Date();
+                deviceItem.consecutiveFailures = 0;
             }
             void this.processDeviceStatus(deviceId, deviceStatus);
         } catch (error) {
+            if (!deviceItem) {
+                await this.setStateAsync(`${deviceId}.alive`, { val: false, ack: true });
+                return;
+            }
+            deviceItem.consecutiveFailures++;
+            if (deviceItem.consecutiveFailures < OfflineFailureThreshold) {
+                // Isolated UDP losses are normal on Wi-Fi; do not flap the device state
+                this.log.debug(
+                    `getDeviceStatus failed for device ${deviceId} (${deviceItem.consecutiveFailures}/${OfflineFailureThreshold}): ${error}`,
+                );
+                return;
+            }
             await this.setStateAsync(`${deviceId}.alive`, { val: false, ack: true });
-            if (deviceItem && deviceItem.isActive === true) {
-                this.log.error(`Error in getDeviceStatus for device ${deviceId}: ${error}`);
+            if (deviceItem.isActive === true) {
+                this.log.error(
+                    `Error in getDeviceStatus for device ${deviceId} (${deviceItem.consecutiveFailures} failures in a row): ${error}`,
+                );
                 deviceItem.isActive = false;
             }
         }

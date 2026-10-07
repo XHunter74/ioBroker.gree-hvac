@@ -57,7 +57,7 @@
                     "max": 10000,
                     "newLine": true,
                     "step": 100,
-                    "default": 1000
+                    "default": 2000
                 }
             }
         }
