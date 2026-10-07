@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "4.0.0",
+        "version": "4.1.0",
         "news": {
             "2.0.9": {
                 "en": "Fixed connection status indicator, fan speed cycling, memory leak on request timeout, maintain-room-temperature polling, and null safety issues. Closed UDP sockets on shutdown.",
@@ -80,6 +80,19 @@
                 "pl": "Zakładka administratora napisana od nowa w React; podąża teraz za motywem admina i jest przetłumaczona na wszystkie języki adaptera.",
                 "uk": "Вкладку адміністратора переписано на React; тепер вона слідує темі admin і перекладена всіма мовами адаптера.",
                 "zh-cn": "管理选项卡已用 React 重写；现在会跟随 admin 主题，并已翻译成适配器的所有语言。"
+            },
+            "4.1.0": {
+                "en": "Fewer false \"device not responding\" errors: status requests are retried, a device is reported offline only after 3 failed polls in a row, and the default request timeout is 2000 ms.",
+                "de": "Weniger falsche „Gerät antwortet nicht“-Fehler: Statusanfragen werden wiederholt, ein Gerät gilt erst nach 3 fehlgeschlagenen Abfragen in Folge als offline, und das Standard-Timeout beträgt 2000 ms.",
+                "ru": "Меньше ложных ошибок «устройство не отвечает»: запросы статуса повторяются, устройство считается офлайн только после 3 неудачных опросов подряд, таймаут по умолчанию — 2000 мс.",
+                "pt": "Menos erros falsos de «dispositivo não responde»: as solicitações de status são repetidas, um dispositivo só é considerado offline após 3 consultas consecutivas com falha, e o tempo limite padrão é de 2000 ms.",
+                "nl": "Minder valse „apparaat reageert niet“-fouten: statusverzoeken worden herhaald, een apparaat wordt pas offline gemeld na 3 mislukte polls achter elkaar, en de standaard time-out is 2000 ms.",
+                "fr": "Moins de fausses erreurs « appareil ne répond pas » : les requêtes d'état sont renouvelées, un appareil n'est déclaré hors ligne qu'après 3 interrogations échouées consécutives, et le délai par défaut est de 2000 ms.",
+                "it": "Meno falsi errori «dispositivo non risponde»: le richieste di stato vengono ripetute, un dispositivo risulta offline solo dopo 3 polling falliti consecutivi e il timeout predefinito è 2000 ms.",
+                "es": "Menos falsos errores de «dispositivo no responde»: las solicitudes de estado se reintentan, un dispositivo se marca como fuera de línea solo tras 3 sondeos fallidos seguidos y el tiempo de espera predeterminado es de 2000 ms.",
+                "pl": "Mniej fałszywych błędów „urządzenie nie odpowiada”: żądania statusu są ponawiane, urządzenie jest uznawane za offline dopiero po 3 nieudanych odpytaniach z rzędu, a domyślny limit czasu to 2000 ms.",
+                "uk": "Менше хибних помилок «пристрій не відповідає»: запити статусу повторюються, пристрій вважається офлайн лише після 3 невдалих опитувань поспіль, таймаут за замовчуванням — 2000 мс.",
+                "zh-cn": "减少“设备无响应”的误报：状态请求会重试，设备仅在连续 3 次轮询失败后才被视为离线，默认请求超时为 2000 毫秒。"
             }
         },
         "titleLang": {
