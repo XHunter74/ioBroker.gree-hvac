@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "gree-hvac",
-        "version": "4.1.0",
+        "version": "4.1.1",
         "news": {
             "2.0.9": {
                 "en": "Fixed connection status indicator, fan speed cycling, memory leak on request timeout, maintain-room-temperature polling, and null safety issues. Closed UDP sockets on shutdown.",
@@ -93,6 +93,19 @@
                 "pl": "Mniej fałszywych błędów „urządzenie nie odpowiada”: żądania statusu są ponawiane, urządzenie jest uznawane za offline dopiero po 3 nieudanych odpytaniach z rzędu, a domyślny limit czasu to 2000 ms.",
                 "uk": "Менше хибних помилок «пристрій не відповідає»: запити статусу повторюються, пристрій вважається офлайн лише після 3 невдалих опитувань поспіль, таймаут за замовчуванням — 2000 мс.",
                 "zh-cn": "减少“设备无响应”的误报：状态请求会重试，设备仅在连续 3 次轮询失败后才被视为离线，默认请求超时为 2000 毫秒。"
+            },
+            "4.1.1": {
+                "en": "The adapter remembers the encryption version of each device, so the next start no longer fails to bind devices with the newer protocol.",
+                "de": "Der Adapter merkt sich die Verschlüsselungsversion jedes Geräts, sodass beim nächsten Start das Binden von Geräten mit dem neueren Protokoll nicht mehr fehlschlägt.",
+                "ru": "Адаптер запоминает версию шифрования каждого устройства, поэтому при следующем запуске привязка устройств с новым протоколом больше не завершается ошибкой.",
+                "pt": "O adaptador lembra a versão de criptografia de cada dispositivo, para que a próxima inicialização não falhe mais ao vincular dispositivos com o protocolo mais recente.",
+                "nl": "De adapter onthoudt de versleutelingsversie van elk apparaat, zodat het koppelen van apparaten met het nieuwere protocol bij de volgende start niet meer mislukt.",
+                "fr": "L'adaptateur mémorise la version de chiffrement de chaque appareil, afin que le prochain démarrage n'échoue plus à associer les appareils utilisant le protocole plus récent.",
+                "it": "L'adattatore ricorda la versione di crittografia di ciascun dispositivo, così al prossimo avvio l'associazione dei dispositivi con il protocollo più recente non fallisce più.",
+                "es": "El adaptador recuerda la versión de cifrado de cada dispositivo, por lo que el siguiente inicio ya no falla al vincular dispositivos con el protocolo más reciente.",
+                "pl": "Adapter zapamiętuje wersję szyfrowania każdego urządzenia, dzięki czemu przy kolejnym uruchomieniu parowanie urządzeń z nowszym protokołem nie kończy się już błędem.",
+                "uk": "Адаптер запам'ятовує версію шифрування кожного пристрою, тому при наступному запуску прив'язка пристроїв з новим протоколом більше не завершується помилкою.",
+                "zh-cn": "适配器会记住每台设备的加密版本，因此下次启动时绑定使用新协议的设备不再失败。"
             }
         },
         "titleLang": {

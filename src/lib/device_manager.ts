@@ -42,10 +42,21 @@ export class DeviceManager extends EventEmitter {
     /**
      *
      */
-    constructor(devicesList: string, logger: ioBroker.Logger, requestTimeoutMs = 1000) {
+    constructor(
+        devicesList: string,
+        logger: ioBroker.Logger,
+        requestTimeoutMs = 1000,
+        knownEncVersions: Record<string, 1 | 2> = {},
+    ) {
         super();
         this.logger = logger;
         this.connection = new Connection(devicesList, logger, requestTimeoutMs);
+        // Start binding with the encryption version that worked last time (the scan runs asynchronously)
+        for (const [address, encVersion] of Object.entries(knownEncVersions)) {
+            this.logger.debug(`Using stored encryption v${encVersion} for ${address}`);
+            this.connection.registerEncVersion(address, encVersion);
+            this.connection.registerKey(address, encVersion === 2 ? defaultKeyGCM : defaultKey);
+        }
         this.rescanDevices(devicesList);
         this.connection.on('dev', this._registerDevice.bind(this));
     }

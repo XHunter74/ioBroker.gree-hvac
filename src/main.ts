@@ -91,7 +91,9 @@ class GreeHvac extends utils.Adapter {
 
             this.subscribeStates('*');
 
-            this.deviceManager = new DeviceManager(devices, this.log, this.config.requestTimeoutMs);
+            const knownEncVersions = await this.loadStoredEncVersions(adapterObjects);
+
+            this.deviceManager = new DeviceManager(devices, this.log, this.config.requestTimeoutMs, knownEncVersions);
 
             this.deviceManager.on('device_bound', async (deviceId: string, device: Device) => {
                 try {
@@ -106,6 +108,29 @@ class GreeHvac extends utils.Adapter {
             this.log.error(`Error in onReady: ${error}`);
             this.sendError(error as Error, 'Error in onReady');
         }
+    }
+
+    /**
+     * Reads the encryption version each device was bound with last time from its stored deviceInfo,
+     * so the next start does not have to try the wrong version first.
+     */
+    async loadStoredEncVersions(adapterObjects: Record<string, ioBroker.Object>): Promise<Record<string, 1 | 2>> {
+        const result: Record<string, 1 | 2> = {};
+        for (const key of Object.keys(adapterObjects)) {
+            if (!key.endsWith('.deviceInfo')) {
+                continue;
+            }
+            try {
+                const state = await this.getStateAsync(key);
+                const info = JSON.parse(String(state?.val)) as Partial<Device>;
+                if (typeof info.address === 'string' && (info.encVersion === 1 || info.encVersion === 2)) {
+                    result[info.address] = info.encVersion;
+                }
+            } catch {
+                /* no usable stored info for this device */
+            }
+        }
+        return result;
     }
 
     async pollDevices(deviceId: string, isFirst: boolean): Promise<void> {
